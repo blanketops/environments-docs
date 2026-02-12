@@ -74,72 +74,78 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
-    navbar: {
-      title: 'My Site',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
+  navbar: {
+  title: 'BlanketOps Environments',
+  logo: {
+    alt: 'BlanketOps Logo',
+    src: 'img/logo.svg', // replace later with your own logo
+  },
+  items: [
+    {
+      type: 'docSidebar',
+      sidebarId: 'tutorialSidebar',
+      position: 'left',
+      label: 'Docs',
+    },
+    {
+      to: '/docs/model/state-machine',
+      label: 'Model',
+      position: 'left',
+    },
+    {
+      to: '/docs/why/delivery-drifts',
+      label: 'Why',
+      position: 'left',
+    },
+    {
+      href: 'https://github.com/ntlaletsi70/blanketops-environments',
+      label: 'GitHub',
+      position: 'right',
+    },
+  ],
+},
+footer: {
+  style: 'dark',
+  links: [
+    {
+      title: 'Platform',
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
+          label: 'Model',
+          to: '/docs/model/state-machine',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/facebook/docusaurus',
+          label: 'Why Delivery Drifts',
+          to: '/docs/why/delivery-drifts',
+        },
+        {
+          label: 'Concepts',
+          to: '/docs/concepts/serviceunit',
+        },
+      ],
+    },
+    {
+      title: 'Project',
+      items: [
+        {
           label: 'GitHub',
-          position: 'right',
+          href: 'https://github.com/ntlaletsi70/blanketops-environments',
         },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
+    {
+      title: 'Community',
+      items: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
-          ],
+          label: 'Roadmap',
+          to: '/docs/roadmap',
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
+  ],
+  copyright: `© ${new Date().getFullYear()} BlanketOps. Deterministic Software Delivery.`,
+},
+
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,

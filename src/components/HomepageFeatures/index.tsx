@@ -1,54 +1,53 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: ReactNode;
 };
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Delivery Is Deterministic State',
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        BlanketOps models software delivery as governed state progression —
+        not pipelines, not scripts, not glued tools. Every stage transition is
+        explicit, observable, and structurally enforced.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Entropy Reduction by Design',
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Each CRD transition constrains system possibility space. From
+        GitHubEvent to ServiceUnit, uncertainty narrows. Velocity increases
+        without structural decay.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Governed Reconciliation',
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Reconciliation is not blind patching. BlanketOps enforces stage
+        contracts. If a transition violates structure, it fails visibly.
+        Coerced reconciliation is eliminated.
       </>
     ),
   },
 ];
 
-function Feature({title, Svg, description}: FeatureItem) {
+function Feature({ title, description, delay }: FeatureItem & { delay: number }) {
   return (
-    <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <Svg className={styles.featureSvg} role="img" />
-      </div>
-      <div className="text--center padding-horiz--md">
+    <div
+      className={clsx('col col--4', styles.featureWrapper)}
+      style={{ animationDelay: `${delay}s` }}
+    >
+      <div className={clsx(styles.featureCard, 'text--center padding-horiz--lg')}>
         <Heading as="h3">{title}</Heading>
         <p>{description}</p>
       </div>
@@ -62,7 +61,7 @@ export default function HomepageFeatures(): ReactNode {
       <div className="container">
         <div className="row">
           {FeatureList.map((props, idx) => (
-            <Feature key={idx} {...props} />
+            <Feature key={idx} {...props} delay={idx * 0.25} />
           ))}
         </div>
       </div>

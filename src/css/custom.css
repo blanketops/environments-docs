@@ -1,30 +1,135 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * BlanketOps Environments Global Theme
+ * Identity: Charcoal + Crimson + Cyan Signal
  */
 
-/* You can override the default Infima variables here. */
+/* ============================= */
+/* Root Theme (Light Mode Fallback) */
+/* ============================= */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #ef4444;
+  --ifm-color-primary-dark: #dc2626;
+  --ifm-color-primary-darker: #b91c1c;
+  --ifm-color-primary-darkest: #991b1b;
+  --ifm-color-primary-light: #f87171;
+  --ifm-color-primary-lighter: #fca5a5;
+  --ifm-color-primary-lightest: #fecaca;
+
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Cyan Signal Accent */
+  --blanketops-signal: #22d3ee;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* ============================= */
+/* Dark Mode (Primary Experience) */
+/* ============================= */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-primary: #ef4444;
+  --ifm-color-primary-dark: #dc2626;
+  --ifm-color-primary-darker: #b91c1c;
+  --ifm-color-primary-darkest: #991b1b;
+  --ifm-color-primary-light: #f87171;
+  --ifm-color-primary-lighter: #fca5a5;
+  --ifm-color-primary-lightest: #fecaca;
+
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.05);
+}
+
+/* ============================= */
+/* Hero Section */
+/* ============================= */
+.hero {
+  background: linear-gradient(135deg, #0f0f12 0%, #111827 100%);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+}
+
+/* ============================= */
+/* Cyan Flow Accent Utility */
+/* ============================= */
+.signal-text {
+  color: var(--blanketops-signal);
+}
+
+.signal-border {
+  border-color: var(--blanketops-signal);
+}
+
+/* ============================= */
+/* Buttons */
+/* ============================= */
+.button--primary {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.button--primary:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+}
+
+/* ============================= */
+/* Code Blocks */
+/* ============================= */
+.theme-code-block {
+  border: 1px solid rgba(34, 211, 238, 0.08);
+}
+
+/* ============================= */
+/* Subtle Cyan Section Divider */
+/* ============================= */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 211, 238, 0.4),
+    transparent
+  );
+  margin: 3rem 0;
+}
+
+
+.footer {
+  background-color: #0b0b0f;
+  border-top: 1px solid rgba(34, 211, 238, 0.15);
+}
+
+.footer a {
+  color: #9ca3af;
+}
+
+.footer a:hover {
+  color: var(--blanketops-signal);
+}
+
+/* ============================= */
+/* Compact Footer */
+/* ============================= */
+
+.footer {
+  background-color: #0b0b0f;
+  border-top: 1px solid rgba(34, 211, 238, 0.15);
+  padding: 2rem 0; /* reduce height */
+}
+
+.footer__title {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer__item {
+  margin: 0.25rem 0;
+}
+
+.footer__link-item {
+  font-size: 0.85rem;
+}
+
+.footer__copyright {
+  font-size: 0.8rem;
+  margin-top: 1.5rem;
+  opacity: 0.6;
 }
