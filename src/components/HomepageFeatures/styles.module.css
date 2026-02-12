@@ -1,6 +1,6 @@
 .features {
   padding: 6rem 0;
-  background: #0f0f12;
+  background: 'linear-gradient(180deg, #111827 0%, #0f172a 100%)',
 }
 
 .featureWrapper {
