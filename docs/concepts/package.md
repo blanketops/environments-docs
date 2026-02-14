@@ -22,14 +22,11 @@ Package is not a runtime deployment.
 
 Package is the structured distribution layer between artifact and environment state.
 
-Position in Delivery
-Build
-↓
-Package
-↓
-ServiceUnit
-↓
-Deployment
+### Position in Delivery
+
+```mathematica
+Build Package Package ServiceUnit Deployment
+```
 
 Where:
 

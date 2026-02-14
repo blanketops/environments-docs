@@ -32,6 +32,7 @@ This prevents uncontrolled execution.
 
 ### Structural Position in Delivery
 
+```mathematica
 GitRepository
 ↓
 GitHubEvent
@@ -43,6 +44,7 @@ Build
 Deploy
 ↓
 ServiceUnit
+```
 
 GitHubEvent establishes:
 
@@ -167,3 +169,7 @@ Deterministic progression start
 Delivery does not begin with a pipeline.
 
 It begins with a structured event.
+
+```
+
+```

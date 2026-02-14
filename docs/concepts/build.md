@@ -10,23 +10,17 @@ It is the artifact constraint layer of the delivery model.
 
 Build produces a verifiable, traceable image artifact.
 
-Position in Delivery
+## Position in Delivery
 
-GitRepository
-↓
-GitHubEvent
-↓
-BuildTrigger
-↓
-Build
-↓
-Deploy
-↓
-ServiceUnit
+```mathematica
+GitRepository → GitHubEvent → BuildTrigger → Build → Deployment → ServiceUnit
+```
 
 Build marks the transition from:
 
+```mathematica
 External event → Internal artifact
+```
 
 This is the most significant entropy reduction stage in delivery.
 
@@ -34,13 +28,10 @@ Why Build Exists as a First-Class Object
 
 Traditional CI systems treat builds as:
 
-Ephemeral jobs
-
-Pipeline steps
-
-Log outputs
-
-Side effects
+- Ephemeral jobs
+- Pipeline steps
+- Log outputs
+- Side effects
 
 BlanketOps models build as state.
 
@@ -96,60 +87,56 @@ Declares the artifact destination.
 
 This constrains:
 
-Registry location
-
-Tag lineage
-
-Deployment compatibility
+- Registry location
+- Tag lineage
+- Deployment compatibility
 
 Build output cannot drift outside this boundary.
 
-strategy
+`strategy`
 
 Defines the execution mechanism.
 
 Example:
 
+```yaml
 strategy:
-kind: ClusterBuildStrategy
-name: kaniko
+  kind: ClusterBuildStrategy
+  name: kaniko
+```
 
 This makes build execution:
 
-Explicit
-
-Auditable
-
-Replaceable
-
-Cluster-governed
+- Explicit
+- Auditable
+- Replaceable
+- Cluster-governed
 
 No hidden docker builds.
 No local overrides.
 
-source
+`source`
 
 Declares source origin and revision.
 
+```yaml
 source:
-url: git@github.com:ntlaletsi70/for-kaniko-app.git
-revision: master
-contextDir: .
-cloneSecret: git-ssh-credentials
+  url: git@github.com:ntlaletsi70/for-kaniko-app.git
+  revision: master
+  contextDir: .
+  cloneSecret: git-ssh-credentials
+```
 
 This constrains:
 
-Repository identity
-
-Revision boundary
-
-Build context
-
-Authentication mechanism
+- Repository identity
+- Revision boundary
+- Build context
+- Authentication mechanism
 
 Build cannot consume ambiguous source.
 
-serviceAccount
+`serviceAccount`
 
 Defines execution identity.
 
@@ -157,107 +144,78 @@ Builds do not run with uncontrolled privileges.
 
 This enforces:
 
-Registry access control
+- Registry access control
+- Secret scoping
+- Cluster RBAC boundaries
 
-Secret scoping
-
-Cluster RBAC boundaries
-
-policy
+`policy`
 
 Controls allowed triggers and retry semantics.
 
 Example:
 
+```yaml
 policy:
-triggers: - type: pull_request - type: push
+  triggers: - type: pull_request - type: push
+```
 
 This ensures:
 
-Only declared GitHubEvents can create BuildTriggers
-
-Unapproved transitions are rejected
-
-Delivery progression remains deterministic
-
-Entropy Reduction at Artifact Boundary
+- Only declared GitHubEvents can create BuildTriggers
+- Unapproved transitions are rejected
+- Delivery progression remains deterministic
+- Entropy Reduction at Artifact Boundary
 
 Before Build:
 
-Code is mutable
-
-Branches may vary
-
-Context may shift
+- Code is mutable
+- Branches may vary
+- Context may shift
 
 After Build:
 
-Artifact digest is fixed
-
-Image is addressable
-
-Execution environment is known
-
-Lineage is traceable
-
-The possibility space collapses.
+- Artifact digest is fixed
+- Image is addressable
+- Execution environment is known
+- Lineage is traceable
+- The possibility space collapses.
 
 This is deterministic artifact creation.
 
-Reconciliation Model
+## Reconciliation Model
 
 The Build controller is responsible for:
 
-Validating contract completeness
-
-Executing strategy
-
-Capturing build status
-
-Persisting artifact digest
-
-Emitting downstream readiness signal
+- Validating contract completeness
+- Executing strategy
+- Capturing build status
+- Persisting artifact digest
+- Emitting downstream readiness signal
 
 It does not:
 
-Deploy workloads
-
-Modify routing
-
-Bypass policy
+- Deploy workloads
+- Modify routing
+- Bypass policy
 
 Build produces constrained output.
 
-Design Principles
+## Design Principles
 
-Artifact production must be explicit
+- Artifact production must be explicit
+- Execution strategy must be declared
+- Source must be constrained
+- Policy must be enforced
+- Identity must be scoped
+- Build is the artifact truth boundary.
 
-Execution strategy must be declared
+### What This Enables
 
-Source must be constrained
-
-Policy must be enforced
-
-Identity must be scoped
-
-Build is the artifact truth boundary.
-
-What This Enables
-
-Deterministic deployment inputs
-
-Artifact traceability
-
-Strategy abstraction (Kaniko, Buildah, etc.)
-
-Secure multi-tenant builds
-
-Controlled CI evolution
-
-Delivery without structured artifact modeling is fragile.
+- Deterministic deployment inputs
+- Artifact traceability
+- Strategy abstraction (Kaniko, Buildah, etc.)
+- Secure multi-tenant builds
+- Controlled CI evolution
+- Delivery without structured artifact modeling is fragile.
 
 Build makes artifact creation deterministic.
-
-```
-
-```

@@ -29,7 +29,9 @@ Delivery cannot progress without it.
 
 The GitRepository sits at the start of deterministic progression:
 
+```mathematica
 GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → Route → ServiceUnit
+```
 
 It establishes:
 
@@ -63,7 +65,7 @@ spec:
     webhooks: - events: - push - pull_request
 ```
 
-Contract Semantics
+### Contract Semantics
 
 The contract field is non-negotiable.
 

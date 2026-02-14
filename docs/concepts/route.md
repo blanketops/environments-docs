@@ -4,26 +4,21 @@ The Route represents the governed traffic exposure contract for a deployed Servi
 
 It defines:
 
-Host binding
-
-Path mapping
-
-TLS policy
-
-Runtime substrate
-
-Exposure enablement
+- Host binding
+- Path mapping
+- TLS policy
+- Runtime substrate
+- Exposure enablement
 
 Route is not an Ingress resource.
 
 Route is the declarative traffic contract of a delivery unit.
 
 Position in Delivery
-ServiceUnit
-↓
-Deployment
-↓
-Route
+
+```mathematica
+ServiceUnit Deployment Route
+```
 
 Where:
 
@@ -56,32 +51,19 @@ This prevents uncontrolled external surface mutation.
 
 Example (Contractual Form)
 
-Your current CR:
-
+```yaml
 apiVersion: environments.blanketops.dev/v1
 kind: Route
 metadata:
-name: route-sample
+  name: route-sample
 spec:
-host: api.dev.blanketops.dev
-path: /
-enabled: true
-tlsEnabled: true
-runtime: kubernetes.io/container-runtime
-
-To align with doctrine, we wrap exposure in a contract:
-
-apiVersion: environments.blanketops.dev/v1
-kind: Route
-metadata:
-name: route-sample
-spec:
-contract:
-host: api.dev.blanketops.dev
-path: /
-enabled: true
-tlsEnabled: true
-runtime: kubernetes.io/container-runtime
+  contract:
+    host: api.dev.blanketops.dev
+    path: /
+    enabled: true
+    tlsEnabled: true
+    runtime: kubernetes.io/container-runtime
+```
 
 Route must be governed.
 
@@ -91,7 +73,7 @@ Contract Semantics
 
 The contract defines non-negotiable exposure boundaries.
 
-host
+`host`
 
 Declares external DNS identity.
 
@@ -105,7 +87,7 @@ Environment isolation
 
 Host identity cannot drift silently.
 
-path
+`path`
 
 Defines HTTP path binding.
 
@@ -119,7 +101,7 @@ Shadow route conflicts
 
 Path mapping is explicit.
 
-enabled
+`enabled`
 
 Controls route activation.
 
@@ -133,7 +115,7 @@ Environment gating
 
 Route exposure is deliberate.
 
-tlsEnabled
+`tlsEnabled`
 
 Declares TLS requirement.
 
@@ -149,7 +131,7 @@ TLS is not inferred.
 
 It is declared.
 
-runtime
+`runtime`
 
 Defines routing substrate.
 

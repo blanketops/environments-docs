@@ -21,19 +21,10 @@ Deployment does not route traffic.
 Deployment projects artifact-backed ServiceUnits into runtime state.
 
 Position in Delivery
-GitRepository
-↓
-GitHubEvent
-↓
-BuildTrigger
-↓
-Build
-↓
-ServiceUnit
-↓
-Deployment
-↓
-Route
+
+```mathematica
+GitRepository GitHubEvent BuildTrigger Build ServiceUnit Deployment Route
+```
 
 Deployment binds resolved ServiceUnits into runtime configuration.
 
@@ -260,3 +251,7 @@ Runtime strategy abstraction
 Structured environment orchestration
 
 Deployment formalizes the boundary between artifact and runtime.
+
+```
+
+```

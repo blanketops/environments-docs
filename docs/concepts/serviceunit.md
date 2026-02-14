@@ -4,11 +4,11 @@ The ServiceUnit represents a runtime workload contract derived from a resolved a
 
 It defines:
 
-Artifact source
-Runtime shape
-Scaling boundary
-Application role
-Stack classification
+- Artifact source
+- Runtime shape
+- Scaling boundary
+- Application role
+- Stack classification
 
 ServiceUnit is not a Kubernetes Deployment.
 
@@ -16,11 +16,15 @@ It is the deterministic workload abstraction of BlanketOps.
 
 Position in Delivery
 
+```mathematica
 Build → Package → ServiceUnit → Deployment → Route
+```
 
 ServiceUnit bridges:
 
+```mathematica
 Artifact identity → Runtime projection
+```
 
 It transforms artifact output into structured workload intent.
 
@@ -28,27 +32,20 @@ Why ServiceUnit Exists
 
 Traditional systems bind:
 
-Image references
-
-Deployment manifests
-
-Replica count
-
-Port exposure
-
-Application role
+- Image references
+- Deployment manifests
+- Replica count
+- Port exposure
+- Application role
 
 directly into Kubernetes YAML.
 
 This creates:
 
-Artifact drift
-
-Repetition
-
-Environment coupling
-
-Implicit scaling
+- Artifact drift
+- Repetition
+- Environment coupling
+- Implicit scaling
 
 BlanketOps isolates runtime workload definition into a governed object.
 

@@ -26,18 +26,11 @@ Event normalization → Policy evaluation → Artifact execution
 
 This preserves structural clarity.
 
-Position in Delivery
-GitRepository
-↓
-GitHubEvent
-↓
-BuildTrigger
-↓
-Build
-↓
-Deploy
-↓
-ServiceUnit
+## Position in Delivery
+
+```mathematica
+GitRepository GitHubEvent BuildTrigger Build Deploy ServiceUnit
+```
 
 BuildTrigger enforces:
 
