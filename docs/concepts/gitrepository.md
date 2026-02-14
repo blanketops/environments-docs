@@ -88,8 +88,9 @@ This prevents ambiguous webhook handling and allows provider-specific validation
 Defines the inbound event endpoint.
 
 This ensures:
-Events are scoped
-Event legitimacy is verifiable
+
+- Events are scoped
+- Event legitimacy is verifiable
 
 External triggers are constrained
 
@@ -104,80 +105,58 @@ Delivery artifacts must trace lineage back to this identity.
 Defines which events are accepted.
 
 This prevents uncontrolled triggers.
-
 Only declared transitions are valid.
-
 Entropy Reduction at Origin
 
-Without a GitRepository:
+### Without a GitRepository:
 
-Events could originate from anywhere
+- Events could originate from anywhere
+- Build triggers lack structural context
+- Artifact lineage is unverifiable
+- Drift begins at the first step
 
-Build triggers lack structural context
+### With GitRepository:
 
-Artifact lineage is unverifiable
-
-Drift begins at the first step
-
-With GitRepository:
-
-Source origin is constrained
-
-Provider contract is explicit
-
-Event scope is defined
-
-Transition legitimacy is enforced
-
-Entropy is reduced at the boundary.
+- Source origin is constrained
+- Provider contract is explicit
+- Event scope is defined
+- Transition legitimacy is enforced
+- Entropy is reduced at the boundary.
 
 ## Reconciliation Model
 
 The GitRepository controller is responsible for:
 
-Validating provider configuration
-
-Ensuring webhook registration
-
-Observing connectivity status
-
-Surfacing contract violations
+- Validating provider configuration
+- Ensuring webhook registration
+- Observing connectivity status
+- Surfacing contract violations
 
 It does not:
 
-Trigger builds directly
-
-Deploy workloads
-
-Resolve artifacts
+- Trigger builds directly
+- Deploy workloads
+- Resolve artifacts
 
 It establishes origin truth.
 
-Design Principles
+## Design Principles
 
-Source identity must be explicit
-
-Event legitimacy must be constrained
-
-Provider integration must be contractual
-
-Delivery must trace lineage to origin
-
-GitRepository is not configuration.
+- Source identity must be explicit
+- Event legitimacy must be constrained
+- Provider integration must be contractual
+- Delivery must trace lineage to origin
+- GitRepository is not configuration.
 
 It is structural authority.
 
-What This Enables
+### What This Enables
 
-Deterministic build lineage
-
-Controlled event ingestion
-
-Multi-provider extensibility
-
-Auditable delivery origin
-
-Platform-level governance
+- Deterministic build lineage
+- Controlled event ingestion
+- Multi-provider extensibility
+- Auditable delivery origin
+- Platform-level governance
 
 Delivery without governed origin is fragile.
 

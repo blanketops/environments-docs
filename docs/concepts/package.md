@@ -4,17 +4,12 @@ The Package represents a versioned, distributable delivery unit composed of runt
 
 It defines:
 
-Version identity
-
-Distribution metadata
-
-Manifest source
-
-Maintainer ownership
-
-Environment state repository
-
-Diff behavior
+- Version identity
+- Distribution metadata
+- Manifest source
+- Maintainer ownership
+- Environment state repository
+- Diff behavior
 
 Package is not a build artifact.
 
@@ -25,44 +20,33 @@ Package is the structured distribution layer between artifact and environment st
 ### Position in Delivery
 
 ```mathematica
-Build Package Package ServiceUnit Deployment
+Build → Package → Package → ServiceUnit → Deployment
 ```
 
 Where:
 
-Build produces image artifact
+- `Build` produces image artifact
+- `Package` defines versioned configuration bundle
+- `ServiceUnit` consumes resolved package context
+- `Deployment` projects into runtime
+- `Package` introduces versioned intent.
 
-Package defines versioned configuration bundle
-
-ServiceUnit consumes resolved package context
-
-Deployment projects into runtime
-
-Package introduces versioned intent.
-
-Why Package Exists
+## Why Package Exists
 
 Traditional delivery systems mix:
 
-Image versions
-
-Manifest repositories
-
-Runtime configuration
-
-Environment state
-
-Maintainer metadata
+- Image versions
+- Manifest repositories
+- Runtime configuration
+- Environment state
+- Maintainer metadata
 
 This creates:
 
-Unclear ownership
-
-Version drift
-
-Weak promotion models
-
-Poor auditability
+- Unclear ownership
+- Version drift
+- Weak promotion models
+- Poor auditability
 
 BlanketOps separates artifact from package.
 
@@ -109,94 +93,81 @@ enabled: true
       path: ./clusters/dev
 ```
 
-Contract Semantics
+## Contract Semantics
 
 The contract field defines package identity and projection rules.
 
-name / version
+`name / version`
 
 Defines canonical package identity.
 
 This allows:
 
-Version pinning
+- Version pinning
+- Promotion workflows
+- Controlled upgrades
+- Rollback capability
+- Package identity is explicit.
 
-Promotion workflows
-
-Controlled upgrades
-
-Rollback capability
-
-Package identity is explicit.
-
-enabled
+`enabled`
 
 Controls whether package is active.
 
 This enables:
 
-Feature toggling
+- Feature toggling
+- Environment gating
+- Controlled rollout
 
-Environment gating
-
-Controlled rollout
-
-packageName / packageVersion
+`packageName / packageVersion`
 
 Separates internal object identity from distributed version.
 
 This distinction allows:
 
-Semantic versioning
+- Semantic versioning
+- Registry-based distribution
+- Promotion without renaming CR
 
-Registry-based distribution
-
-Promotion without renaming CR
-
-packageDescription
+`packageDescription`
 
 Defines human-readable context.
 
 This makes Package:
 
-Self-documenting
+- Self-documenting
+- Discoverable
+- Maintained as a product unit
 
-Discoverable
-
-Maintained as a product unit
-
-packageMaintainers
+`packageMaintainers`
 
 Declares ownership.
 
 This supports:
 
-Governance
-
-Escalation clarity
-
-Team accountability
+- Governance
+- Escalation clarity
+- Team accountability
 
 Packages are owned artifacts.
 
-packageRepository
+`packageRepository`
 
 Defines configuration bundle source.
 
+```yaml
 packageRepository:
-url: git@github.com:ntlaletsi70/for-kaniko-app-packages.git
+  url: git@github.com:ntlaletsi70/for-kaniko-app-packages.git
+```
 
 This constrains:
 
-Manifest origin
+- Manifest origin
+- Versioned configuration
+- Distribution lineage
+- Package configuration cannot drift outside declared repo.
 
-Versioned configuration
-
-Distribution lineage
-
-Package configuration cannot drift outside declared repo.
-
-packageKappDiff
+`packageKappDiff`
 
 Controls diff strategy behavior.
 
@@ -214,95 +185,69 @@ Defines environment state projection repository.
 
 ```yaml
 stateRepo:
-url: git@github.com:ntlaletsi70/for-kaniko-app-state.git
-ref:
-branch: master
-strategy: kustomization
-path: ./clusters/dev
+  url: git@github.com:ntlaletsi70/for-kaniko-app-state.git
+  ref:
+    branch: master
+    strategy: kustomization
+    path: ./clusters/dev
 ```
 
 This allows:
 
-Environment-specific projection
+- Environment-specific projection
+- State separation
+- Promotion workflows
+- Multi-cluster targeting
+- Package becomes environment-aware.
 
-State separation
-
-Promotion workflows
-
-Multi-cluster targeting
-
-Package becomes environment-aware.
-
-Entropy Reduction at Packaging Layer
+## Entropy Reduction at Packaging Layer
 
 Before Package:
 
 Artifact exists
-
 Configuration may vary
-
 Environment state may drift
 
 After Package:
 
 Version is fixed
-
 Maintainers are declared
-
 Manifest origin is constrained
-
 Environment state target is explicit
-
 Package reduces distribution entropy.
 
-Reconciliation Responsibility
+## Reconciliation Responsibility
 
 The Package controller is responsible for:
 
-Validating package metadata
-
-Resolving configuration repository
-
-Tracking version identity
-
-Managing environment state projection
-
-Enforcing enabled flag
+- Validating package metadata
+- Resolving configuration repository
+- Tracking version identity
+- Managing environment state projection
+- Enforcing enabled flag
 
 It does not:
 
-Build artifacts
+- Build artifacts
+- Execute runtime containers
+- Trigger external events
+- It governs configuration distribution.
 
-Execute runtime containers
+## Design Principles
 
-Trigger external events
+- Version identity must be explicit
+- Distribution source must be constrained
+- Ownership must be declared
+- Environment projection must be deterministic
+- Drift must be observable
+- Package formalizes delivery as a distributable unit.
 
-It governs configuration distribution.
-
-Design Principles
-
-Version identity must be explicit
-
-Distribution source must be constrained
-
-Ownership must be declared
-
-Environment projection must be deterministic
-
-Drift must be observable
-
-Package formalizes delivery as a distributable unit.
-
-What This Enables
+### What This Enables
 
 Versioned delivery governance
-
 Controlled environment promotion
-
 Clear ownership boundaries
-
 Structured state management
-
 Deterministic configuration projection
 
 Package transforms delivery from execution to distribution discipline.
