@@ -2,14 +2,14 @@
 
 BlanketOps Environments is composed of Kubernetes Custom Resource Definitions (CRDs) grouped into two primary API domains:
 
-## sources.blanketops.dev
+### sources.blanketops.dev
 
 Defines source origin and event ingestion.
 
 - GitRepository
 - GitHubEvent
 
-## environments.blanketops.dev
+### environments.blanketops.dev
 
 Defines delivery, artifact, runtime, and exposure modeling.
 
@@ -19,10 +19,6 @@ Defines delivery, artifact, runtime, and exposure modeling.
 - ServiceUnit
 - Deployment
 - Route
-
-## Security Boundaries
-
-- ServiceAccount
 
 Each resource defines a `contract` field that governs non-negotiable structural behavior.
 
