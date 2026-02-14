@@ -10,7 +10,7 @@ It is the artifact constraint layer of the delivery model.
 
 Build produces a verifiable, traceable image artifact.
 
-## Position in Delivery
+### Position in Delivery
 
 ```mathematica
 GitRepository → GitHubEvent → BuildTrigger → Build → Deployment → ServiceUnit

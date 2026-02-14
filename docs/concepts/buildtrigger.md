@@ -12,21 +12,20 @@ It decides whether a Build may be created.
 
 Without BuildTrigger:
 
-Every GitHubEvent could trigger a Build
-
-Branch logic leaks into build execution
-
-Policy becomes implicit
-
-Event filtering becomes scattered
+- Every GitHubEvent could trigger a Build
+- Branch logic leaks into build execution
+- Policy becomes implicit
+- Event filtering becomes scattered
 
 BlanketOps separates:
 
+```mathematica
 Event normalization → Policy evaluation → Artifact execution
+```
 
 This preserves structural clarity.
 
-## Position in Delivery
+### Position in Delivery
 
 ```mathematica
 GitRepository GitHubEvent BuildTrigger Build Deploy ServiceUnit
@@ -34,17 +33,15 @@ GitRepository GitHubEvent BuildTrigger Build Deploy ServiceUnit
 
 BuildTrigger enforces:
 
-Event filtering
-
-Branch scoping
-
-Repository binding
-
-Execution targeting
-
-It reduces entropy before artifact creation.
+- Event filtering
+- Branch scoping
+- Repository binding
+- Execution targeting
+- It reduces entropy before artifact creation.
 
 Example
+
+```yaml
 apiVersion: environments.blanketops.dev/v1alpha1
 kind: BuildTrigger
 metadata:
@@ -65,52 +62,55 @@ eventType: push
 
     payloadPolicy:
       allow: true
+```
 
-Contract Semantics
+## Contract Semantics
 
 The contract field defines trigger eligibility.
 
-source
+`source`
 
 Declares event provider.
 
 This prevents cross-provider ambiguity.
 
-eventType
+`eventType`
 
 Specifies which event is eligible.
 
 Example:
 
+```yaml
 eventType: push
+```
 
 This constrains transition type.
 
 Pull requests and pushes are not interchangeable.
 
-repository
+`repository`
 
 Binds trigger to a specific repository identity.
 
 Even if multiple repositories exist in the cluster, this trigger only matches one.
 
-ref
+`ref`
 
 Constrains branch or reference.
 
 Example:
 
+```yaml
 ref: refs/heads/main
+```
 
 This prevents:
 
-Feature branch builds from triggering production pipelines
+- Feature branch builds from triggering production pipelines
+- Accidental execution from unintended refs
+- Branch scoping is explicit.
 
-Accidental execution from unintended refs
-
-Branch scoping is explicit.
-
-buildRef
+`buildRef`
 
 Defines which Build object should execute when policy matches.
 
@@ -118,108 +118,90 @@ This decouples:
 
 Policy evaluation from execution logic.
 
-payloadPolicy
+`payloadPolicy`
 
 Controls whether raw event payload is exposed to downstream systems.
 
 This allows:
 
-Advanced build logic
-
-Metadata extraction
-
-Controlled dynamic behavior
+- Advanced build logic
+- Metadata extraction
+- Controlled dynamic behavior
 
 Without forcing every build to parse provider payloads.
 
 Status Model (Conceptual)
+
+```yaml
 status:
-phase: Pending | Ignored | Executed | Failed
-lastMatch:
-eventName: ""
-sha: ""
-triggeredAt: ""
-buildRunRef: ""
-conditions: []
+  phase: Pending | Ignored | Executed | Failed
+    lastMatch:
+    eventName: ""
+    sha: ""
+    triggeredAt: ""
+    buildRunRef: ""
+  conditions: []
+```
 
 This allows:
 
-Observability
-
-Auditability
-
-Trigger history tracking
-
-Clear execution state
-
-Entropy Reduction at Policy Layer
+- Observability
+- Auditability
+- Trigger history tracking
+- Clear execution state
+- Entropy Reduction at Policy Layer
 
 Before BuildTrigger:
 
-All GitHubEvents are potential execution sources
+- All GitHubEvents are potential execution sources
 
 After BuildTrigger:
 
-Only declared events
-
-From declared repository
-
-On declared branch
-
-For declared buildRef
-
-may proceed.
+- Only declared events
+- From declared repository
+- On declared branch
+- For declared buildRef may proceed.
 
 The possibility space collapses further.
 
-Reconciliation Responsibility
+## Reconciliation Responsibility
 
 The BuildTrigger controller is responsible for:
 
-Matching GitHubEvent against contract
-
-Evaluating branch constraints
-
-Creating Build execution signal
-
-Recording trigger status
+- Matching GitHubEvent against contract
+- Evaluating branch constraints
+- Creating Build execution signal
+- Recording trigger status
 
 It does not:
 
-Execute build logic
-
-Deploy workloads
-
-Modify artifacts
+- Execute build logic
+- Deploy workloads
+- Modify artifacts
 
 It enforces policy.
 
-Design Principles
+## Design Principles
 
-Policy must be explicit
+- Policy must be explicit
+- Execution must be deliberate
+- Branch logic must be declarative
+- Event filtering must be structural
+- Trigger eligibility must be observable
+- BuildTrigger protects the artifact boundary.
 
-Execution must be deliberate
+### What This Enables
 
-Branch logic must be declarative
-
-Event filtering must be structural
-
-Trigger eligibility must be observable
-
-BuildTrigger protects the artifact boundary.
-
-What This Enables
-
-Multi-branch governance
-
-Environment isolation
-
-Controlled CI/CD flows
-
-Explicit promotion patterns
-
-Deterministic event filtering
+- Multi-branch governance
+- Environment isolation
+- Controlled CI/CD flows
+- Explicit promotion patterns
+- Deterministic event filtering
 
 Delivery without explicit trigger policy is fragile.
 
 BuildTrigger enforces intent before execution.
+
+```
+
+```
