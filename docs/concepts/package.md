@@ -75,6 +75,8 @@ Package = structured configuration unit
 This allows deterministic version governance.
 
 Example
+
+```yaml
 apiVersion: environments.blanketops.dev/v1
 kind: Package
 metadata:
@@ -108,6 +110,7 @@ enabled: true
       cloneSecret: git-ssh-credentials-state
       strategy: kustomization
       path: ./clusters/dev
+```
 
 Contract Semantics
 
@@ -202,24 +205,24 @@ Controls diff strategy behavior.
 
 Enables:
 
-Declarative drift visibility
-
-Safe reconciliation
-
-Deterministic diff projection
+- Declarative drift visibility.
+- Safe reconciliation.
+- Deterministic diff projection.
 
 This is runtime governance support.
 
-stateRepo
+`stateRepo`
 
 Defines environment state projection repository.
 
+```yaml
 stateRepo:
 url: git@github.com:ntlaletsi70/for-kaniko-app-state.git
 ref:
 branch: master
 strategy: kustomization
 path: ./clusters/dev
+```
 
 This allows:
 

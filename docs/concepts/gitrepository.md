@@ -75,31 +75,29 @@ The source provider
 
 The delivery system
 
-provider
+`provider`
 
 Declares the SCM provider.
 
 This prevents ambiguous webhook handling and allows provider-specific validation.
 
-hookUrl
+`hookUrl`
 
 Defines the inbound event endpoint.
 
 This ensures:
-
 Events are scoped
-
 Event legitimacy is verifiable
 
 External triggers are constrained
 
-repository.owner / repository.name
+`repository.owner / repository.name`
 
 Establishes canonical repository identity.
 
 Delivery artifacts must trace lineage back to this identity.
 
-webhooks.events
+`webhooks.events`
 
 Defines which events are accepted.
 
@@ -131,7 +129,7 @@ Transition legitimacy is enforced
 
 Entropy is reduced at the boundary.
 
-Reconciliation Model
+## Reconciliation Model
 
 The GitRepository controller is responsible for:
 

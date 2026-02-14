@@ -8,16 +8,13 @@ It is a structured event object inside the BlanketOps domain.
 
 GitHubEvent converts external activity into internal intent.
 
-Why GitHubEvent Exists
+## Why GitHubEvent Exists
 
 Webhooks are:
 
 Unstructured
-
 Provider-specific
-
 Ephemeral
-
 External
 
 Non-authoritative
@@ -27,16 +24,14 @@ BlanketOps does not allow raw webhooks to drive delivery directly.
 Instead:
 
 A GitRepository receives a webhook.
-
 The payload is validated against the repository contract.
-
 A GitHubEvent object is created.
-
 Delivery progression begins.
 
 This prevents uncontrolled execution.
 
-Structural Position in Delivery
+### Structural Position in Delivery
+
 GitRepository
 ↓
 GitHubEvent

@@ -8,7 +8,7 @@ BuildTrigger does not build artifacts.
 
 It decides whether a Build may be created.
 
-Why BuildTrigger Exists
+## Why BuildTrigger Exists
 
 Without BuildTrigger:
 
