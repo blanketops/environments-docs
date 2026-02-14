@@ -1,17 +1,13 @@
-ServiceUnit
+# ServiceUnit
 
 The ServiceUnit represents a runtime workload contract derived from a resolved artifact.
 
 It defines:
 
 Artifact source
-
 Runtime shape
-
 Scaling boundary
-
 Application role
-
 Stack classification
 
 ServiceUnit is not a Kubernetes Deployment.
@@ -19,6 +15,7 @@ ServiceUnit is not a Kubernetes Deployment.
 It is the deterministic workload abstraction of BlanketOps.
 
 Position in Delivery
+
 Build → Package → ServiceUnit → Deployment → Route
 
 ServiceUnit bridges:

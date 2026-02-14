@@ -1,4 +1,4 @@
-Package
+# Package
 
 The Package represents a versioned, distributable delivery unit composed of runtime configuration, metadata, and state projection.
 

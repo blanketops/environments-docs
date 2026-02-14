@@ -1,4 +1,4 @@
-GitHubEvent
+# GitHubEvent
 
 The GitHubEvent represents a normalized, governed delivery trigger derived from an external webhook.
 

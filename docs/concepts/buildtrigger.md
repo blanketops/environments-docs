@@ -1,4 +1,4 @@
-BuildTrigger
+# BuildTrigger
 
 The BuildTrigger governs when a Build is allowed to execute.
 

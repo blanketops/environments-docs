@@ -1,16 +1,17 @@
-Build
+# Build
 
 The Build represents the deterministic transformation of governed source into a container artifact.
 
 It is the artifact constraint layer of the delivery model.
 
-Build does not deploy.
-Build does not route.
-Build does not mutate runtime.
+- Build does not deploy.
+- Build does not route.
+- Build does not mutate runtime.
 
 Build produces a verifiable, traceable image artifact.
 
 Position in Delivery
+
 GitRepository
 ↓
 GitHubEvent
@@ -45,21 +46,18 @@ BlanketOps models build as state.
 
 Because:
 
-Artifacts must be traceable
-
-Strategies must be declared
-
-Source must be constrained
-
-Execution must be governed
-
-Policies must be enforced
-
-Build is not a step.
+- Artifacts must be traceable
+- Strategies must be declared
+- Source must be constrained
+- Execution must be governed
+- Policies must be enforced
+- Build is not a step.
 
 It is a state boundary.
 
 Example
+
+```yaml
 apiVersion: environments.blanketops.dev/v1alpha1
 kind: Build
 metadata:
@@ -86,12 +84,13 @@ image: docker.io/nkanyezisolutions/for-kaniko-app:master
       triggers:
         - type: pull_request
         - type: push
+```
 
-Contract Semantics
+## Contract Semantics
 
 The contract field defines non-negotiable artifact boundaries.
 
-image
+`image`
 
 Declares the artifact destination.
 
@@ -258,3 +257,7 @@ Controlled CI evolution
 Delivery without structured artifact modeling is fragile.
 
 Build makes artifact creation deterministic.
+
+```
+
+```
