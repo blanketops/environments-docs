@@ -2,9 +2,9 @@
 
 API Group: `sources.blanketops.dev`
 
-Version: `v1alpha1
+Version: `v1alpha1`
 
-Scope: `Namespaced
+Scope: `Namespaced`
 
 ---
 
@@ -15,6 +15,8 @@ GitRepository defines a governed source origin for delivery.
 It establishes provider configuration, webhook scope, and repository identity.
 
 ---
+
+### Contract
 
 | Field            | Type   | Required | Description                             |
 | ---------------- | ------ | -------- | --------------------------------------- |
