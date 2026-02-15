@@ -98,3 +98,14 @@ spec:
       strategy: kustomization
       path: ./bases/kustomization.yaml
 ```
+
+---
+
+## Invariants
+
+- All referenced ServiceUnits must exist.
+- runtime must be supported by the controller.
+- manifestsRepo.url must be reachable.
+- path must resolve to valid manifests.
+- imageAutomation must not override ServiceUnit contract constraints.
+- Deployment does not modify Build resources.
