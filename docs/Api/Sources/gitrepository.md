@@ -1,10 +1,10 @@
 # GitRepository
 
-`API Group`: sources.blanketops.dev
+API Group: `sources.blanketops.dev`
 
-`Version`: v1alpha1
+Version: `v1alpha1
 
-`Scope`: Namespaced
+Scope: `Namespaced
 
 ---
 
