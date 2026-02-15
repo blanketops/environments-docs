@@ -85,13 +85,9 @@ spec:
   contract:
     serviceUnits:
       - for-kaniko-app-api
-
     runtime: kubernetes.io/container-runtime
-
     imageAutomation: false
-
     reconciliationStrategy: kustomize
-
     manifestsRepo:
       url: git@github.com:ntlaletsi70/for-kaniko-app-deployment.git
       cloneSecret: git-ssh-credentials
