@@ -8,7 +8,7 @@ Scope: `Namespaced`
 
 ---
 
-### Description
+## Description
 
 GitRepository defines a governed source origin for delivery.
 
@@ -28,7 +28,7 @@ It establishes provider configuration, webhook scope, and repository identity.
 
 ---
 
-### spec.repositoryRef
+#### spec.repositoryRef
 
 | Field  | Type     | Required | Description                                       |
 | ------ | -------- | -------- | ------------------------------------------------- |
@@ -36,7 +36,7 @@ It establishes provider configuration, webhook scope, and repository identity.
 
 ---
 
-### Status
+#### Status
 
 `status.phase`
 

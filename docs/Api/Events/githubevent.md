@@ -8,7 +8,7 @@ Scope: `Namespaced`
 
 ---
 
-### Description
+## Description
 
 GitHubEvent represents a normalized, provider-derived event created from a validated GitRepository webhook.
 
@@ -34,7 +34,7 @@ GitHubEvent is immutable once created.
 
 ---
 
-### spec.repositoryRef
+#### spec.repositoryRef
 
 | Field | Type   | Required | Description                        |
 | ----- | ------ | -------- | ---------------------------------- |
@@ -42,7 +42,7 @@ GitHubEvent is immutable once created.
 
 ---
 
-### Status
+#### Status
 
 | Field               | Type        | Description                                  |
 | ------------------- | ----------- | -------------------------------------------- |
