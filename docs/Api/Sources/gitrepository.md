@@ -16,7 +16,7 @@ It establishes provider configuration, webhook scope, and repository identity.
 
 ---
 
-### Contract
+### Spec
 
 | Field            | Type   | Required | Description                             |
 | ---------------- | ------ | -------- | --------------------------------------- |
@@ -27,6 +27,8 @@ It establishes provider configuration, webhook scope, and repository identity.
 | webhooks         | list   | Yes      | Allowed webhook event configurations    |
 
 ---
+
+### spec.repositoryRef
 
 | Field  | Type     | Required | Description                                       |
 | ------ | -------- | -------- | ------------------------------------------------- |

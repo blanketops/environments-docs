@@ -21,7 +21,7 @@ GitHubEvent is immutable once created.
 
 ---
 
-### Contract
+### Spec
 
 | Field         | Type   | Required | Description                                 |
 | ------------- | ------ | -------- | ------------------------------------------- |
@@ -34,6 +34,38 @@ GitHubEvent is immutable once created.
 
 ---
 
+### spec.repositoryRef
+
 | Field | Type   | Required | Description                        |
 | ----- | ------ | -------- | ---------------------------------- |
 | name  | string | Yes      | Name of the GitRepository resource |
+
+---
+
+### Status
+
+| Field               | Type        | Description                                  |
+| ------------------- | ----------- | -------------------------------------------- |
+| phase               | string      | Lifecycle phase of the event                 |
+| conditions          | []Condition | Standard Kubernetes condition array          |
+| matchedBuildTrigger | string      | Name of BuildTrigger that matched this event |
+| processedAt         | string      | Timestamp when event was evaluated           |
+
+---
+
+Example
+
+```yaml
+apiVersion: sources.blanketops.dev/v1
+kind: GitHubEvent
+metadata:
+  name: for-kaniko-app-3f2c91d
+spec:
+  contract:
+    repositoryRef:
+      name: for-kaniko-app
+    eventType: push
+    revision: 3f2c91d
+    branch: main
+    rawRef: refs/heads/main
+```
