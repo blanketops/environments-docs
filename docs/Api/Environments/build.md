@@ -116,7 +116,7 @@ Build objects are responsible for producing a verifiable image artifact
 
 ---
 
-Example
+### Example
 
 ```yaml
 apiVersion: environments.blanketops.dev/v1alpha1
@@ -142,3 +142,14 @@ spec:
         - type: push
         - type: pull_request
 ```
+
+---
+
+### Invariants
+
+- image must be a valid container image reference.
+- strategy.kind must correspond to a registered build strategy.
+- source.revision must be resolvable.
+- serviceAccount.name must exist in the namespace.
+- artifactDigest is immutable once set.
+- Build does not modify Deployment or Route resources.

@@ -53,7 +53,7 @@ GitHubEvent is immutable once created.
 
 ---
 
-Example
+### Example
 
 ```yaml
 apiVersion: sources.blanketops.dev/v1
