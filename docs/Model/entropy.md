@@ -25,35 +25,27 @@ Entropy decreases when:
 Traditional CI/CD systems rely on:
 
 Imperative pipelines
-
 Scripted transitions
-
 Tool coupling
-
 YAML mutation
-
 Manual promotion
 
 This increases delivery entropy because:
 
 Any step can modify state
-
 Order is implicit
-
 Policy is embedded in execution logic
-
 Observability is fragmented
-
 As systems grow, delivery becomes fragile.
-
 Entropy accumulates silently.
 
-Entropy Model in BlanketOps
+### Entropy Model in BlanketOps
 
 BlanketOps reduces entropy through structured CRDs.
 
 Each stage narrows the possibility space.
 
+```mathematica
 GitRepository
 ↓
 GitHubEvent
@@ -67,6 +59,7 @@ ServiceUnit
 Deployment
 ↓
 Route
+```
 
 At each transition:
 
@@ -81,20 +74,21 @@ Mutation is limited
 The system becomes predictable.
 
 Entropy Reduction by Layer
-Source Layer
+
+### Source Layer
 
 GitRepository restricts origin.
 Only declared repositories are accepted.
 
 Reduces external uncertainty.
 
-Event Layer
+### Event Layer
 
 GitHubEvent normalizes webhook payloads.
 
 Removes provider-specific ambiguity.
 
-Policy Layer
+### Policy Layer
 
 BuildTrigger filters events.
 
@@ -102,25 +96,25 @@ Only allowed combinations proceed.
 
 Prevents uncontrolled execution.
 
-Artifact Layer
+### Artifact Layer
 
 Build produces immutable image artifacts.
 
 Collapses mutable source into fixed digest.
 
-Workload Layer
+### Workload Layer
 
 ServiceUnit defines workload shape explicitly.
 
 Prevents runtime configuration drift.
 
-Runtime Layer
+### Runtime Layer
 
 Deployment governs reconciliation strategy and manifest origin.
 
 Prevents uncontrolled environment mutation.
 
-Exposure Layer
+### Exposure Layer
 
 Route constrains public surface area.
 
@@ -138,7 +132,7 @@ BlanketOps primarily reduces structural entropy.
 
 Operational stability improves as a consequence.
 
-Design Principle
+## Design Principle
 
 Entropy cannot be eliminated.
 
