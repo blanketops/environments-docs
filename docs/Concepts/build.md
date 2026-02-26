@@ -4,9 +4,10 @@ The Build represents the deterministic transformation of governed source into a 
 
 It is the artifact constraint layer of the delivery model.
 
+<!--
 - Build does not deploy.
 - Build does not route.
-- Build does not mutate runtime.
+- Build does not mutate runtime. -->
 
 Build produces a verifiable, traceable image artifact.
 
@@ -152,7 +153,9 @@ Example:
 
 ```yaml
 policy:
-  triggers: - type: pull_request - type: push
+  triggers:
+    - type: pull_request
+    - type: push
 ```
 
 This ensures:
