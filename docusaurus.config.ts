@@ -74,11 +74,11 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
-  navbar: {
+navbar: {
   title: 'BlanketOps Environments',
   logo: {
     alt: 'BlanketOps Logo',
-    src: 'img/logo.svg', // replace later with your own logo
+    src: 'img/logo.svg',
   },
   items: [
     {
@@ -88,13 +88,27 @@ const config: Config = {
       label: 'Docs',
     },
     {
-      to: '/docs/model/state-machine',
+      type: 'doc',
+      docId: 'Model/state-machine',
       label: 'Model',
       position: 'left',
     },
     {
-      to: '/docs/why/delivery-drifts',
+      type: 'doc',
+      docId: 'Why/delivery-drifts',
       label: 'Why',
+      position: 'left',
+    },
+    {
+      type: 'doc',
+      docId: 'Concepts/serviceunit',
+      label: 'Concepts',
+      position: 'left',
+    },
+    {
+      type: 'doc',
+      docId: 'Roadmap',
+      label: 'Roadmap',
       position: 'left',
     },
     {
@@ -104,41 +118,39 @@ const config: Config = {
     },
   ],
 },
+
 footer: {
   style: 'dark',
   links: [
-    {
-      title: 'Platform',
-      items: [
-        {
-          label: 'Model',
-          to: '/docs/model/state-machine',
-        },
-        {
-          label: 'Why Delivery Drifts',
-          to: '/docs/why/delivery-drifts',
-        },
-        {
-          label: 'Concepts',
-          to: '/docs/concepts/serviceunit',
-        },
-      ],
-    },
+    // {
+    //   title: 'Platform',
+    //   items: [
+    //     {
+    //       label: 'Model',
+    //     },
+    //     {
+    //       label: 'Why Delivery Drifts',
+    //     },
+    //     {
+    //       label: 'Concepts',
+    //     },
+    //   ],
+    // },
     {
       title: 'Project',
       items: [
         {
-          label: 'GitHub',
           href: 'https://github.com/ntlaletsi70/blanketops-environments',
+          label: 'GitHub',
         },
       ],
     },
     {
-      title: 'Community',
+      title: 'Roadmap',
       items: [
         {
           label: 'Roadmap',
-          to: '/docs/roadmap',
+          to: '/docs/Roadmap',
         },
       ],
     },
