@@ -36,7 +36,7 @@ function HomepageHeader() {
         <div style={{ marginTop: '2rem' }}>
           <Link
             className="button button--primary button--lg"
-            to="/docs/model/state-machine"
+            to="/docs/Model/state-machine"
             style={{ marginRight: '1rem' }}
           >
             Read the Model
@@ -44,7 +44,7 @@ function HomepageHeader() {
 
           <Link
             className="button button--secondary button--lg"
-            to="/docs/getting-started/installation"
+            to="/docs/Getting Started/installation"
           >
             Get Started
           </Link>
