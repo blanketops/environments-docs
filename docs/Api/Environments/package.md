@@ -130,13 +130,13 @@ enabled: true
         email: neo@blanketops.online
 
     packageRepository:
-      url: git@github.com:ntlaletsi70/for-kaniko-app-packages.git
+      url: git@github.com:blanketops01/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
 
     packageKappDiff: true
 
     stateRepo:
-      url: git@github.com:ntlaletsi70/for-kaniko-app-state.git
+      url: git@github.com:blanketops01/for-kaniko-app-state.git
       ref:
         branch: master
       cloneSecret: git-ssh-credentials-state

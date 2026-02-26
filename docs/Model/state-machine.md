@@ -18,11 +18,11 @@ GitRepository -> GitHubEvent → BuildTrigger -> Build →  Deploy → Route →
 
 Each stage:
 
-- Is represented as a Custom Resource
-- Is reconciled independently
-- Produces observable status
-- Reduces entropy
-- Constrains future transitions
+- Is represented as a Custom Resource.
+- Is reconciled independently.
+- Produces observable status.
+- Reduces entropy.
+- Constrains future transitions.
 
 This is not a workflow engine.
 
@@ -34,11 +34,11 @@ This is structured state progression.
 
 A deterministic delivery system guarantees:
 
-- The same intent produces the same resolved state
-- Transitions are explicit
-- Stage boundaries are enforced
-- No implicit mutation occurs between stages
-- Reconciliation cannot bypass structural rules
+- The same intent produces the same resolved state.
+- Transitions are explicit.
+- Stage boundaries are enforced.
+- No implicit mutation occurs between stages.
+- Reconciliation cannot bypass structural rules.
 
 Given identical input and system conditions, the resulting state is predictable.
 
@@ -99,13 +99,10 @@ Transitions are not implicit.
 
 They are governed.
 
-A Build cannot exist without a GitRepository reference.
-
-A Deploy cannot progress without a valid Package.
-
-A Route cannot expose an undefined workload.
-
-A ServiceUnit cannot represent an invalid state.
+- A Build cannot exist without a GitRepository reference.
+- A Deploy cannot progress without a valid Package.
+- A Route cannot expose an undefined workload.
+- A ServiceUnit cannot represent an invalid state.
 
 These boundaries prevent structural drift.
 

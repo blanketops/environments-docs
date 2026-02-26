@@ -69,7 +69,7 @@ spec:
   contract:
     provider: github
     repository:
-      owner: ntlaletsi70
+      owner: blanketops01
       name: for-kaniko-app
     webhooks:
       - events:

@@ -12,34 +12,34 @@ It decides whether a Build may be created.
 
 Without BuildTrigger:
 
-- Every GitHubEvent could trigger a Build
-- Branch logic leaks into build execution
-- Policy becomes implicit
-- Event filtering becomes scattered
+- Every GitHubEvent could trigger a Build.
+- Branch logic leaks into build execution.
+- Policy becomes implicit.
+- Event filtering becomes scattered.
 
 BlanketOps separates:
 
 ```mathematica
-Event normalization → Policy evaluation → Artifact execution
+Event Normalization → Policy Evaluation → Artifact Execution
 ```
 
 This preserves structural clarity.
 
-### Position in Delivery
+## Position in Delivery
 
 ```mathematica
-GitRepository GitHubEvent BuildTrigger Build Deploy ServiceUnit
+GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → ServiceUnit
 ```
 
 BuildTrigger enforces:
 
-- Event filtering
-- Branch scoping
-- Repository binding
-- Execution targeting
+- Event filtering.
+- Branch scoping.
+- Repository binding.
+- Execution targeting.
 - It reduces entropy before artifact creation.
 
-Example
+### Example
 
 ```yaml
 apiVersion: environments.blanketops.dev/v1alpha1
@@ -48,18 +48,14 @@ metadata:
 name: github-push-main
 spec:
 contract:
-source: github
-eventType: push
-
+  source: github
+  eventType: push
     repository:
-      owner: ntlaletsi70
+      owner: blanketops01
       name: for-kaniko-app
-
     ref: refs/heads/main
-
     buildRef:
       name: build-sample-kaniko
-
     payloadPolicy:
       allow: true
 ```
@@ -106,8 +102,8 @@ ref: refs/heads/main
 
 This prevents:
 
-- Feature branch builds from triggering production pipelines
-- Accidental execution from unintended refs
+- Feature branch builds from triggering production pipelines.
+- Accidental execution from unintended refs.
 - Branch scoping is explicit.
 
 `buildRef`
@@ -124,9 +120,9 @@ Controls whether raw event payload is exposed to downstream systems.
 
 This allows:
 
-- Advanced build logic
-- Metadata extraction
-- Controlled dynamic behavior
+- Advanced build logic.
+- Metadata extraction.
+- Controlled dynamic behavior.
 
 Without forcing every build to parse provider payloads.
 
@@ -145,11 +141,11 @@ status:
 
 This allows:
 
-- Observability
-- Auditability
-- Trigger history tracking
-- Clear execution state
-- Entropy Reduction at Policy Layer
+- Observability.
+- Auditability.
+- Trigger history tracking.
+- Clear execution state.
+- Entropy Reduction at Policy Layer.
 
 Before BuildTrigger:
 
@@ -157,9 +153,9 @@ Before BuildTrigger:
 
 After BuildTrigger:
 
-- Only declared events
-- From declared repository
-- On declared branch
+- Only declared events.
+- From declared repository.
+- On declared branch.
 - For declared buildRef may proceed.
 
 The possibility space collapses further.
@@ -168,35 +164,34 @@ The possibility space collapses further.
 
 The BuildTrigger controller is responsible for:
 
-- Matching GitHubEvent against contract
-- Evaluating branch constraints
-- Creating Build execution signal
-- Recording trigger status
+- Matching GitHubEvent against contract.
+- Evaluating branch constraints.
+- Creating Build execution signal.
+- Recording trigger status.
 
 It does not:
 
-- Execute build logic
-- Deploy workloads
-- Modify artifacts
+- Execute build logic.
+- Deploy workloads.
+- Modify artifacts.
 
 It enforces policy.
 
 ## Design Principles
 
-- Policy must be explicit
-- Execution must be deliberate
-- Branch logic must be declarative
-- Event filtering must be structural
-- Trigger eligibility must be observable
+- Policy must be explicit.
+- Execution must be deliberate.
+- Branch logic must be declarative.
+- Event filtering must be structural.
 - BuildTrigger protects the artifact boundary.
 
 ### What This Enables
 
-- Multi-branch governance
-- Environment isolation
-- Controlled CI/CD flows
-- Explicit promotion patterns
-- Deterministic event filtering
+- Multi-branch governance.
+- Environment isolation.
+- Controlled CI/CD flows.
+- Explicit promotion patterns.
+- Deterministic event filtering.
 
 Delivery without explicit trigger policy is fragile.
 
