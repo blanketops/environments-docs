@@ -4,11 +4,11 @@ The Deployment represents the governed runtime projection of one or more `Servic
 
 It defines:
 
-- Which ServiceUnits are deployed
-- Which runtime substrate executes them
-- How manifests are reconciled
-- Whether image automation is enabled
-- Which strategy governs runtime mutation
+- Which ServiceUnits are deployed.
+- Which runtime substrate executes them.
+- How manifests are reconciled.
+- Whether image automation is enabled.
+- Which strategy governs runtime mutation.
 
 - Deployment does not build artifacts.
 - Deployment does not route traffic.
@@ -28,10 +28,10 @@ It is the runtime governance boundary.
 
 Traditional systems blur runtime configuration and artifact delivery:
 
-- GitOps repos contain both manifests and image tags
-- CI modifies YAML directly
-- Runtime state is mutated implicitly
-- Drift becomes hard to reason about
+- GitOps repos contain both manifests and image tags.
+- CI modifies YAML directly.
+- Runtime state is mutated implicitly.
+- Drift becomes hard to reason about.
 
 BlanketOps separates:
 
@@ -48,16 +48,14 @@ kind: Deployment
 metadata:
 name: for-kaniko-app
 spec:
-contract:
-serviceUnits: - for-kaniko-app-api
-
+  contract:
+    serviceUnits:
+      - for-kaniko-app-api
     runtime: kubernetes.io/container-runtime
-
     imageAutomation: false
     reconciliationStrategy: kustomize
-
     manifestsRepo:
-      url: git@github.com:ntlaletsi70/for-kaniko-app-deployment.git
+      url: git@github.com:blanketops01/for-kaniko-app-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
@@ -89,17 +87,17 @@ runtime: kubernetes.io/container-runtime
 
 This allows:
 
-- Multi-runtime extensibility
-- Runtime abstraction
-- Future substrate expansion
+- Multi-runtime extensibility.
+- Runtime abstraction.
+- Future substrate expansion.
 - Runtime is explicit, not assumed.
 
 `imageAutomation`
 
 Controls whether image updates are automatically reconciled.
 
-- `false` → image updates must be deliberate
-- `true` → Deployment tracks artifact changes
+- `false` → image updates must be deliberate.
+- `true` → Deployment tracks artifact changes.
 
 This prevents uncontrolled drift.
 
@@ -115,9 +113,9 @@ reconciliationStrategy: kustomize
 
 This allows:
 
-- Strategy abstraction
-- Deterministic reconciliation
-- Pluggable manifest engines
+- Strategy abstraction.
+- Deterministic reconciliation.
+- Pluggable manifest engines.
 
 The strategy itself is part of the contract.
 
@@ -127,7 +125,7 @@ Declares manifest source.
 
 ```yaml
 manifestsRepo:
-  url: git@github.com:ntlaletsi70/for-kaniko-app-deployment.git
+  url: git@github.com:blanketops01/for-kaniko-app-deployment.git
   cloneSecret: git-ssh-credentials
   strategy: kustomization
   path: ./bases/kustomization.yaml
@@ -135,10 +133,10 @@ manifestsRepo:
 
 This constrains:
 
-- Runtime manifest origin
-- Authentication boundary
-- Reconciliation path
-- Git-based governance
+- Runtime manifest origin.
+- Authentication boundary.
+- Reconciliation path.
+- Git-based governance.
 
 Deployment does not mutate YAML blindly.
 
@@ -148,16 +146,16 @@ Entropy Reduction at Runtime Layer
 
 Before Deployment:
 
-- Artifact exists
-- Runtime intent may vary
-- Manifests may drift
+- Artifact exists.
+- Runtime intent may vary.
+- Manifests may drift.
 
 After Deployment:
 
-- Runtime projection is explicit
-- Strategy is declared
-- Image automation is controlled
-- Manifest origin is constrained
+- Runtime projection is explicit.
+- Strategy is declared.
+- Image automation is controlled.
+- Manifest origin is constrained.
 
 Deployment narrows runtime possibility space.
 
@@ -172,7 +170,7 @@ spec:
     runtime: kubernetes.io/container-runtime
     imageAutomation: true
     manifestsRepo:
-      url: git@github.com:ntlaletsi70/for-buildpacks-deployment.git
+      url: git@github.com:blanketops01/for-buildpacks-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
@@ -180,42 +178,42 @@ spec:
 
 This allows:
 
-- Multi-ServiceUnit binding
-- Coordinated runtime projection
-- Environment-level grouping
+- Multi-ServiceUnit binding.
+- Coordinated runtime projection.
+- Environment-level grouping.
 - Deployment becomes environment-aware orchestration.
 
-### Reconciliation Responsibility
+## Reconciliation Responsibility
 
 The Deployment controller is responsible for:
 
-- Resolving ServiceUnit image references
-- Injecting artifact digest into manifests
-- Executing reconciliation strategy
-- Surfacing runtime drift
-- Managing image automation policies
+- Resolving ServiceUnit image references.
+- Injecting artifact digest into manifests.
+- Executing reconciliation strategy.
+- Surfacing runtime drift.
+- Managing image automation policies.
 
 It does not:
 
-- Build artifacts
-- Trigger events
-- Route traffic directly
+- Build artifacts.
+- Trigger events.
+- Route traffic directly.
 - It governs runtime projection.
 
 ## Design Principles
 
-- Runtime must be explicit
-- Manifest origin must be constrained
-- Strategy must be declared
-- Artifact injection must be deterministic
-- Drift must be visible
+- Runtime must be explicit.
+- Manifest origin must be constrained.
+- Strategy must be declared.
+- Artifact injection must be deterministic.
+- Drift must be visible.
 - Deployment prevents runtime entropy.
 
 ### What This Enables
 
-- Deterministic GitOps projection
-- Controlled image promotion
-- Multi-environment deployments
-- Runtime strategy abstraction
-- Structured environment orchestration
+- Deterministic GitOps projection.
+- Controlled image promotion.
+- Multi-environment deployments.
+- Runtime strategy abstraction.
+- Structured environment orchestration.
 - Deployment formalizes the boundary between artifact and runtime.

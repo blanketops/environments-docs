@@ -89,7 +89,7 @@ spec:
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:
-      url: git@github.com:ntlaletsi70/for-kaniko-app-deployment.git
+      url: git@github.com:blanketops01/for-kaniko-app-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
