@@ -4,11 +4,11 @@ The GitRepository defines the authoritative source boundary for delivery.
 
 It represents:
 
-- Ownership of code origin
-- Provider contract
-- Event legitimacy
-- Webhook integration
-- Repository identity
+- Ownership of code origin.
+- Provider contract.
+- Event legitimacy.
+- Webhook integration.
+- Repository identity.
 
 Without a GitRepository, delivery has no governed origin.
 
@@ -16,10 +16,10 @@ Without a GitRepository, delivery has no governed origin.
 
 Modern CI/CD systems often treat repositories as loose configuration:
 
-- Webhooks are configured manually
-- Pipelines are wired independently
-- Repository references are duplicated
-- Event legitimacy is assumed
+- Webhooks are configured manually.
+- Pipelines are wired independently.
+- Repository references are duplicated.
+- Event legitimacy is assumed.
 
 BlanketOps makes repository origin a first-class domain object.
 
@@ -35,11 +35,11 @@ GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → Route �
 
 It establishes:
 
-- Source ownership
-- Provider contract
-- Webhook authority
-- Namespace alignment
-- Environment binding
+- Source ownership.
+- Provider contract.
+- Webhook authority.
+- Namespace alignment.
+- Environment binding.
 
 Every downstream stage depends on it.
 
@@ -50,22 +50,17 @@ apiVersion: sources.blanketops.dev/v1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
-  labels:
-    sources.blanketops.dev/gitrepository: for-kaniko-app
-    sources.blanketops.dev/provider: github-upjet
-    environments.blanketops.dev/name: for-kaniko-app
-    environments.blanketops.dev/type: dev
 spec:
   contract:
     provider: github
      hookUrl: https://elimination-propecia-meter-strips.trycloudflare.com/
     repository:
-      owner: ntlaletsi70
+      owner: blanketops01
       name: for-kaniko-app
     webhooks: - events: - push - pull_request
 ```
 
-### Contract Semantics
+## Contract Semantics
 
 The contract field is non-negotiable.
 
@@ -73,9 +68,9 @@ It defines the structural agreement between:
 
 BlanketOps
 
-The source provider
+The source provider.
 
-The delivery system
+The delivery system.
 
 `provider`
 
@@ -89,10 +84,10 @@ Defines the inbound event endpoint.
 
 This ensures:
 
-- Events are scoped
-- Event legitimacy is verifiable
+- Events are scoped.
+- Event legitimacy is verifiable.
 
-External triggers are constrained
+External triggers are constrained.
 
 `repository.owner / repository.name`
 
@@ -106,57 +101,57 @@ Defines which events are accepted.
 
 This prevents uncontrolled triggers.
 Only declared transitions are valid.
-Entropy Reduction at Origin
+Entropy Reduction at Origin.
 
 ### Without a GitRepository:
 
-- Events could originate from anywhere
-- Build triggers lack structural context
-- Artifact lineage is unverifiable
-- Drift begins at the first step
+- Events could originate from anywhere.
+- Build triggers lack structural context.
+- Artifact lineage is unverifiable.
+- Drift begins at the first step.
 
 ### With GitRepository:
 
-- Source origin is constrained
-- Provider contract is explicit
-- Event scope is defined
-- Transition legitimacy is enforced
+- Source origin is constrained.
+- Provider contract is explicit.
+- Event scope is defined.
+- Transition legitimacy is enforced.
 - Entropy is reduced at the boundary.
 
 ## Reconciliation Model
 
 The GitRepository controller is responsible for:
 
-- Validating provider configuration
-- Ensuring webhook registration
-- Observing connectivity status
-- Surfacing contract violations
+- Validating provider configuration.
+- Ensuring webhook registration.
+- Observing connectivity status.
+- Surfacing contract violations.
 
 It does not:
 
-- Trigger builds directly
-- Deploy workloads
-- Resolve artifacts
+- Trigger builds directly.
+- Deploy workloads.
+- Resolve artifacts.
 
 It establishes origin truth.
 
 ## Design Principles
 
-- Source identity must be explicit
-- Event legitimacy must be constrained
-- Provider integration must be contractual
-- Delivery must trace lineage to origin
+- Source identity must be explicit.
+- Event legitimacy must be constrained.
+- Provider integration must be contractual.
+- Delivery must trace lineage to origin.
 - GitRepository is not configuration.
 
 It is structural authority.
 
 ### What This Enables
 
-- Deterministic build lineage
-- Controlled event ingestion
-- Multi-provider extensibility
-- Auditable delivery origin
-- Platform-level governance
+- Deterministic build lineage.
+- Controlled event ingestion.
+- Multi-provider extensibility.
+- Auditable delivery origin.
+- Platform-level governance.
 
 Delivery without governed origin is fragile.
 

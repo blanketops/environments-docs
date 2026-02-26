@@ -12,10 +12,10 @@ GitHubEvent converts external activity into internal intent.
 
 Webhooks are:
 
-- Unstructured
-- Provider-specific
-- Ephemeral
-- External
+- Unstructured.
+- Provider-specific.
+- Ephemeral.
+- External.
 
 Non-authoritative
 
@@ -38,29 +38,33 @@ GitHubEvent GitHubEvent BuildTrigger Build Deploy ServiceUnit
 
 GitHubEvent establishes:
 
-- Revision identity
-- Trigger legitimacy
-- Event type
-- Provider lineage
-- Transition boundary
+- Revision identity.
+- Trigger legitimacy.
+- Event type.
+- Provider lineage.
+- Transition boundary.
 
 Without it, progression cannot begin.
 
 Conceptual Example
 
 ```yaml
-apiVersion: sources.blanketops.dev/v1
+apiVersion: events.blanketops.dev/v1
 kind: GitHubEvent
 metadata:
-  name: for-kaniko-app-3f2c91d
-  labels:
-    sources.blanketops.dev/gitrepository: for-kaniko-app
+  name: push-main-001
+  namespace: default
 spec:
-  repositoryRef:
-    name: for-kaniko-app
+  contract:
+    source: github
+    repository: for-kaniko-app
     eventType: push
-    revision: 3f2c91d
-    branch: main
+    ref: refs/heads/main
+    eventSource:
+      webhook:
+        secretRef:
+          name: github-webhook-secret
+          key: secret
 ```
 
 ## Contract Semantics
