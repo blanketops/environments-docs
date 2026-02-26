@@ -130,7 +130,7 @@ spec:
       kind: ClusterBuildStrategy
       name: kaniko
     source:
-      url: git@github.com:ntlaletsi70/for-kaniko-app.git
+      url: git@github.com:blanketops01/for-kaniko-app.git
       revision: master
       contextDir: .
       cloneSecret: git-ssh-credentials

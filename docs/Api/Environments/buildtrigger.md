@@ -77,7 +77,7 @@ spec:
     source: github
     eventType: push
     repository:
-      owner: ntlaletsi70
+      owner: blanketops01
       name: for-kaniko-app
     ref: refs/heads/main
     buildRef:

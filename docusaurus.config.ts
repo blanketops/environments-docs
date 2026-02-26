@@ -112,7 +112,7 @@ navbar: {
       position: 'left',
     },
     {
-      href: 'https://github.com/ntlaletsi70/blanketops-environments',
+      href: 'https://github.com/blanketops01/blanketops-environments',
       label: 'GitHub',
       position: 'right',
     },
@@ -140,7 +140,7 @@ footer: {
       title: 'Project',
       items: [
         {
-          href: 'https://github.com/ntlaletsi70/blanketops-environments',
+          href: 'https://github.com/blanketops01/blanketops-environments',
           label: 'GitHub',
         },
       ],
