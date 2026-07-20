@@ -62,6 +62,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Package
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     name: for-kaniko-app

@@ -123,6 +123,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Build
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     image: docker.io/example/for-kaniko-app:master

@@ -53,7 +53,7 @@ apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: push-main-001
-  namespace: default
+  namespace: dev
 spec:
   contract:
     repository: example-org/for-kaniko-app

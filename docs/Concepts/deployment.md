@@ -44,12 +44,14 @@ Example
 apiVersion: environments.blanketops.dev/v1alpha1
 kind: Deployment
 metadata:
-name: for-kaniko-app
+  name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     serviceUnits:
       - for-kaniko-app-api
     runtime: kubernetes.io/container-runtime
+    strategy: Rolling
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:
@@ -89,6 +91,12 @@ This allows:
 - Runtime abstraction.
 - Future substrate expansion.
 - Runtime is explicit, not assumed.
+
+`strategy`
+
+Declares the rollout strategy: `Rolling`, `BlueGreen`, or `Canary`.
+
+This governs how a new revision replaces the old one — gradual replacement, full cutover, or traffic-shifted — rather than leaving that choice to whatever the runtime substrate defaults to.
 
 `imageAutomation`
 
@@ -166,7 +174,9 @@ spec:
       - for-kaniko-app-api
       - for-kaniko-app-worker
     runtime: kubernetes.io/container-runtime
+    strategy: Rolling
     imageAutomation: true
+    reconciliationStrategy: kustomize
     manifestsRepo:
       url: git@github.com:example-org/for-buildpacks-deployment.git
       cloneSecret: git-ssh-credentials

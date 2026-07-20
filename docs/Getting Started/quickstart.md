@@ -4,9 +4,9 @@ sidebar_position: 3
 
 # Quickstart
 
-The fastest way to confirm your install worked: create a namespace, an [Environment](../Api/Environments/environment.md), and a [GitRepository](../Api/Sources/gitrepository.md), and watch the controller pick them up.
+The fastest way to confirm your install worked: create a namespace, an [`Environment`](../Api/Environments/environment.md), and a [`GitRepository`](../Api/Sources/gitrepository.md), and watch the controller pick them up.
 
-This doesn't build or deploy anything yet — that's [First Delivery](./first-delivery.md). This just proves the operator is reconciling.
+This doesn't build or deploy anything yet — that's [`First Delivery`](./first-delivery.md). This just proves the operator is reconciling.
 
 ## 1. Create a Namespace
 
@@ -66,6 +66,6 @@ kubectl get environments.environments.blanketops.dev,gitrepositories.sources.bla
 
 You should see both objects pick up a `phase` within a few seconds — that's the controller-manager reconciling. Ctrl-C once you see status populate.
 
-If nothing changes, the operator likely isn't running — go back to [Installation](./installation.md) and confirm `kubectl get pods -n blanketops-environments`.
+If nothing changes, the operator likely isn't running — go back to [`Installation`](./installation.md) and confirm `kubectl get pods -n blanketops-environments`.
 
-Ready for the real thing: [First Delivery](./first-delivery.md).
+Ready for the real thing: [`First Delivery`](./first-delivery.md).

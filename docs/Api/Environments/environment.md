@@ -172,6 +172,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Environment
 metadata:
   name: for-kaniko-app-main
+  namespace: dev
 spec:
   contract:
     applicationName: for-kaniko-app

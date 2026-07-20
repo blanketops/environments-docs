@@ -60,7 +60,7 @@ kubectl describe externalsecret git-ssh-credentials -n dev
 Once Route and Domain both report `Ready`:
 
 ```bash
-curl https://api.dev.blanketops.dev/
+curl https://api.dev.example.com/
 ```
 
 ## Tearing Down

@@ -64,6 +64,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
+  namespace: dev
 spec:
   contract:
     type: static
@@ -89,6 +90,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-buildah-app-worker
+  namespace: dev
 spec:
   contract:
     type: build

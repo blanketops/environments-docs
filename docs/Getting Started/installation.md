@@ -40,7 +40,7 @@ Run it with no arguments and `bops-env` prints its banner, the cluster context i
 
 If you already have a Kubernetes cluster and a working `kubectl` context, skip to step 3.
 
-Otherwise, spin up a local [Kind](https://kind.sigs.k8s.io/) cluster:
+Otherwise, spin up a local [`Kind`](https://kind.sigs.k8s.io/) cluster:
 
 ```bash
 bops-env cluster up dev
@@ -63,10 +63,10 @@ This applies the CRDs, RBAC, and controller-manager `Deployment` published by [e
 
 | Group                    | Resources                                                                                                                                                                                                                        |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `environments.blanketops.dev` | [Environment](../Api/Environments/environment.md), [Build](../Api/Environments/build.md), [Package](../Api/Environments/package.md), [ServiceUnit](../Api/Environments/serviceunit.md), [Deployment](../Api/Environments/deployment.md) |
-| `sources.blanketops.dev`      | [GitRepository](../Api/Sources/gitrepository.md)                                                                                                                                                                                    |
-| `events.blanketops.dev`       | [GitHubEvent](../Api/Events/githubevent.md)                                                                                                                                                                                        |
-| `networks.blanketops.dev`     | [Route](../Api/Networks/route.md), [Domain](../Api/Networks/domain.md)                                                                                                                                                            |
+| `environments.blanketops.dev` | [`Environment`](../Api/Environments/environment.md), [`Build`](../Api/Environments/build.md), [`Package`](../Api/Environments/package.md), [`ServiceUnit`](../Api/Environments/serviceunit.md), [`Deployment`](../Api/Environments/deployment.md) |
+| `sources.blanketops.dev`      | [`GitRepository`](../Api/Sources/gitrepository.md)                                                                                                                                                                                    |
+| `events.blanketops.dev`       | [`GitHubEvent`](../Api/Events/githubevent.md)                                                                                                                                                                                        |
+| `networks.blanketops.dev`     | [`Route`](../Api/Networks/route.md), [`Domain`](../Api/Networks/domain.md)                                                                                                                                                            |
 
 ## 4. Install the Platform Stack
 
@@ -112,4 +112,4 @@ bops-env uninstall
 bops-env cluster down dev   # only if you created a Kind cluster in step 2
 ```
 
-Continue to [Quickstart](./quickstart.md).
+Continue to [`Quickstart`](./quickstart.md).

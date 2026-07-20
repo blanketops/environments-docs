@@ -220,7 +220,7 @@ metadata:
   namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     path: /
     enabled: true
     tlsEnabled: true
@@ -245,7 +245,7 @@ metadata:
   namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     routeRef:
       name: route-sample
     tlsStrategy: platform

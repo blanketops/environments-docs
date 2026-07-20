@@ -109,32 +109,27 @@ spec
 ### Example
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: Package
 metadata:
-name: for-kaniko-app
+  name: for-kaniko-app
+  namespace: dev
 spec:
-contract:
-name: for-kaniko-app
-version: v1.0.0
-enabled: true
-
+  contract:
+    name: for-kaniko-app
+    version: v1.0.0
+    enabled: true
     packageName: for-kaniko-app
     packageVersion: v1.2.3
-
     packageDescription: >
       This package contains the API deployment manifests and runtime configuration.
-
     packageMaintainers:
       - name: Jane Doe
         email: jane@example.com
-
     packageRepository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
-
     packageKappDiff: true
-
     stateRepo:
       url: git@github.com:example-org/for-kaniko-app-state.git
       ref:

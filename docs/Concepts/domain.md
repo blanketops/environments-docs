@@ -54,9 +54,10 @@ apiVersion: networks.blanketops.dev/v1alpha1
 kind: Domain
 metadata:
   name: for-kaniko-app-domain
+  namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     routeRef:
       name: route-sample
     tlsStrategy: platform
@@ -76,7 +77,7 @@ The contract defines non-negotiable certificate and mapping boundaries.
 
 Declares the fully qualified domain name this Domain covers.
 
-Under `platform` strategy, this must match the platform wildcard pattern (e.g. `*.dev.blanketops.dev`).
+Under `platform` strategy, this must match the platform wildcard pattern (e.g. `*.dev.example.com`).
 Under `custom` strategy, this may be any client-owned FQDN.
 
 `routeRef`

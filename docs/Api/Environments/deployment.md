@@ -30,13 +30,15 @@ spec
 
 #### spec.contract
 
-| Field                  | Type     | Required | Description                                        |
-| ---------------------- | -------- | -------- | -------------------------------------------------- |
-| serviceUnits           | string[] | Yes      | Names of ServiceUnit resources to deploy           |
-| runtime                | string   | Yes      | Runtime substrate identifier                       |
-| imageAutomation        | boolean  | Yes      | Whether image updates are automatically reconciled |
-| reconciliationStrategy | string   | Yes      | Strategy used to reconcile manifests               |
-| manifestsRepo          | object   | Yes      | Git repository containing runtime manifests        |
+| Field                  | Type     | Required                              | Description                                        |
+| ---------------------- | -------- | ---------------------------------------- | -------------------------------------------------- |
+| serviceUnits           | string[] | Yes                                       | Names of ServiceUnit resources to deploy           |
+| runtime                | string   | Yes                                       | Runtime substrate identifier                       |
+| strategy               | string   | Yes                                       | Rollout strategy: `Rolling`, `BlueGreen`, or `Canary` |
+| imageAutomation        | boolean  | No                                        | Whether image updates are automatically reconciled |
+| gitOwner               | string   | No                                        | Owning Git organisation or user                    |
+| reconciliationStrategy | string   | Yes, if `manifestsRepo` is set            | Strategy used to reconcile manifests: `kustomize` or `helm`. Must be absent if `manifestsRepo` is not set — defaults to imperative reconciliation |
+| manifestsRepo          | object   | No                                        | Git repository containing runtime manifests        |
 
 ---
 
@@ -64,13 +66,12 @@ spec
 
 #### status.phase Values
 
-| Value       | Meaning                                  |
-| ----------- | ---------------------------------------- |
-| Pending     | Deployment registered but not reconciled |
-| Reconciling | Applying manifests                       |
-| Ready       | Runtime state matches desired contract   |
-| Drifted     | Runtime state differs from desired state |
-| Failed      | Reconciliation error occurred            |
+| Value     | Meaning                                          |
+| --------- | --------------------------------------------------- |
+| Pending   | Waiting for service units or GitOps sources to be ready |
+| Deploying | Workloads are being rolled out                        |
+| Ready     | All service units are deployed and healthy             |
+| Failed    | One or more service units failed to deploy              |
 
 ---
 
@@ -81,11 +82,13 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Deployment
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     serviceUnits:
       - for-kaniko-app-api
     runtime: kubernetes.io/container-runtime
+    strategy: Rolling
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:

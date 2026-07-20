@@ -50,6 +50,7 @@ apiVersion: sources.blanketops.dev/v1alpha1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     provider: github

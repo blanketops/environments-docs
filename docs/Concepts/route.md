@@ -51,9 +51,10 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Route
 metadata:
   name: route-sample
+  namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     path: /
     enabled: true
     tlsEnabled: true

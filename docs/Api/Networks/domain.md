@@ -104,9 +104,10 @@ apiVersion: networks.blanketops.dev/v1alpha1
 kind: Domain
 metadata:
   name: for-kaniko-app-domain
+  namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     routeRef:
       name: route-sample
     tlsStrategy: platform
@@ -121,6 +122,7 @@ apiVersion: networks.blanketops.dev/v1alpha1
 kind: Domain
 metadata:
   name: client-a-domain
+  namespace: dev
 spec:
   contract:
     host: app.client-a.co.za
