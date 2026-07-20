@@ -14,10 +14,15 @@ jobs:
   finalize:
     runs-on: ubuntu-latest
     steps:
+      # GH_PAT (not the default GITHUB_TOKEN) is required — pushing the tag
+      # below must trigger ko.yml and release.yml, which GitHub's default
+      # token is intentionally prevented from doing. This is why tagging
+      # v0.0.4/v0.0.5 with the default token never fired either workflow.
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
 
       - name: Configure git
         run: |
