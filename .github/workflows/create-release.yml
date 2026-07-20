@@ -18,11 +18,27 @@ jobs:
   create:
     runs-on: ubuntu-latest
     steps:
+      # The GitHub App token (not the default GITHUB_TOKEN) is required here
+      # — the pushed release branch needs to trigger downstream workflows
+      # (CI on the PR), which GitHub's default token is intentionally
+      # prevented from doing. Same BlanketOps-Environments App environments-
+      # controller's ko.yml uses; installation tokens are minted fresh per
+      # job and expire in an hour, instead of a PAT's expiry silently lapsing.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: blanketops
+          repositories: environments-docs
+
       - name: Checkout develop
         uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Configure git
         run: |
@@ -38,7 +54,7 @@ jobs:
       # branch is already pushed, so we warn instead of failing the run.
       - name: Open PR to main
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           gh pr create \
             --base main \
