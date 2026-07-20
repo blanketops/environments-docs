@@ -137,7 +137,7 @@ After Domain:
 
 ## Reconciliation Responsibility
 
-The Domain controller is responsible for:
+The Domain controller owns the certificate and mapping chain, and stops there:
 
 - Resolving the owning Route reference.
 - Selecting the TLS provisioning path (platform or custom).
@@ -145,11 +145,7 @@ The Domain controller is responsible for:
 - Wiring mTLS sidecar identity when enforced.
 - Reflecting certificate and mapping status.
 
-It does not:
-
-- Define workload binding.
-- Modify Route path or runtime configuration.
-- Outlive its owning Route.
+Workload binding and path/runtime configuration stay with [Route](route.md) — the resource that owns this Domain, and the only thing this Domain's lifecycle is bound to.
 
 ## Design Principles
 

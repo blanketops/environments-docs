@@ -4,9 +4,7 @@ The Environment is the envelope of the delivery chain: a versioned, isolated exe
 
 It composes the resources that make up an application's delivery — Build, Package, ServiceUnit, Deployment, Route — by reference, and owns them via `ownerReference`.
 
-Environment does not build, deploy, or route anything itself.
-
-It is the boundary that holds a delivery chain together and deletes it as one unit.
+It is the boundary that holds a delivery chain together and deletes it as one unit — building, deploying, and routing stay with the resources it composes.
 
 ## Why Environment Exists
 
@@ -75,23 +73,17 @@ Compose the delivery chain by reference. Each is an `ObjectRef` (a name resolved
 
 `contract.secretStore`
 
-Selects which external secrets backend (AWS, Vault, GCP, Azure) backs this environment's `ClusterSecretStore`. Environment does not hold credentials itself — it only tells the platform where to find them. Every composed CR that needs a credential (Build's Git clone key, Build's registry push credential, GitHubEvent's webhook secret) materializes its own `ExternalSecret` against that store, at a fixed platform key path. See the [API reference](../Api/Environments/environment.md#secrets--secretstore) for the exact paths — they must already hold a value in your secret backend before you apply an Environment that needs them.
+Selects which external secrets backend (AWS, Vault, GCP, Azure) backs this environment's `ClusterSecretStore`. Environment only points at where credentials live — every composed CR that needs one (Build's Git clone key, Build's registry push credential, GitHubEvent's webhook secret) materializes its own `ExternalSecret` against that store, at a fixed platform key path. See the [API reference](../Api/Environments/environment.md#secrets--secretstore) for the exact paths — they need a value in the secret backend before an Environment that depends on them is applied.
 
 ## Reconciliation Responsibility
 
-The Environment controller is responsible for:
+The Environment controller aggregates and owns — nothing more:
 
 - Resolving composed resource references.
 - Aggregating per-resource readiness into a single environment phase.
 - Cascading deletion to every resource it owns.
 
-It does not:
-
-- Build artifacts.
-- Deploy workloads.
-- Route traffic.
-
-It aggregates and owns.
+Building, deploying, and routing are the composed resources' jobs; Environment's job is holding them together as one lifecycle.
 
 ## Design Principles
 

@@ -224,19 +224,14 @@ After ServiceUnit:
 
 ## Reconciliation Responsibility
 
-The ServiceUnit controller is responsible for:
+The ServiceUnit controller defines workload contract, and stops there:
 
 - Resolving artifact reference.
 - Validating buildRef if applicable.
 - Enforcing contract completeness.
 - Surfacing readiness state.
 
-It does not:
-
-- Apply manifests directly.
-- Route traffic.
-- Modify build artifacts.
-- It defines workload contract.
+Applying manifests and routing traffic are [Deployment](deployment.md)'s and [Route](route.md)'s jobs; ServiceUnit only defines what they act on.
 
 ## Design Principles
 

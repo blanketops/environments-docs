@@ -101,19 +101,14 @@ With GitHubEvent:
 
 ## Reconciliation Responsibility
 
-The GitHubEvent controller is responsible for:
+The GitHubEvent controller converts signal into governed intent, and hands off from there:
 
 - Validating event against repository contract
 - Normalizing provider payload
 - Persisting revision identity
 - Marking the event as triggered against the eligible Build, once its allowed-trigger policy matches
 
-It does not:
-
-- Build artifacts
-- Deploy workloads
-- Modify runtime state
-- It converts signal into governed intent.
+[Build](build.md) takes it from there — artifact production and runtime state belong to the stages downstream of this one.
 
 ## Design Principles
 

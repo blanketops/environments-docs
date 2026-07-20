@@ -212,7 +212,7 @@ Package reduces distribution entropy.
 
 ## Reconciliation Responsibility
 
-The Package controller is responsible for:
+The Package controller governs configuration distribution, and stops there:
 
 - Validating package metadata.
 - Resolving configuration repository.
@@ -220,12 +220,7 @@ The Package controller is responsible for:
 - Managing environment state projection.
 - Enforcing enabled flag.
 
-It does not:
-
-- Build artifacts.
-- Execute runtime containers.
-- Trigger external events.
-- It governs configuration distribution.
+Artifact production stays with [Build](build.md); running containers stays with [ServiceUnit](serviceunit.md) and [Deployment](deployment.md).
 
 ## Design Principles
 

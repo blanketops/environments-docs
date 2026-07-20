@@ -10,9 +10,7 @@ It defines:
 - Whether image automation is enabled.
 - Which strategy governs runtime mutation.
 
-- Deployment does not build artifacts.
-- Deployment does not route traffic.
-- Deployment projects artifact-backed ServiceUnits into runtime state.
+Deployment projects artifact-backed ServiceUnits into runtime state — that projection is the whole of its job. [Build](build.md) produces the artifact upstream; [Route](route.md) exposes it downstream.
 
 ### Position in Delivery
 
@@ -185,7 +183,7 @@ This allows:
 
 ## Reconciliation Responsibility
 
-The Deployment controller is responsible for:
+The Deployment controller governs runtime projection, and nothing past it:
 
 - Resolving ServiceUnit image references.
 - Injecting artifact digest into manifests.
@@ -193,12 +191,7 @@ The Deployment controller is responsible for:
 - Surfacing runtime drift.
 - Managing image automation policies.
 
-It does not:
-
-- Build artifacts.
-- Trigger events.
-- Route traffic directly.
-- It governs runtime projection.
+Artifact production and event triggering happen upstream, in Build; exposing the result to traffic happens downstream, in Route.
 
 ## Design Principles
 

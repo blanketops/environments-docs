@@ -151,7 +151,7 @@ After Route:
 
 ## Reconciliation Responsibility
 
-The Route controller is responsible for:
+The Route controller owns external access, and stops there:
 
 - Validating host uniqueness.
 - Ensuring TLS configuration.
@@ -159,12 +159,7 @@ The Route controller is responsible for:
 - Surfacing exposure conflicts.
 - Reflecting availability status.
 
-It does not:
-
-Deploy workloads
-Modify artifacts
-Bypass deployment contract
-It governs external access.
+Workload deployment stays with [Deployment](deployment.md); the deployment contract stays fixed once Route hands traffic to it.
 
 ## Design Principles
 

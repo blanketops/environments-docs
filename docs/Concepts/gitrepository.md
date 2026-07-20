@@ -123,20 +123,14 @@ Entropy Reduction at Origin.
 
 ## Reconciliation Model
 
-The GitRepository controller is responsible for:
+The GitRepository controller establishes origin truth, and stops there:
 
 - Validating provider configuration.
 - Ensuring webhook registration.
 - Observing connectivity status.
 - Surfacing contract violations.
 
-It does not:
-
-- Trigger builds directly.
-- Deploy workloads.
-- Resolve artifacts.
-
-It establishes origin truth.
+Triggering builds and resolving artifacts happen downstream, once [GitHubEvent](githubevent.md) and [Build](build.md) take over.
 
 ## Design Principles
 

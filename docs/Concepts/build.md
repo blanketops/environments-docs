@@ -2,12 +2,7 @@
 
 The Build represents the deterministic transformation of governed source into a container artifact.
 
-It is the artifact constraint layer of the delivery model.
-
-<!--
-- Build does not deploy.
-- Build does not route.
-- Build does not mutate runtime. -->
+It is the artifact constraint layer of the delivery model — the one place in the chain where source becomes a fixed, addressable image, and stops being anything else's concern.
 
 Build produces a verifiable, traceable image artifact.
 
@@ -183,7 +178,7 @@ This is deterministic artifact creation.
 
 ## Reconciliation Responsibility
 
-The Build controller is responsible for:
+The Build controller owns one job end to end: turning a governed contract into a constrained artifact.
 
 - Validating contract completeness.
 - Executing strategy.
@@ -191,13 +186,7 @@ The Build controller is responsible for:
 - Persisting artifact digest.
 - Emitting downstream readiness signal.
 
-It does not:
-
-- Deploy workloads.
-- Modify routing.
-- Bypass policy.
-
-Build produces constrained output.
+That job stops at the artifact. Deployment, routing, and policy enforcement belong to the resources that pick the artifact up from there — [ServiceUnit](serviceunit.md), [Deployment](deployment.md), [Route](route.md).
 
 ## Design Principles
 
