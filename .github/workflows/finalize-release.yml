@@ -1,6 +1,6 @@
 # Manually-triggered: second step of the release flow. Merges the
 # release/<version> branch into main, tags the release (which triggers
-# release.yml), syncs main back into develop, then deletes the release branch.
+# release.yml + ko.yml), syncs main back into develop, then deletes the release branch.
 name: Finalize Release
 on:
   workflow_dispatch:
@@ -32,7 +32,8 @@ jobs:
             -m "release: merge release/${{ github.event.inputs.version }} into main"
           git push origin main
 
-      # Pushing this tag is what kicks off release.yml (build, push image, publish).
+      # Pushing this tag is what kicks off release.yml (changelog, GitHub Release)
+      # and ko.yml (image build/push) — both trigger on the same tag push.
       - name: Tag release
         run: |
           git tag ${{ github.event.inputs.version }}
