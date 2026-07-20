@@ -14,15 +14,26 @@ jobs:
   finalize:
     runs-on: ubuntu-latest
     steps:
-      # GH_PAT (not the default GITHUB_TOKEN) is required — pushing the tag
-      # below must trigger ko.yml and release.yml, which GitHub's default
-      # token is intentionally prevented from doing. This is why tagging
-      # v0.0.4/v0.0.5 with the default token never fired either workflow.
+      # The GitHub App token (not the default GITHUB_TOKEN) is required —
+      # pushing the tag below must trigger ko.yml and release.yml, which
+      # GitHub's default token is intentionally prevented from doing. This
+      # is why tagging v0.0.4/v0.0.5 with the default token never fired
+      # either workflow. Same BlanketOps-Environments App environments-
+      # controller's ko.yml uses.
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: blanketops
+          repositories: environments-docs
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Configure git
         run: |
