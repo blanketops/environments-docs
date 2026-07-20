@@ -59,7 +59,14 @@ bops-env cluster down dev     # tear it down
 bops-env install
 ```
 
-This applies the CRDs, RBAC, and controller-manager `Deployment` published by [environments-install](https://github.com/blanketops/environments-install) — [Environment](../Api/Environments/environment.md), [GitRepository](../Api/Sources/gitrepository.md), [GitHubEvent](../Api/Events/githubevent.md), [Build](../Api/Environments/build.md), [Package](../Api/Environments/package.md), [ServiceUnit](../Api/Environments/serviceunit.md), [Deployment](../Api/Environments/deployment.md), [Route](../Api/Networks/route.md), and [Domain](../Api/Networks/domain.md).
+This applies the CRDs, RBAC, and controller-manager `Deployment` published by [environments-install](https://github.com/blanketops/environments-install) — every resource in the chain:
+
+| Group                    | Resources                                                                                                                                                                                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `environments.blanketops.dev` | [Environment](../Api/Environments/environment.md), [Build](../Api/Environments/build.md), [Package](../Api/Environments/package.md), [ServiceUnit](../Api/Environments/serviceunit.md), [Deployment](../Api/Environments/deployment.md) |
+| `sources.blanketops.dev`      | [GitRepository](../Api/Sources/gitrepository.md)                                                                                                                                                                                    |
+| `events.blanketops.dev`       | [GitHubEvent](../Api/Events/githubevent.md)                                                                                                                                                                                        |
+| `networks.blanketops.dev`     | [Route](../Api/Networks/route.md), [Domain](../Api/Networks/domain.md)                                                                                                                                                            |
 
 ## 4. Install the Platform Stack
 

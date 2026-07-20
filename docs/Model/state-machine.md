@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Delivery as Deterministic State
 
 Modern delivery systems treat software movement as execution.

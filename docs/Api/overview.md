@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # API Overview
 
 BlanketOps Environments is composed of Kubernetes Custom Resource Definitions (CRDs) grouped into four primary API domains:
