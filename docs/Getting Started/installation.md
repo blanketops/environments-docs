@@ -31,10 +31,10 @@ mage install   # builds and installs to ~/.local/bin (falls back to ~/bin)
 Confirm it's on your `PATH`:
 
 ```bash
-bops-env
+bops-env version
 ```
 
-With no arguments, `bops-env` prints its banner, the cluster context it's connected to, and a full command reference.
+Run it with no arguments and `bops-env` prints its banner, the cluster context it's connected to, and a full command reference.
 
 ## 2. Point at a Cluster
 
@@ -63,7 +63,7 @@ This applies the CRDs, RBAC, and controller-manager `Deployment` published by [e
 
 ## 4. Install the Platform Stack
 
-The operator reconciles BlanketOps CRDs into workloads on a supporting stack — Tekton, Shipwright, Knative Serving, Kourier, Crossplane, External Secrets Operator, and Argo Events. Install it in one shot:
+The operator reconciles BlanketOps CRDs into workloads on a supporting stack: `carvel`, `argoevents`, `tekton-pipelines`, `tekton-dashboard`, `shipwright`, `crossplane`, `externalsecrets`, `buildstrategies`, `flux`, `knative`, and `kourier`. Install the whole stack in one shot:
 
 ```bash
 bops-env dependencies install
@@ -71,7 +71,23 @@ bops-env dependencies install
 
 This can take several minutes on a fresh cluster — it's pulling and starting every component in the stack.
 
+Each dependency is also individually addressable, useful when you only need to reinstall one piece:
+
+```bash
+bops-env dependencies list              # every dependency name above
+bops-env dependencies status            # install status for all of them
+bops-env dependencies status knative    # status for just one
+bops-env dependencies install knative   # (re)install just one
+bops-env dependencies uninstall knative # remove just one
+```
+
 ## 5. Confirm It's Running
+
+```bash
+bops-env dependencies status
+```
+
+Or check pods directly:
 
 ```bash
 kubectl get pods -A

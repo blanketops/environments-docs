@@ -28,8 +28,8 @@ function HomepageHeader() {
 
         <div style={{ marginTop: '2rem' }}>
           <p className="signal-text" style={{ fontSize: '1.1rem' }}>
-            GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → Route
-            → ServiceUnit
+            GitRepository → GitHubEvent → Build → ServiceUnit → Deploy → Route
+            → Domain
           </p>
         </div>
 
@@ -85,11 +85,11 @@ export default function Home(): ReactNode {
               {[
                 'GitRepository',
                 'GitHubEvent',
-                'BuildTrigger',
                 'Build',
+                'ServiceUnit',
                 'Deploy',
                 'Route',
-                'ServiceUnit',
+                'Domain',
               ].map((item, idx, arr) => (
                 <div
                   key={idx}

@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'BlanketOps Environments',
-  tagline: 'Dinosaurs are cool',
+  tagline: 'Deterministic Software Delivery on Kubernetes',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -23,7 +23,7 @@ const config: Config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'blanketops', // Usually your GitHub org/user name.
-  projectName: 'blanketops-environments', // Usually your repo name.
+  projectName: 'environments-docs', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -41,10 +41,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/blanketops/environments-docs/tree/main/',
         },
         blog: {
           showReadingTime: true,
@@ -52,10 +49,7 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: 'https://github.com/blanketops/environments-docs/tree/main/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -74,89 +68,75 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
-navbar: {
-  title: 'BlanketOps Environments',
-  logo: {
-    alt: 'BlanketOps Logo',
-    src: 'img/logo.svg',
-  },
-  items: [
-    {
-      type: 'docSidebar',
-      sidebarId: 'tutorialSidebar',
-      position: 'left',
-      label: 'Docs',
-    },
-    {
-      type: 'doc',
-      docId: 'Model/state-machine',
-      label: 'Model',
-      position: 'left',
-    },
-    {
-      type: 'doc',
-      docId: 'Why/delivery-drifts',
-      label: 'Why',
-      position: 'left',
-    },
-    {
-      type: 'doc',
-      docId: 'Concepts/build',
-      label: 'Concepts',
-      position: 'left',
-    },
-    {
-      type: 'doc',
-      docId: 'Roadmap',
-      label: 'Roadmap',
-      position: 'left',
-    },
-    {
-      href: 'https://github.com/blanketops/environments',
-      label: 'GitHub',
-      position: 'right',
-    },
-  ],
-},
-
-footer: {
-  style: 'dark',
-  links: [
-    // {
-    //   title: 'Platform',
-    //   items: [
-    //     {
-    //       label: 'Model',
-    //     },
-    //     {
-    //       label: 'Why Delivery Drifts',
-    //     },
-    //     {
-    //       label: 'Concepts',
-    //     },
-    //   ],
-    // },
-    {
-      title: 'Project',
+    navbar: {
+      title: 'BlanketOps Environments',
+      logo: {
+        alt: 'BlanketOps Logo',
+        src: 'img/logo.svg',
+      },
       items: [
         {
-          href: 'https://github.com/blanketops01/blanketops-environments',
-          label: 'GitHub',
+          type: 'docSidebar',
+          sidebarId: 'tutorialSidebar',
+          position: 'left',
+          label: 'Docs',
         },
-      ],
-    },
-    {
-      title: 'Roadmap',
-      items: [
         {
+          type: 'doc',
+          docId: 'Model/state-machine',
+          label: 'Model',
+          position: 'left',
+        },
+        {
+          type: 'doc',
+          docId: 'Why/delivery-drifts',
+          label: 'Why',
+          position: 'left',
+        },
+        {
+          type: 'doc',
+          docId: 'Concepts/build',
+          label: 'Concepts',
+          position: 'left',
+        },
+        {
+          type: 'doc',
+          docId: 'Roadmap',
           label: 'Roadmap',
-          to: '/docs/Roadmap',
+          position: 'left',
+        },
+        {
+          href: 'https://github.com/blanketops/environments-cli',
+          label: 'GitHub',
+          position: 'right',
         },
       ],
     },
-  ],
-  copyright: `© ${new Date().getFullYear()} BlanketOps. Deterministic Software Delivery.`,
-},
+
+    footer: {
+      style: 'dark',
+      links: [
+        {
+          title: 'Project',
+          items: [
+            {
+              href: 'https://github.com/blanketops/environments-cli',
+              label: 'GitHub',
+            },
+          ],
+        },
+        {
+          title: 'Roadmap',
+          items: [
+            {
+              label: 'Roadmap',
+              to: '/docs/Roadmap',
+            },
+          ],
+        },
+      ],
+      copyright: `© ${new Date().getFullYear()} BlanketOps. Deterministic Software Delivery.`,
+    },
 
     prism: {
       theme: prismThemes.github,
