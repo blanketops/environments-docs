@@ -18,7 +18,9 @@ kubectl create namespace for-kaniko-app
 
 You will **not** `kubectl create secret` anything for this walkthrough. Build's Git clone key and registry push credential are pulled automatically by the controller via `ExternalSecret`, from whichever backend the Environment's `contract.secretStore.provider` points at (step 1 below).
 
-What that means concretely: before applying the `Build` in step 4, these two remote keys must already hold a value in your AWS Secrets Manager / Vault / GCP Secret Manager instance —
+That does assume a `ClusterSecretStore` named `blanketops-environments-aws` (or `-vault`/`-gcp`/`-azure`) already exists on the cluster, pointed at your actual secret manager — that's cluster infrastructure, not something this walkthrough or the Environment controller creates. See [Environment: Secrets & SecretStore](../Api/Environments/environment.md#secrets--secretstore) for a minimal example.
+
+With that store in place, before applying the `Build` in step 4, these remote keys need a value in it —
 
 | Remote key                       | Backs                                    |
 | ---------------------------------- | ------------------------------------------- |

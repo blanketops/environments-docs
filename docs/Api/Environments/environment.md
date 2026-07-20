@@ -89,26 +89,64 @@ Each is an object reference, resolved in the same namespace as the Environment �
 
 ## Secrets & SecretStore
 
-Every credential consumed downstream — Git SSH keys, registry push credentials, the GitHub webhook HMAC secret — is pulled from an external secrets backend via [External Secrets Operator](https://external-secrets.io/) (ESO), never created by hand and never inlined into a CR.
+Every credential consumed downstream — Git SSH keys, registry push credentials, the GitHub webhook HMAC secret — is pulled from an external secrets backend via [External Secrets Operator](https://external-secrets.io/) (ESO), never created by hand and never inlined into a CR. The chain is: an environment operator's own secret manager → a `ClusterSecretStore` ESO can read → a per-resource `ExternalSecret` the platform materializes → the plain `Secret` a workload actually mounts.
 
-`spec.contract.contract.secretStore.provider` selects which backend-agnostic `ClusterSecretStore` the platform targets for this environment. Yes, `contract` nested inside `contract` — the outer one is the Kubernetes envelope every resource uses (`spec.contract`), the inner one is `EnvironmentContract`, the Environment resource's own platform-level bindings field.
+`spec.contract.contract.secretStore.provider` is the one input that drives all of it. Yes, `contract` nested inside `contract` — the outer one is the Kubernetes envelope every resource uses (`spec.contract`), the inner one is `EnvironmentContract`, the Environment resource's own platform-level bindings field.
 
-| Field                                          | Type   | Required | Description                                              |
-| ----------------------------------------------- | ------ | -------- | ------------------------------------------------------------ |
-| contract.secretStore                            | object | Yes, if `contract` is set | Which external secrets backend backs this environment |
-| contract.secretStore.provider                   | string | Yes      | `aws`, `vault`, `gcp`, or `azure`                             |
+| Field                          | Type   | Required                  | Description                                            |
+| ------------------------------- | ------ | -------------------------- | ---------------------------------------------------------- |
+| contract.secretStore            | object | Yes, if `contract` is set  | Which external secrets backend backs this environment      |
+| contract.secretStore.provider   | string | Yes                        | `aws`, `vault`, `gcp`, or `azure`                            |
 
-Each composed CR then materializes its own `ExternalSecret` against that store, at a **fixed, platform-constant remote path** — these paths are not configurable per-environment, and must already hold a value in your secret backend before the corresponding CR is applied:
+`provider` resolves to a fixed `ClusterSecretStore` name — you don't choose the name yourself:
 
-| Consumer                                    | Remote key (in your secret backend)   | Materialized Secret key(s)                         | Secret type                      |
-| -------------------------------------------- | -------------------------------------- | ---------------------------------------------------- | ---------------------------------- |
-| Build's Git clone (`spec.source.cloneSecret`) | `/blanketops/git/ssh-privatekey`       | `ssh-privatekey`                                      | `kubernetes.io/ssh-auth`           |
-|                                               | `/blanketops/git/ssh-publickey`        | `ssh-publickey`                                       |                                     |
-|                                               | `/blanketops/git/known-hosts`          | `known_hosts`                                         |                                     |
-| Build's registry push (`spec.serviceAccount.secret`) | `/blanketops/registry/config`   | `.dockerconfigjson`                                   | `kubernetes.io/dockerconfigjson`   |
-| GitHubEvent's webhook signature (`spec.webhook.secretRef`) | `/blanketops/github/webhook/secret` | whatever key name `webhook.secretRef.key` declares | `Opaque`                           |
+| provider | ClusterSecretStore name          |
+| -------- | ------------------------------------ |
+| `aws`    | `blanketops-environments-aws`        |
+| `vault`  | `blanketops-environments-vault`      |
+| `gcp`    | `blanketops-environments-gcp`        |
+| `azure`  | `blanketops-environments-azure`      |
+| _(unset/unknown)_ | falls back to a fake store — fine for a local Kind cluster, not for anything that needs real credentials |
 
-Populate those three remote keys in your AWS Secrets Manager / Vault / GCP Secret Manager instance — matching whichever `provider` you set — before applying an Environment that composes a Build or a GitHubEvent with a webhook secret. The controller reconciles the `ExternalSecret` (and the `Secret` ESO materializes from it) automatically; there is nothing to `kubectl create secret` by hand.
+That `ClusterSecretStore` is infrastructure you (or whoever owns the cluster) create once, pointed at your actual AWS Secrets Manager / Vault / GCP Secret Manager / Azure Key Vault instance. It is not something the Environment controller creates for you. Minimal AWS example:
+
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: blanketops-environments-aws
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: af-south-1
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: external-secrets
+            namespace: external-secrets
+```
+
+Full worked examples for AWS, Azure, and GCP ship as CRD samples in [environments-install](https://github.com/blanketops/environments-install/tree/main/config/samples).
+
+Once that store exists, each composed CR materializes its own `ExternalSecret` against it, at a **fixed, platform-constant remote path** — these paths are not configurable per-environment, and need a value in your secret backend before the corresponding CR is applied:
+
+| Remote key                            | Backs                                                              | Materialized Secret key(s)              | Secret type                    |
+| ---------------------------------------- | ------------------------------------------------------------------- | ------------------------------------------ | --------------------------------- |
+| `/blanketops/git/ssh-privatekey`         | Build's source clone, Deployment's manifests-repo clone, Package's state-repo clone | `ssh-privatekey` (`ssh_privatekey` for Package) | `kubernetes.io/ssh-auth`          |
+| `/blanketops/git/ssh-publickey`          | same three consumers                                                 | `ssh-publickey` (`ssh_publickey` for Package)   |                                    |
+| `/blanketops/git/known-hosts`            | same three consumers                                                 | `known_hosts`                               |                                    |
+| `/blanketops/registry/config`            | Build's registry push, Package's registry credentials                | `.dockerconfigjson` (`dockerconfigjson` for Package) | `kubernetes.io/dockerconfigjson`  |
+| `/blanketops/github/webhook/secret`      | GitHubEvent's webhook signature (`spec.webhook.secretRef`)           | whatever key name `webhook.secretRef.key` declares | `Opaque`                          |
+| `/blanketops/crossplane/github/token`    | Crossplane's GitHub provider (repository/webhook provisioning)       | `token`                                     | `Opaque`                          |
+| `/blanketops/github/api/token`           | Listed by the install-repo secret store samples as a required path; no reconciler reads it yet | —                | —                                  |
+
+Two secrets in this chain are **not** ESO-sourced, and need no key in your backend at all:
+
+- **Flux's Git SSH keypair** (`<deployment-name>-flux-ssh`) — generated by the controller itself, once per Deployment, and left alone afterward.
+- **The webhook hook-URL secret** (`<repository-name>-hookurl`) — copied directly from `GitRepository.spec.contract.hookUrl`, a user-declared field, not a secret-store lookup.
+
+Populate the remote keys above before applying an Environment that composes a Build, Deployment, Package, or GitHubEvent with a webhook secret. The controller reconciles every `ExternalSecret` (and the `Secret` ESO materializes from it) automatically; there is nothing to `kubectl create secret` by hand.
 
 ---
 
