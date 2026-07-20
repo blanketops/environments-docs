@@ -2,18 +2,14 @@
 
 Modern delivery systems treat software movement as execution.
 
-BlanketOps treats it as state progression.
-
-Delivery is not a pipeline.
-
-Delivery is a deterministic state machine.
+BlanketOps treats it as state progression: a deterministic state machine.
 
 ## The Core Model
 
 Software delivery progresses through governed stages:
 
 ```mathematica
-GitRepository -> GitHubEvent -> Build ->  Deploy -> Route -> Domain -> Package -> ServiceUnit
+GitRepository -> GitHubEvent -> Build -> Package -> ServiceUnit -> Deployment -> Route -> Domain
 ```
 
 Each stage:
@@ -23,8 +19,6 @@ Each stage:
 - Produces observable status.
 - Reduces entropy.
 - Constrains future transitions.
-
-This is not a workflow engine.
 
 This is structured state progression.
 
@@ -37,14 +31,9 @@ A deterministic delivery system guarantees:
 - The same intent produces the same resolved state.
 - Transitions are explicit.
 - Stage boundaries are enforced.
-- No implicit mutation occurs between stages.
-- Reconciliation cannot bypass structural rules.
+- Reconciliation enforces structural rules on every change.
 
-Given identical input and system conditions, the resulting state is predictable.
-
-No hidden steps.
-
-No silent transformations.
+Given identical input and system conditions, the resulting state is predictable — no hidden steps, no silent transformations.
 
 ---
 
@@ -60,15 +49,11 @@ BlanketOps defines:
 
 This distinction matters.
 
-Steps describe action.
-
-State describes structure.
+Steps describe action. State describes structure.
 
 - State can be validated.
 - State can be observed.
 - State can be governed.
-
-Steps cannot.
 
 ---
 
@@ -80,27 +65,22 @@ Example:
 
 - A `GitHubEvent` could represent any code change.
 - A `Build` constrains that change into a reproducible artifact.
-- A `Package` constrains that artifact into a defined image.
-- A `Deploy` constrains execution configuration.
-- A `Route` constrains exposure rules.
+- A `Package` constrains that artifact into a defined, versioned configuration bundle.
 - A `ServiceUnit` represents authoritative runtime state.
+- A `Deployment` constrains execution configuration.
+- A `Route` constrains exposure rules.
+- A `Domain` constrains the certificate and DNS mapping chain for that exposure.
 
-With every stage:
-
-The space of uncertainty narrows.
-
-Entropy decreases.
+With every stage, the space of uncertainty narrows. Entropy decreases.
 
 ---
 
 ## Stage Boundaries Are Contracts
 
-Transitions are not implicit.
-
-They are governed.
+Transitions are governed, not implicit:
 
 - A Build cannot exist without a GitRepository reference.
-- A Deploy cannot progress without a valid Package.
+- A Deployment cannot progress without a valid ServiceUnit.
 - A Route cannot expose an undefined workload.
 - A ServiceUnit cannot represent an invalid state.
 
@@ -110,33 +90,21 @@ These boundaries prevent structural drift.
 
 ## Reconciliation as Enforcement
 
-In BlanketOps:
+In BlanketOps, reconciliation enforces state contracts on every change.
 
-Reconciliation does not blindly patch the cluster.
-
-It enforces state contracts.
-
-If a transition violates structural rules:
-
-It fails visibly.
-
-Reconciliation becomes governed.
-
-Not coerced.
+If a transition violates structural rules, it fails visibly — reconciliation stays governed and deliberate.
 
 ---
 
 ## Observable Delivery
 
-Because each stage is a CRD:
-
-Engineers can inspect:
+Because each stage is a CRD, engineers inspect delivery directly:
 
 ```bash
-kubectl get builds
-kubectl get packages
-kubectl get deploys
-kubectl get serviceunits
+kubectl get builds.environments.blanketops.dev
+kubectl get packages.environments.blanketops.dev
+kubectl get deployments.environments.blanketops.dev
+kubectl get serviceunits.environments.blanketops.dev
 ```
 
 Delivery becomes:
@@ -145,8 +113,7 @@ Delivery becomes:
 - Auditable
 - Structurally visible
 - Domain-driven
-
-Not hidden inside CI logs
+- Native to the cluster, not buried in CI logs
 
 ---
 
@@ -160,24 +127,18 @@ When delivery is modeled as deterministic state:
 - Platform governance becomes enforceable
 - Cognitive load decreases
 
-You are no longer stitching tools.
-
-You are progressing state.
+This is no longer tool-stitching. This is state progression.
 
 ---
 
-#3 The Shift
+## The Shift
 
 The industry optimized for automation.
 
 BlanketOps optimizes for structure.
 
-Automation without structure increases entropy.
+Automation without structure increases entropy. Structure with automation reduces it.
 
-Structure with automation reduces it.
-
-Delivery must be modeled as state.
-
-Only then can it scale without decay.
+Delivery must be modeled as state. Only then can it scale without decay.
 
 ---
