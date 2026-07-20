@@ -46,7 +46,7 @@ BlanketOps reduces entropy through structured CRDs.
 Each stage narrows the possibility space.
 
 ```mathematica
-  GitRepository →  GitHubEvent →  BuildTrigger →  Build →  ServiceUnit →  Deployment →  Route → Package
+  GitRepository →  GitHubEvent →  Build →  ServiceUnit →  Deployment →  Route → Domain → Package
 ```
 
 At each transition:
@@ -72,8 +72,8 @@ Reduces external uncertainty.
 
 ### Policy Layer
 
-- `BuildTrigger` filters events.
-- Only allowed combinations proceed.
+- `Build.spec.policy` filters which events are allowed to trigger execution.
+- Only allowed trigger types proceed.
 - Prevents uncontrolled execution.
 
 ### Artifact Layer
@@ -95,6 +95,7 @@ Reduces external uncertainty.
 
 - `Route` constrains public surface area.
 - Prevents accidental external exposure.
+- `Domain` constrains certificate and DNS mapping lifecycle for the exposed host.
 
 ## Structural Entropy vs Operational Entropy
 

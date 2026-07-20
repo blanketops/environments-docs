@@ -17,7 +17,7 @@ It defines:
 ### Position in Delivery
 
 ```mathematica
-GitRepository GitHubEvent BuildTrigger Build ServiceUnit Deployment Route
+GitRepository → GitHubEvent → Build → ServiceUnit → Deployment → Route
 ```
 
 Deployment binds resolved ServiceUnits into runtime configuration.

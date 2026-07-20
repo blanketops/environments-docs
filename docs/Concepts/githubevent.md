@@ -33,7 +33,7 @@ This prevents uncontrolled execution.
 ### Structural Position in Delivery
 
 ```mathematica
-GitHubEvent GitHubEvent BuildTrigger Build Deploy ServiceUnit
+GitRepository → GitHubEvent → Build → Deploy → ServiceUnit
 ```
 
 GitHubEvent establishes:
@@ -107,7 +107,7 @@ The GitHubEvent controller is responsible for:
 - Validating event against repository contract
 - Normalizing provider payload
 - Persisting revision identity
-- Emitting BuildTrigger creation
+- Marking the event as triggered against the eligible Build, once its allowed-trigger policy matches
 
 It does not:
 

@@ -30,7 +30,7 @@ Delivery cannot progress without it.
 The GitRepository sits at the start of deterministic progression:
 
 ```mathematica
-GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → Route → ServiceUnit
+GitRepository → GitHubEvent → Build → Deploy → Route → ServiceUnit
 ```
 
 It establishes:

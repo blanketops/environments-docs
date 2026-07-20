@@ -44,12 +44,14 @@ GitHubEvent is immutable once created.
 
 #### Status
 
-| Field               | Type        | Description                                  |
-| ------------------- | ----------- | -------------------------------------------- |
-| phase               | string      | Lifecycle phase of the event                 |
-| conditions          | []Condition | Standard Kubernetes condition array          |
-| matchedBuildTrigger | string      | Name of BuildTrigger that matched this event |
-| processedAt         | string      | Timestamp when event was evaluated           |
+| Field        | Type        | Description                                                         |
+| ------------ | ----------- | --------------------------------------------------------------------- |
+| phase        | string      | Lifecycle phase of the event                                          |
+| conditions   | []Condition | Standard Kubernetes condition array                                   |
+| accepted     | boolean     | Whether the event passed signature verification and contract match    |
+| triggered    | boolean     | Whether the event triggered a Build                                   |
+| triggeredRef | string      | Name of the Build CR triggered by this event, if any                  |
+| processedAt  | string      | Timestamp when event was evaluated                                    |
 
 ---
 

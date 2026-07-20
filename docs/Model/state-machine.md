@@ -13,7 +13,7 @@ Delivery is a deterministic state machine.
 Software delivery progresses through governed stages:
 
 ```mathematica
-GitRepository -> GitHubEvent → BuildTrigger -> Build →  Deploy → Route → Package → ServiceUnit
+GitRepository -> GitHubEvent -> Build ->  Deploy -> Route -> Domain -> Package -> ServiceUnit
 ```
 
 Each stage:

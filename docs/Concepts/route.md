@@ -17,7 +17,7 @@ Route is the declarative traffic contract of a delivery unit.
 ### Position in Delivery
 
 ```mathematica
-ServiceUnit → Deployment → Route
+ServiceUnit → Deployment → Route → Domain
 ```
 
 Where:
@@ -25,6 +25,7 @@ Where:
 - ServiceUnit defines runtime workload.
 - Deployment projects workload into environment.
 - Route exposes workload to external traffic.
+- Domain governs the TLS and DNS mapping chain for the Route's host.
 - Route is the final public boundary of delivery.
 
 Why Route Exists
@@ -107,10 +108,12 @@ Declares TLS requirement.
 This enforces:
 
 - Encrypted traffic.
-- Certificate provisioning.
+- Certificate provisioning, delegated to an owned Domain resource.
 - Security baseline.
 - TLS is not inferred.
 - It is declared.
+
+Route does not provision certificates itself. When `tlsEnabled` is true, the controller materializes an owned Domain that governs the certificate and DNS mapping chain for the host. See [Domain](domain.md).
 
 `runtime`
 

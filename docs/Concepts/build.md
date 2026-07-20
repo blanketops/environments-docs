@@ -14,7 +14,7 @@ Build produces a verifiable, traceable image artifact.
 ## Position in Delivery
 
 ```mathematica
-GitRepository → GitHubEvent → BuildTrigger → Build → Deployment → ServiceUnit
+GitRepository → GitHubEvent → Build → Deployment → ServiceUnit
 ```
 
 Build marks the transition from:
@@ -160,7 +160,7 @@ policy:
 
 This ensures:
 
-- Only declared GitHubEvents can create BuildTriggers.
+- Only declared GitHubEvent types may trigger a BuildRun.
 - Unapproved transitions are rejected.
 - Delivery progression remains deterministic.
 - Entropy Reduction at Artifact Boundary.
