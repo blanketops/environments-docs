@@ -13,8 +13,8 @@ const FeatureList: FeatureItem[] = [
     title: 'Delivery Is Deterministic State',
     description: (
       <>
-        BlanketOps models software delivery as governed state progression —
-        not pipelines, not scripts, not glued tools. Every stage transition is
+        BlanketOps models software delivery as governed state progression:
+        every stage is a structured resource, and every transition is
         explicit, observable, and structurally enforced.
       </>
     ),
@@ -33,9 +33,9 @@ const FeatureList: FeatureItem[] = [
     title: 'Governed Reconciliation',
     description: (
       <>
-        Reconciliation is not blind patching. BlanketOps enforces stage
-        contracts. If a transition violates structure, it fails visibly.
-        Coerced reconciliation is eliminated.
+        BlanketOps enforces stage contracts on every reconciliation. A
+        transition that violates structure fails visibly, so state stays
+        deliberate — never coerced.
       </>
     ),
   },

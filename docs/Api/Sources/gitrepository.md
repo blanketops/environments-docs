@@ -65,11 +65,12 @@ apiVersion: sources.blanketops.dev/v1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     provider: github
     repository:
-      owner: blanketops01
+      owner: example-org
       name: for-kaniko-app
     webhooks:
       - events:

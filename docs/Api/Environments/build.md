@@ -123,14 +123,15 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Build
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
-    image: docker.io/nkanyezisolutions/for-kaniko-app:master
+    image: docker.io/example/for-kaniko-app:master
     strategy:
       kind: ClusterBuildStrategy
       name: kaniko
     source:
-      url: git@github.com:blanketops01/for-kaniko-app.git
+      url: git@github.com:example-org/for-kaniko-app.git
       revision: master
       contextDir: .
       cloneSecret: git-ssh-credentials

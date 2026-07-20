@@ -60,14 +60,15 @@ ServiceUnit supports multiple artifact sourcing strategies.
 ## 1️⃣ Static Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
+  namespace: dev
 spec:
   contract:
     type: static
-    image: docker.io/nkanyezisolutions/for-kaniko-app:master
+    image: docker.io/example/for-kaniko-app:master
     containerPort: 8080
     size: 2
     appType: web
@@ -85,10 +86,11 @@ This is deterministic but externally resolved.
 ## 2️⃣ Build-Derived Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-buildah-app-worker
+  namespace: dev
 spec:
   contract:
     type: build
@@ -224,19 +226,14 @@ After ServiceUnit:
 
 ## Reconciliation Responsibility
 
-The ServiceUnit controller is responsible for:
+The ServiceUnit controller defines workload contract, and stops there:
 
 - Resolving artifact reference.
 - Validating buildRef if applicable.
 - Enforcing contract completeness.
 - Surfacing readiness state.
 
-It does not:
-
-- Apply manifests directly.
-- Route traffic.
-- Modify build artifacts.
-- It defines workload contract.
+Applying manifests and routing traffic are [Deployment](deployment.md)'s and [Route](route.md)'s jobs; ServiceUnit only defines what they act on.
 
 ## Design Principles
 

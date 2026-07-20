@@ -1,0 +1,116 @@
+# Tag-triggered release pipeline. Builds the Docusaurus site, bundles it as
+# ko kodata for the static-file-server binary in cmd/server, builds/pushes
+# that image via ko, updates the changelog on main, then publishes a
+# GitHub Release. No Dockerfile — same ko-based path as environments-controller.
+name: Release
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  IMAGE_REPO: ghcr.io/blanketops/environments-docs
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Populates build/, which cmd/server/kodata symlinks to — ko bundles
+      # it into the image automatically as static content.
+      - name: Build site
+        run: npm run build
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Setup ko
+        uses: ko-build/setup-ko@v0.7
+
+      - name: Login to GHCR
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | ko login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password-stdin
+
+      - name: Build and push image
+        id: ko-build
+        env:
+          KO_DOCKER_REPO: ${{ env.IMAGE_REPO }}
+        run: |
+          ko build ./cmd/server --bare \
+            --platform linux/amd64,linux/arm64 \
+            --tags "${{ github.ref_name }},latest" \
+            --image-refs /tmp/ko-image-refs
+          echo "digest=$(tail -1 /tmp/ko-image-refs | cut -d@ -f2)" >> "$GITHUB_OUTPUT"
+
+      # The tag checkout above is a detached HEAD — switch to main so the
+      # changelog commit below lands on a real branch, not the tag ref.
+      - name: Checkout main
+        run: |
+          git checkout main
+          git pull origin main
+
+      - name: Install git-cliff
+        run: |
+          GITCLIFF_VERSION="2.13.0"
+          curl -L "https://github.com/orhun/git-cliff/releases/download/v${GITCLIFF_VERSION}/git-cliff-${GITCLIFF_VERSION}-x86_64-unknown-linux-gnu.tar.gz" -o git-cliff.tar.gz
+          tar xzf git-cliff.tar.gz
+          sudo mv "git-cliff-${GITCLIFF_VERSION}/git-cliff" /usr/local/bin/git-cliff
+          rm -rf git-cliff.tar.gz "git-cliff-${GITCLIFF_VERSION}"
+
+      - name: Generate CHANGELOG.md
+        run: git-cliff --output CHANGELOG.md
+
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "chore(release): update changelog for ${{ github.ref_name }}" || echo "No changes"
+          git push origin main
+
+      - name: Generate release notes
+        run: git-cliff --latest --output RELEASE_NOTES.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: RELEASE_NOTES.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Summary
+        if: always()
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY <<EOF
+          # 📦 Release Published: ${{ github.ref_name }}
+          ## Completed
+          - Built the Docusaurus site
+          - Built and pushed \`${{ env.IMAGE_REPO }}\` via ko — tags \`${{ github.ref_name }}\`, \`latest\`
+          - Generated CHANGELOG.md using git-cliff and committed to main
+          - Published GitHub Release with release notes
+          ## Image
+          - **Digest:** \`${{ steps.ko-build.outputs.digest }}\`
+          - **Pull:** \`docker pull ${{ env.IMAGE_REPO }}:${{ github.ref_name }}\`
+          EOF

@@ -33,7 +33,7 @@ This prevents uncontrolled execution.
 ### Structural Position in Delivery
 
 ```mathematica
-GitHubEvent GitHubEvent BuildTrigger Build Deploy ServiceUnit
+GitRepository → GitHubEvent → Build → Deploy → ServiceUnit
 ```
 
 GitHubEvent establishes:
@@ -49,22 +49,21 @@ Without it, progression cannot begin.
 Conceptual Example
 
 ```yaml
-apiVersion: events.blanketops.dev/v1
+apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: push-main-001
-  namespace: default
+  namespace: dev
 spec:
   contract:
-    source: github
-    repository: for-kaniko-app
+    repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
-    eventSource:
-      webhook:
-        secretRef:
-          name: github-webhook-secret
-          key: secret
+    commitSHA: 3f2c91d
+    webhook:
+      secretRef:
+        name: github-webhook-secret
+        key: secret
 ```
 
 ## Contract Semantics
@@ -102,19 +101,14 @@ With GitHubEvent:
 
 ## Reconciliation Responsibility
 
-The GitHubEvent controller is responsible for:
+The GitHubEvent controller converts signal into governed intent, and hands off from there:
 
 - Validating event against repository contract
 - Normalizing provider payload
 - Persisting revision identity
-- Emitting BuildTrigger creation
+- Marking the event as triggered against the eligible Build, once its allowed-trigger policy matches
 
-It does not:
-
-- Build artifacts
-- Deploy workloads
-- Modify runtime state
-- It converts signal into governed intent.
+[Build](build.md) takes it from there — artifact production and runtime state belong to the stages downstream of this one.
 
 ## Design Principles
 

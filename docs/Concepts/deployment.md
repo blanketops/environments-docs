@@ -10,14 +10,12 @@ It defines:
 - Whether image automation is enabled.
 - Which strategy governs runtime mutation.
 
-- Deployment does not build artifacts.
-- Deployment does not route traffic.
-- Deployment projects artifact-backed ServiceUnits into runtime state.
+Deployment projects artifact-backed ServiceUnits into runtime state — that projection is the whole of its job. [Build](build.md) produces the artifact upstream; [Route](route.md) exposes it downstream.
 
 ### Position in Delivery
 
 ```mathematica
-GitRepository GitHubEvent BuildTrigger Build ServiceUnit Deployment Route
+GitRepository → GitHubEvent → Build → ServiceUnit → Deployment → Route
 ```
 
 Deployment binds resolved ServiceUnits into runtime configuration.
@@ -46,16 +44,18 @@ Example
 apiVersion: environments.blanketops.dev/v1alpha1
 kind: Deployment
 metadata:
-name: for-kaniko-app
+  name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     serviceUnits:
       - for-kaniko-app-api
     runtime: kubernetes.io/container-runtime
+    strategy: Rolling
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:
-      url: git@github.com:blanketops01/for-kaniko-app-deployment.git
+      url: git@github.com:example-org/for-kaniko-app-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
@@ -92,6 +92,12 @@ This allows:
 - Future substrate expansion.
 - Runtime is explicit, not assumed.
 
+`strategy`
+
+Declares the rollout strategy: `Rolling`, `BlueGreen`, or `Canary`.
+
+This governs how a new revision replaces the old one — gradual replacement, full cutover, or traffic-shifted — rather than leaving that choice to whatever the runtime substrate defaults to.
+
 `imageAutomation`
 
 Controls whether image updates are automatically reconciled.
@@ -125,7 +131,7 @@ Declares manifest source.
 
 ```yaml
 manifestsRepo:
-  url: git@github.com:blanketops01/for-kaniko-app-deployment.git
+  url: git@github.com:example-org/for-kaniko-app-deployment.git
   cloneSecret: git-ssh-credentials
   strategy: kustomization
   path: ./bases/kustomization.yaml
@@ -168,9 +174,11 @@ spec:
       - for-kaniko-app-api
       - for-kaniko-app-worker
     runtime: kubernetes.io/container-runtime
+    strategy: Rolling
     imageAutomation: true
+    reconciliationStrategy: kustomize
     manifestsRepo:
-      url: git@github.com:blanketops01/for-buildpacks-deployment.git
+      url: git@github.com:example-org/for-buildpacks-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
@@ -185,7 +193,7 @@ This allows:
 
 ## Reconciliation Responsibility
 
-The Deployment controller is responsible for:
+The Deployment controller governs runtime projection, and nothing past it:
 
 - Resolving ServiceUnit image references.
 - Injecting artifact digest into manifests.
@@ -193,12 +201,7 @@ The Deployment controller is responsible for:
 - Surfacing runtime drift.
 - Managing image automation policies.
 
-It does not:
-
-- Build artifacts.
-- Trigger events.
-- Route traffic directly.
-- It governs runtime projection.
+Artifact production and event triggering happen upstream, in Build; exposing the result to traffic happens downstream, in Route.
 
 ## Design Principles
 

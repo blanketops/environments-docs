@@ -82,10 +82,11 @@ apiVersion: environments.blanketops.dev/v1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
+  namespace: dev
 spec:
   contract:
     type: static
-    image: docker.io/nkanyezisolutions/for-kaniko-app:master
+    image: docker.io/example/for-kaniko-app:master
     containerPort: 8080
     size: 2
     appType: web
@@ -99,6 +100,7 @@ apiVersion: environments.blanketops.dev/v1
 kind: ServiceUnit
 metadata:
   name: for-buildah-app-worker
+  namespace: dev
 spec:
   contract:
     type: build

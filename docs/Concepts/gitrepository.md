@@ -30,7 +30,7 @@ Delivery cannot progress without it.
 The GitRepository sits at the start of deterministic progression:
 
 ```mathematica
-GitRepository → GitHubEvent → BuildTrigger → Build → Deploy → Route → ServiceUnit
+GitRepository → GitHubEvent → Build → Deploy → Route → ServiceUnit
 ```
 
 It establishes:
@@ -46,18 +46,22 @@ Every downstream stage depends on it.
 ### Example
 
 ```yaml
-apiVersion: sources.blanketops.dev/v1
+apiVersion: sources.blanketops.dev/v1alpha1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     provider: github
-     hookUrl: https://elimination-propecia-meter-strips.trycloudflare.com/
+    hookUrl: https://your-webhook-endpoint.example.com/
     repository:
-      owner: blanketops01
+      owner: example-org
       name: for-kaniko-app
-    webhooks: - events: - push - pull_request
+    webhooks:
+      events:
+        - push
+        - pull_request
 ```
 
 ## Contract Semantics
@@ -120,20 +124,14 @@ Entropy Reduction at Origin.
 
 ## Reconciliation Model
 
-The GitRepository controller is responsible for:
+The GitRepository controller establishes origin truth, and stops there:
 
 - Validating provider configuration.
 - Ensuring webhook registration.
 - Observing connectivity status.
 - Surfacing contract violations.
 
-It does not:
-
-- Trigger builds directly.
-- Deploy workloads.
-- Resolve artifacts.
-
-It establishes origin truth.
+Triggering builds and resolving artifacts happen downstream, once [GitHubEvent](githubevent.md) and [Build](build.md) take over.
 
 ## Design Principles
 

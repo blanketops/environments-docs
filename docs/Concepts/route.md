@@ -17,7 +17,7 @@ Route is the declarative traffic contract of a delivery unit.
 ### Position in Delivery
 
 ```mathematica
-ServiceUnit → Deployment → Route
+ServiceUnit → Deployment → Route → Domain
 ```
 
 Where:
@@ -25,6 +25,7 @@ Where:
 - ServiceUnit defines runtime workload.
 - Deployment projects workload into environment.
 - Route exposes workload to external traffic.
+- Domain governs the TLS and DNS mapping chain for the Route's host.
 - Route is the final public boundary of delivery.
 
 Why Route Exists
@@ -46,13 +47,14 @@ This prevents uncontrolled external surface mutation.
 Example (Contractual Form)
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: Route
 metadata:
   name: route-sample
+  namespace: dev
 spec:
   contract:
-    host: api.dev.blanketops.dev
+    host: api.dev.example.com
     path: /
     enabled: true
     tlsEnabled: true
@@ -107,10 +109,12 @@ Declares TLS requirement.
 This enforces:
 
 - Encrypted traffic.
-- Certificate provisioning.
+- Certificate provisioning, delegated to an owned Domain resource.
 - Security baseline.
 - TLS is not inferred.
 - It is declared.
+
+Route does not provision certificates itself. When `tlsEnabled` is true, the controller materializes an owned Domain that governs the certificate and DNS mapping chain for the host. See [Domain](domain.md).
 
 `runtime`
 
@@ -148,7 +152,7 @@ After Route:
 
 ## Reconciliation Responsibility
 
-The Route controller is responsible for:
+The Route controller owns external access, and stops there:
 
 - Validating host uniqueness.
 - Ensuring TLS configuration.
@@ -156,12 +160,7 @@ The Route controller is responsible for:
 - Surfacing exposure conflicts.
 - Reflecting availability status.
 
-It does not:
-
-Deploy workloads
-Modify artifacts
-Bypass deployment contract
-It governs external access.
+Workload deployment stays with [Deployment](deployment.md); the deployment contract stays fixed once Route hands traffic to it.
 
 ## Design Principles
 
