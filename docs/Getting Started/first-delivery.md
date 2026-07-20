@@ -6,7 +6,7 @@ sidebar_position: 4
 
 A complete walkthrough of the delivery chain, end to end: source → build → workload → runtime → traffic → TLS.
 
-We'll deliver the same example application used throughout these docs — [`for-kaniko-app`](https://github.com/blanketops01/for-kaniko-app), built with the `kaniko` Shipwright strategy.
+We'll deliver the same example application used throughout these docs — [`for-kaniko-app`](https://github.com/example-org/for-kaniko-app), built with the `kaniko` Shipwright strategy.
 
 Every resource below is namespaced and belongs to one [Environment](../Api/Environments/environment.md), which owns them all via `ownerReference`.
 
@@ -45,7 +45,7 @@ spec:
   contract:
     applicationName: for-kaniko-app
     branch: main
-    gitOwner: blanketops01
+    gitOwner: example-org
     environmentType: development
     version: v0.1.0
     gitRepository:
@@ -90,7 +90,7 @@ spec:
     provider: github
     hookUrl: https://your-webhook-endpoint.example.com/
     repository:
-      owner: blanketops01
+      owner: example-org
       name: for-kaniko-app
     webhooks:
       events:
@@ -114,7 +114,7 @@ metadata:
   namespace: dev
 spec:
   contract:
-    repository: blanketops01/for-kaniko-app
+    repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
     commitSha: 3f2c91d
@@ -136,12 +136,12 @@ metadata:
   namespace: dev
 spec:
   contract:
-    image: docker.io/nkanyezisolutions/for-kaniko-app:main
+    image: docker.io/example/for-kaniko-app:main
     strategy:
       kind: ClusterBuildStrategy
       name: kaniko
     source:
-      url: git@github.com:blanketops01/for-kaniko-app.git
+      url: git@github.com:example-org/for-kaniko-app.git
       revision: main
       contextDir: .
       cloneSecret: git-ssh-credentials

@@ -72,14 +72,14 @@ spec:
     packageDescription: >
       This package contains the API deployment manifests and runtime configuration.
     packageMaintainers:
-      - name: Neo
-        email: neo@blanketops.online
+      - name: Jane Doe
+        email: jane@example.com
     packageRepository:
-      url: git@github.com:blanketops01/for-kaniko-app-packages.git
+      url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
     packageKappDiff: true
     stateRepo:
-      url: git@github.com:blanketops01/for-kaniko-app-state.git
+      url: git@github.com:example-org/for-kaniko-app-state.git
       ref:
         branch: master
       cloneSecret: git-ssh-credentials-state
@@ -151,7 +151,7 @@ Defines configuration bundle source.
 
 ```yaml
 packageRepository:
-  url: git@github.com:blanketops01/for-kaniko-app-packages.git
+  url: git@github.com:example-org/for-kaniko-app-packages.git
 ```
 
 This constrains:
@@ -179,7 +179,7 @@ Defines environment state projection repository.
 
 ```yaml
 stateRepo:
-  url: git@github.com:blanketops01/for-kaniko-app-state.git
+  url: git@github.com:example-org/for-kaniko-app-state.git
   ref:
     branch: master
     strategy: kustomization

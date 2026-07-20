@@ -38,7 +38,7 @@ spec:
   contract:
     applicationName: for-kaniko-app
     branch: main
-    gitOwner: blanketops01
+    gitOwner: example-org
     environmentType: development
     version: v0.1.0
     serviceUnits:

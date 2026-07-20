@@ -53,9 +53,9 @@ metadata:
 spec:
   contract:
     provider: github
-    hookUrl: https://elimination-propecia-meter-strips.trycloudflare.com/
+    hookUrl: https://your-webhook-endpoint.example.com/
     repository:
-      owner: blanketops01
+      owner: example-org
       name: for-kaniko-app
     webhooks:
       events:

@@ -67,7 +67,7 @@ metadata:
 spec:
   contract:
     type: static
-    image: docker.io/nkanyezisolutions/for-kaniko-app:master
+    image: docker.io/example/for-kaniko-app:master
     containerPort: 8080
     size: 2
     appType: web

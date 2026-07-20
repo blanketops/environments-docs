@@ -53,7 +53,7 @@ spec:
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:
-      url: git@github.com:blanketops01/for-kaniko-app-deployment.git
+      url: git@github.com:example-org/for-kaniko-app-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml
@@ -123,7 +123,7 @@ Declares manifest source.
 
 ```yaml
 manifestsRepo:
-  url: git@github.com:blanketops01/for-kaniko-app-deployment.git
+  url: git@github.com:example-org/for-kaniko-app-deployment.git
   cloneSecret: git-ssh-credentials
   strategy: kustomization
   path: ./bases/kustomization.yaml
@@ -168,7 +168,7 @@ spec:
     runtime: kubernetes.io/container-runtime
     imageAutomation: true
     manifestsRepo:
-      url: git@github.com:blanketops01/for-buildpacks-deployment.git
+      url: git@github.com:example-org/for-buildpacks-deployment.git
       cloneSecret: git-ssh-credentials
       strategy: kustomization
       path: ./bases/kustomization.yaml

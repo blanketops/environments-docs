@@ -51,12 +51,12 @@ metadata:
   name: for-kaniko-app
 spec:
   contract:
-    image: docker.io/nkanyezisolutions/for-kaniko-app:master
+    image: docker.io/example/for-kaniko-app:master
     strategy:
       kind: ClusterBuildStrategy
       name: kaniko
     source:
-      url: git@github.com:blanketops01/for-kaniko-app.git
+      url: git@github.com:example-org/for-kaniko-app.git
       revision: master
       contextDir: .
       cloneSecret: git-ssh-credentials
@@ -113,7 +113,7 @@ Declares source origin and revision.
 
 ```yaml
 source:
-  url: git@github.com:blanketops01/for-kaniko-app.git
+  url: git@github.com:example-org/for-kaniko-app.git
   revision: master
   contextDir: .
   cloneSecret: git-ssh-credentials

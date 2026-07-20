@@ -56,7 +56,7 @@ metadata:
   namespace: default
 spec:
   contract:
-    repository: blanketops01/for-kaniko-app
+    repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
     commitSha: 3f2c91d

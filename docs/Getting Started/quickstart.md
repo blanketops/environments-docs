@@ -26,7 +26,7 @@ spec:
   contract:
     applicationName: for-kaniko-app
     branch: main
-    gitOwner: blanketops01
+    gitOwner: example-org
     environmentType: development
 ```
 
@@ -46,7 +46,7 @@ spec:
   contract:
     provider: github
     repository:
-      owner: blanketops01
+      owner: example-org
       name: for-kaniko-app
     webhooks:
       events:
