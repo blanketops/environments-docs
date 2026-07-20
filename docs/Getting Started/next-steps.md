@@ -29,7 +29,9 @@ Every resource in the chain has a Concept page (the why) and an API Reference (t
 
 ## Try a Real Webhook
 
-[`First Delivery`](./first-delivery.md) created its `GitHubEvent` manually. In practice, point a GitHub webhook at the `hookUrl` you declared on your `GitRepository` and pushes will create `GitHubEvent` objects — and trigger Builds — on their own.
+[`First Delivery`](./first-delivery.md) created its `GitHubEvent` manually, in the `dev` namespace, next to everything else. In practice, point a GitHub webhook at the `hookUrl` you declared on your `GitRepository` and pushes will create `GitHubEvent` objects — and trigger Builds — on their own.
+
+Those auto-created ones land somewhere different: GitRepository provisions an Argo Events `EventSource`/`Sensor` pair in the platform's own `argo-events` namespace, and that Sensor is what creates the `GitHubEvent` on a real delivery — into `argo-events`, not `dev`. Look for it with `kubectl get githubevents.events.blanketops.dev -n argo-events`, not `-n dev`.
 
 ## Wire In a Second Environment
 

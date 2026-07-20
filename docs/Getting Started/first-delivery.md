@@ -117,7 +117,7 @@ spec:
     repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
-    commitSha: 3f2c91d
+    commitSHA: 3f2c91d
 ```
 
 ```bash

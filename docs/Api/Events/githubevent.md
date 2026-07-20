@@ -27,12 +27,13 @@ GitHubEvent is immutable once created — the controller writes status, never th
 | ---------- | ------ | -------- | ------------------------------------------------------------------ |
 | repository | string | Yes      | Repository the event originated from, as `owner/name`             |
 | eventType  | string | Yes      | Provider event type: `push`, `pull_request`, `release`, or `manual` |
-| ref        | string | Yes      | Git ref the event applies to (e.g. `refs/heads/main`)              |
-| commitSha  | string | Yes      | Commit SHA at the head of the event                                |
+| ref        | string | No       | Git ref the event applies to (e.g. `refs/heads/main`)              |
+| commitSHA  | string | No       | Commit SHA at the head of the event                                |
 | actor      | string | No       | Provider login of the actor who caused the event                   |
 | eventId    | string | No       | Provider-assigned delivery ID, used for idempotency and audit      |
-| occurredAt | string | No       | Timestamp the event occurred on the provider                       |
 | webhook    | object | No       | Webhook signature verification config. Absent for manual dispatch  |
+
+Only `repository` and `eventType` are enforced today — everything else is read if present and left empty otherwise. A real webhook delivery populates `ref`, `commitSHA`, and `actor`; a manual dispatch can omit them.
 
 ---
 
@@ -88,12 +89,20 @@ spec:
     repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
-    commitSha: 3f2c91d
+    commitSHA: 3f2c91d
 ```
 
-Delivered webhooks arrive through the platform-generated `GitHubPayload` object, not this one — `GitHubEvent` is the user-facing surface. Creating one directly (as above) is the manual dispatch path: useful for local testing before a webhook is wired up.
+That's the manual dispatch path — useful for local testing before a webhook is wired up, and you choose the namespace.
 
-With signature verification wired up:
+**Real webhook deliveries land somewhere different.** GitRepository provisions an Argo Events `EventSource` + `Sensor` pair in the platform's own `argo-events` namespace, not the GitRepository's namespace. When GitHub actually delivers a webhook, that Sensor is what creates the resulting `GitHubEvent` — and it creates it in `argo-events`, populating `ref`, `commitSHA`, and `actor` from the payload:
+
+```bash
+kubectl get githubevents.events.blanketops.dev -n argo-events
+```
+
+Not `-n dev`. This is easy to miss the first time — see [Next Steps: Try a Real Webhook](../../Getting Started/next-steps.md).
+
+With signature verification wired up (relevant to the manual-dispatch path above; the Sensor's own trigger doesn't set this):
 
 ```yaml
 apiVersion: events.blanketops.dev/v1alpha1
@@ -106,19 +115,20 @@ spec:
     repository: example-org/for-kaniko-app
     eventType: push
     ref: refs/heads/main
-    commitSha: 3f2c91d
+    commitSHA: 3f2c91d
     webhook:
       secretRef:
         name: github-webhook-secret
         key: secret
 ```
 
-`github-webhook-secret` here is materialized by the controller via `ExternalSecret`, sourced from `/blanketops/github/webhook/secret` in your environment's secret store — see [Environment: Secrets & SecretStore](../Environments/environment.md#secrets--secretstore). You don't create it directly.
+`github-webhook-secret` here is materialized by the controller via `ExternalSecret`, sourced from `/blanketops/github/webhook/secret` in the environment's secret store — see [Environment: Secrets & SecretStore](../Environments/environment.md#secrets--secretstore). It isn't created directly.
 
 ---
 
 ### Invariants
 
 - GitHubEvent is immutable once created — resubmit a new event rather than editing an existing one.
-- `repository` must match a `repository.owner/repository.name` pair from an existing GitRepository in the namespace.
+- `repository` must match a `repository.owner/repository.name` pair from an existing GitRepository.
 - `eventType` must be one of the declared webhook events on the originating GitRepository.
+- Webhook-delivered GitHubEvents are created in the platform's `argo-events` namespace, not the originating GitRepository's namespace.
