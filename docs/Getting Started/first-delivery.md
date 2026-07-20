@@ -18,9 +18,9 @@ kubectl create namespace for-kaniko-app
 
 You will **not** `kubectl create secret` anything for this walkthrough. Build's Git clone key and registry push credential are pulled automatically by the controller via `ExternalSecret`, from whichever backend the Environment's `contract.secretStore.provider` points at (step 1 below).
 
-That does assume a `ClusterSecretStore` named `blanketops-environments-aws` (or `-vault`/`-gcp`/`-azure`) already exists on the cluster, pointed at your actual secret manager — that's cluster infrastructure, not something this walkthrough or the Environment controller creates. See [Environment: Secrets & SecretStore](../Api/Environments/environment.md#secrets--secretstore) for a minimal example.
+That does assume a `ClusterSecretStore` named `blanketops-environments-aws` (or `-vault`/`-gcp`/`-azure`) already exists on the cluster, pointed at your actual secret manager — that's cluster infrastructure, not something this walkthrough or the Environment controller creates.
 
-With that store in place, before applying the `Build` in step 4, these remote keys need a value in it —
+**These remote keys need a value in that store before step 1, not before step 4** — Environment is what resolves `contract.secretStore.provider`, and it mediates Build (and everything else composed into it) on the assumption its credentials already exist. Applying the Environment before the store is populated doesn't fail loudly on Environment itself; it surfaces later as Build's mediation failing to find its `ExternalSecret` data:
 
 | Remote key                       | Backs                                    |
 | ---------------------------------- | ------------------------------------------- |
@@ -29,7 +29,7 @@ With that store in place, before applying the `Build` in step 4, these remote ke
 | `/blanketops/git/known-hosts`      | Git SSH clone key (`known_hosts`)           |
 | `/blanketops/registry/config`      | Registry push credential (`.dockerconfigjson`) |
 
-These paths are platform constants, not something you name yourself. Full detail: [Environment: Secrets & SecretStore](../Api/Environments/environment.md#secrets--secretstore).
+These paths are platform constants, not something you name yourself. Full detail, plus the exact `aws secretsmanager create-secret` commands to populate them: [Environment: Secrets & SecretStore](../Api/Environments/environment.md#secrets--secretstore).
 
 ## 1. Environment
 
