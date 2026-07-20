@@ -49,22 +49,21 @@ Without it, progression cannot begin.
 Conceptual Example
 
 ```yaml
-apiVersion: events.blanketops.dev/v1
+apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: push-main-001
   namespace: default
 spec:
   contract:
-    source: github
-    repository: for-kaniko-app
+    repository: blanketops01/for-kaniko-app
     eventType: push
     ref: refs/heads/main
-    eventSource:
-      webhook:
-        secretRef:
-          name: github-webhook-secret
-          key: secret
+    commitSha: 3f2c91d
+    webhook:
+      secretRef:
+        name: github-webhook-secret
+        key: secret
 ```
 
 ## Contract Semantics

@@ -22,7 +22,7 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'facebook', // Usually your GitHub org/user name.
+  organizationName: 'blanketops', // Usually your GitHub org/user name.
   projectName: 'blanketops-environments', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -101,7 +101,7 @@ navbar: {
     },
     {
       type: 'doc',
-      docId: 'Concepts/serviceunit',
+      docId: 'Concepts/build',
       label: 'Concepts',
       position: 'left',
     },
@@ -112,7 +112,7 @@ navbar: {
       position: 'left',
     },
     {
-      href: 'https://github.com/blanketops01/blanketops-environments',
+      href: 'https://github.com/blanketops/environments',
       label: 'GitHub',
       position: 'right',
     },

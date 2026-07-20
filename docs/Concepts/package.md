@@ -58,7 +58,7 @@ This allows deterministic version governance.
 Example
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: Package
 metadata:
   name: for-kaniko-app

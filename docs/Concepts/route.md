@@ -47,7 +47,7 @@ This prevents uncontrolled external surface mutation.
 Example (Contractual Form)
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: Route
 metadata:
   name: route-sample

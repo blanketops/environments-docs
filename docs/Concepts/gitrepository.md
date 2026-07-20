@@ -46,18 +46,21 @@ Every downstream stage depends on it.
 ### Example
 
 ```yaml
-apiVersion: sources.blanketops.dev/v1
+apiVersion: sources.blanketops.dev/v1alpha1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
 spec:
   contract:
     provider: github
-     hookUrl: https://elimination-propecia-meter-strips.trycloudflare.com/
+    hookUrl: https://elimination-propecia-meter-strips.trycloudflare.com/
     repository:
       owner: blanketops01
       name: for-kaniko-app
-    webhooks: - events: - push - pull_request
+    webhooks:
+      events:
+        - push
+        - pull_request
 ```
 
 ## Contract Semantics

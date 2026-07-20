@@ -60,7 +60,7 @@ ServiceUnit supports multiple artifact sourcing strategies.
 ## 1️⃣ Static Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
@@ -85,7 +85,7 @@ This is deterministic but externally resolved.
 ## 2️⃣ Build-Derived Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-buildah-app-worker

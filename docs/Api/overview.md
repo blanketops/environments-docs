@@ -1,18 +1,24 @@
 # API Overview
 
-BlanketOps Environments is composed of Kubernetes Custom Resource Definitions (CRDs) grouped into three primary API domains:
+BlanketOps Environments is composed of Kubernetes Custom Resource Definitions (CRDs) grouped into four primary API domains:
 
 ### sources.blanketops.dev
 
 Defines source origin and event ingestion.
 
 - GitRepository
+
+### events.blanketops.dev
+
+Defines external capture of events.
+
 - GitHubEvent
 
 ### environments.blanketops.dev
 
 Defines delivery, artifact, and runtime modeling.
 
+- Environment
 - Build
 - Package
 - ServiceUnit

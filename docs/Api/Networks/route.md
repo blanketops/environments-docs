@@ -2,7 +2,7 @@
 
 API Group: `networks.blanketops.dev`
 
-Version: `v1`
+Version: `v1alpha1`
 
 Scope: `Namespaced`
 
@@ -94,7 +94,7 @@ The controller derives the materialized service/ksvc name by convention (`ksvc n
 ### Example
 
 ```yaml
-apiVersion: networks.blanketops.dev/v1
+apiVersion: networks.blanketops.dev/v1alpha1
 kind: Route
 metadata:
   name: route-sample
