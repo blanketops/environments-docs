@@ -13,7 +13,7 @@ Every resource below is namespaced and belongs to one [Environment](../Api/Envir
 ## 0. Namespace and Secrets
 
 ```bash
-kubectl create namespace for-kaniko-app
+kubectl create namespace dev
 ```
 
 You will **not** `kubectl create secret` anything for this walkthrough. Build's Git clone key and registry push credential are pulled automatically by the controller via `ExternalSecret`, from whichever backend the Environment's `contract.secretStore.provider` points at (step 1 below).
@@ -40,7 +40,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Environment
 metadata:
   name: for-kaniko-app-main
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     applicationName: for-kaniko-app
@@ -84,7 +84,7 @@ apiVersion: sources.blanketops.dev/v1alpha1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     provider: github
@@ -111,7 +111,7 @@ apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: for-kaniko-app-3f2c91d
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     repository: blanketops01/for-kaniko-app
@@ -133,7 +133,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Build
 metadata:
   name: build-sample-kaniko
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     image: docker.io/nkanyezisolutions/for-kaniko-app:main
@@ -169,7 +169,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     type: build
@@ -194,7 +194,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Deployment
 metadata:
   name: for-kaniko-app
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     serviceUnits:
@@ -217,7 +217,7 @@ apiVersion: networks.blanketops.dev/v1alpha1
 kind: Route
 metadata:
   name: route-sample
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     host: api.dev.blanketops.dev
@@ -242,7 +242,7 @@ apiVersion: networks.blanketops.dev/v1alpha1
 kind: Domain
 metadata:
   name: for-kaniko-app-domain
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     host: api.dev.blanketops.dev

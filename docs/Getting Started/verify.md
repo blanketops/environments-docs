@@ -9,20 +9,20 @@ Every BlanketOps resource is a CRD, so the whole delivery chain from [First Deli
 Some of these plural names collide with resources from other operators installed alongside the platform (Shipwright's own `Build`, Kubernetes' own `Deployment`). Qualify with the API group to be unambiguous:
 
 ```bash
-kubectl get environments.environments.blanketops.dev -n for-kaniko-app
-kubectl get gitrepositories.sources.blanketops.dev -n for-kaniko-app
-kubectl get githubevents.events.blanketops.dev -n for-kaniko-app
-kubectl get builds.environments.blanketops.dev -n for-kaniko-app
-kubectl get serviceunits.environments.blanketops.dev -n for-kaniko-app
-kubectl get deployments.environments.blanketops.dev -n for-kaniko-app
-kubectl get routes.networks.blanketops.dev -n for-kaniko-app
-kubectl get domains.networks.blanketops.dev -n for-kaniko-app
+kubectl get environments.environments.blanketops.dev -n dev
+kubectl get gitrepositories.sources.blanketops.dev -n dev
+kubectl get githubevents.events.blanketops.dev -n dev
+kubectl get builds.environments.blanketops.dev -n dev
+kubectl get serviceunits.environments.blanketops.dev -n dev
+kubectl get deployments.environments.blanketops.dev -n dev
+kubectl get routes.networks.blanketops.dev -n dev
+kubectl get domains.networks.blanketops.dev -n dev
 ```
 
 Or watch everything reconcile at once:
 
 ```bash
-kubectl get environments.environments.blanketops.dev,gitrepositories.sources.blanketops.dev,githubevents.events.blanketops.dev,builds.environments.blanketops.dev,serviceunits.environments.blanketops.dev,deployments.environments.blanketops.dev,routes.networks.blanketops.dev,domains.networks.blanketops.dev -n for-kaniko-app -w
+kubectl get environments.environments.blanketops.dev,gitrepositories.sources.blanketops.dev,githubevents.events.blanketops.dev,builds.environments.blanketops.dev,serviceunits.environments.blanketops.dev,deployments.environments.blanketops.dev,routes.networks.blanketops.dev,domains.networks.blanketops.dev -n dev -w
 ```
 
 ## What "Done" Looks Like
@@ -43,7 +43,7 @@ Full phase value tables live on each resource's [API reference](../Api/overview.
 ## Digging Into One Resource
 
 ```bash
-kubectl describe environment.environments.blanketops.dev for-kaniko-app-main -n for-kaniko-app
+kubectl describe environment.environments.blanketops.dev for-kaniko-app-main -n dev
 ```
 
 `status.conditions` on the Environment aggregates per-resource readiness (`BuildReady`, `DeploymentReady`, `RouteReady`, ...) — check there first if the top-level phase is stuck on `Pending` or `Degraded`, then drill into whichever condition is `False`.
@@ -51,8 +51,8 @@ kubectl describe environment.environments.blanketops.dev for-kaniko-app-main -n 
 If Build or GitHubEvent are stuck `Pending`, check their `ExternalSecret` before anything else — a remote key missing from your secret backend (see [Environment: Secrets & SecretStore](../Api/Environments/environment.md#secrets--secretstore)) surfaces there first:
 
 ```bash
-kubectl get externalsecrets -n for-kaniko-app
-kubectl describe externalsecret git-ssh-credentials -n for-kaniko-app
+kubectl get externalsecrets -n dev
+kubectl describe externalsecret git-ssh-credentials -n dev
 ```
 
 ## Reaching the Workload
@@ -68,7 +68,7 @@ curl https://api.dev.blanketops.dev/
 Deleting the Environment cascades to every resource it owns:
 
 ```bash
-kubectl delete environment.environments.blanketops.dev for-kaniko-app-main -n for-kaniko-app
+kubectl delete environment.environments.blanketops.dev for-kaniko-app-main -n dev
 ```
 
 Continue to [Next Steps](./next-steps.md).

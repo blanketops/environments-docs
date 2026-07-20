@@ -11,7 +11,7 @@ This doesn't build or deploy anything yet — that's [First Delivery](./first-de
 ## 1. Create a Namespace
 
 ```bash
-kubectl create namespace quickstart
+kubectl create namespace dev
 ```
 
 ## 2. Apply an Environment
@@ -21,7 +21,7 @@ apiVersion: environments.blanketops.dev/v1alpha1
 kind: Environment
 metadata:
   name: for-kaniko-app-main
-  namespace: quickstart
+  namespace: dev
 spec:
   contract:
     applicationName: for-kaniko-app
@@ -41,7 +41,7 @@ apiVersion: sources.blanketops.dev/v1alpha1
 kind: GitRepository
 metadata:
   name: for-kaniko-app
-  namespace: quickstart
+  namespace: dev
 spec:
   contract:
     provider: github

@@ -82,7 +82,7 @@ apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: for-kaniko-app-3f2c91d
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     repository: blanketops01/for-kaniko-app
@@ -100,7 +100,7 @@ apiVersion: events.blanketops.dev/v1alpha1
 kind: GitHubEvent
 metadata:
   name: for-kaniko-app-3f2c91d
-  namespace: for-kaniko-app
+  namespace: dev
 spec:
   contract:
     repository: blanketops01/for-kaniko-app
