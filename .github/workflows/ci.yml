@@ -1,0 +1,62 @@
+# Build/typecheck safety net, independent of Netlify's own build. Netlify
+# deploying successfully doesn't block a PR merge by default; this does,
+# once required as a branch protection check.
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # onBrokenLinks: 'throw' in docusaurus.config.ts fails this on any
+      # broken internal link or anchor — the same check that caught real
+      # issues in this repo's history.
+      - name: Build (catches broken links/anchors)
+        run: npm run build
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # cmd/server is what release.yml ships via ko — catch compile errors
+      # here instead of at tag time.
+      - name: Build and vet server
+        run: |
+          go build ./cmd/server
+          go vet ./...
+
+      - name: Summary
+        if: always()
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY <<EOF
+          # ✅ CI — ${{ github.event_name }} on \`${{ github.ref_name }}\`
+          | Step | Result |
+          | ---- | ------ |
+          | Typecheck | ${{ job.status }} |
+          | Build (broken-link check) | ${{ job.status }} |
+          | Go build/vet (cmd/server) | ${{ job.status }} |
+          Commit: \`${{ github.sha }}\`
+          EOF
