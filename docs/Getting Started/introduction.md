@@ -15,7 +15,7 @@ See [`Delivery as Deterministic State`](../Model/state-machine.md) and [`Entropy
 A single CLI, `bops-env`, bootstraps the whole stack directly against the Kubernetes API — no Helm charts to hand-tune, no cluster-specific YAML to assemble:
 
 - The **BlanketOps Environments operator** — the CRDs, RBAC, and controller-manager that reconcile [`Environment`](../Api/Environments/environment.md), [`GitRepository`](../Api/Sources/gitrepository.md), [`GitHubEvent`](../Api/Events/githubevent.md), [`Build`](../Api/Environments/build.md), [`Package`](../Api/Environments/package.md), [`ServiceUnit`](../Api/Environments/serviceunit.md), [`Deployment`](../Api/Environments/deployment.md), [`Route`](../Api/Networks/route.md), and [`Domain`](../Api/Networks/domain.md).
-- The **platform stack** these resources build on: Tekton, Shipwright, Knative Serving, Kourier, Crossplane, Argo Events, and External Secrets Operator.
+- The **platform stack** these resources build on: Carvel Kapp Controller, Argo Events, Tekton Pipelines & Dashboard, Shipwright, Crossplane, External Secrets Operator, Flux, Knative Serving, and Kourier.
 
 ## What You'll Do in This Guide
 

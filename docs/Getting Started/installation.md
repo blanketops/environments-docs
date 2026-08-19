@@ -6,7 +6,14 @@ sidebar_position: 2
 
 ## 1. Install the `bops-env` CLI
 
-Download a signed prebuilt binary:
+The easiest path, once any version of `bops-env` is on your machine, is letting it fetch itself:
+
+```bash
+bops-env self install     # fetches and installs the latest release
+bops-env self uninstall   # removes a self-installed binary
+```
+
+That's only available on Linux (the only platform with a published binary today) and needs a `bops-env` already on `PATH` to bootstrap from — for the first install, or for Windows/macOS, grab a signed prebuilt binary directly:
 
 ```bash
 # Linux amd64
@@ -20,12 +27,23 @@ chmod +x bops-env-static-arm64
 sudo mv bops-env-static-arm64 /usr/local/bin/bops-env
 ```
 
-Or build it locally from source:
+Verify the download before running it — every release is signed with `cosign` (keyless) and carries a SLSA provenance attestation:
+
+```bash
+# Verify the signature (fetch the matching .sig asset first)
+curl -LO https://github.com/blanketops/environments-cli/releases/latest/download/bops-env-static.sig
+cosign verify-blob --certificate-identity-regexp ".*" --signature bops-env-static.sig bops-env-static
+
+# Verify the attestation via GitHub CLI
+gh attest verify bops-env-static --owner blanketops
+```
+
+Or build it locally from source (the only path today on Windows and macOS, which have no published binary yet):
 
 ```bash
 git clone https://github.com/blanketops/environments-cli.git
 cd environments-cli
-mage install   # builds and installs to ~/.local/bin (falls back to ~/bin)
+mage install   # builds and installs to ~/.local/bin (falls back to ~/bin; %USERPROFILE%\.local\bin on Windows)
 ```
 
 Confirm it's on your `PATH`:
@@ -100,7 +118,7 @@ Or check pods directly:
 kubectl get pods -A
 ```
 
-Look for `Running` pods across the `blanketops-environments`, `tekton-pipelines`, `shipwright-build`, `knative-serving`, `kourier-system`, `crossplane-system`, `external-secrets`, and `argo-events` namespaces before moving on.
+Look for `Running` pods across the `blanketops-environments`, `kapp-controller`, `argo-events`, `tekton-pipelines`, `shipwright-build`, `crossplane-system`, `external-secrets`, `flux-system`, `knative-serving`, and `kourier-system` namespaces before moving on. `buildstrategies` has no namespace of its own — it registers cluster-scoped `ClusterBuildStrategy` resources instead, so `bops-env dependencies status buildstrategies` is how you check it.
 
 ## Uninstalling
 

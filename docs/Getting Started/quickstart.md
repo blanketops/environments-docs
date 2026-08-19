@@ -61,7 +61,7 @@ kubectl apply -f gitrepository.yaml
 ## 4. Watch It Reconcile
 
 ```bash
-kubectl get environments.environments.blanketops.dev,gitrepositories.sources.blanketops.dev -n quickstart -w
+kubectl get environments.environments.blanketops.dev,gitrepositories.sources.blanketops.dev -n dev -w
 ```
 
 You should see both objects pick up a `phase` within a few seconds — that's the controller-manager reconciling. Ctrl-C once you see status populate.
