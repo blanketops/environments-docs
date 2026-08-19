@@ -60,12 +60,13 @@ The controller derives the materialized service/ksvc name by convention (`ksvc n
 
 ### Status
 
-| Field        | Type        | Description                         |
-| ------------ | ----------- | ------------------------------------ |
-| phase        | string      | Current lifecycle phase             |
-| resolvedHost | string      | Host applied in runtime             |
-| tlsStatus    | string      | TLS provisioning state              |
-| conditions   | []Condition | Standard Kubernetes condition array |
+| Field           | Type        | Description                         |
+| ---------------- | ----------- | ------------------------------------ |
+| phase           | string      | Current lifecycle phase             |
+| message         | string      | Human-readable status detail        |
+| resolvedAddress | string      | Address the route resolved to in runtime |
+| tlsStatus       | string      | TLS provisioning state              |
+| conditions      | []Condition | Standard Kubernetes condition array |
 
 ---
 

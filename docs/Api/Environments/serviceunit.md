@@ -39,6 +39,7 @@ spec
 | buildRef      | object  | Cond.    | Reference to Build (required if `type=build`)              |
 | containerPort | integer | Yes      | Primary container TCP port                                 |
 | size          | integer | Yes      | Desired replica count baseline                             |
+| route         | object  | No       | Reference to the Route exposing this ServiceUnit           |
 | appType       | string  | Yes      | Application role classification (`web`, `worker`, etc.)    |
 | stackType     | string  | Yes      | Technology stack classification (`nodejs`, `python`, etc.) |
 
@@ -46,19 +47,33 @@ spec
 
 #### spec.contract.buildRef
 
-| Field | Type   | Required | Description                 |
-| ----- | ------ | -------- | --------------------------- |
-| name  | string | Yes      | Name of referenced Build CR |
+| Field     | Type   | Required | Description                                              |
+| --------- | ------ | -------- | ------------------------------------------------------- |
+| name      | string | Yes      | Name of referenced Build CR                              |
+| namespace | string | No       | Namespace of the referenced Build CR, if not this one's  |
+
+---
+
+#### spec.contract.route
+
+| Field | Type   | Required | Description                  |
+| ----- | ------ | -------- | ----------------------------- |
+| name  | string | Yes      | Name of referenced Route CR   |
 
 ---
 
 ### Status
 
-| Field         | Type        | Description                         |
-| ------------- | ----------- | ----------------------------------- |
-| phase         | string      | Current lifecycle phase             |
-| observedImage | string      | Resolved image reference in runtime |
-| conditions    | []Condition | Standard Kubernetes condition array |
+| Field              | Type        | Description                                    |
+| ------------------- | ----------- | ------------------------------------------------ |
+| phase              | string      | Current lifecycle phase                          |
+| message            | string      | Human-readable status detail                      |
+| observedGeneration | integer     | Last reconciled generation                         |
+| resolvedImage      | string      | Resolved image reference in runtime                |
+| buildStatus        | object      | Resolution status of the referenced Build, if `type=build` |
+| runtime            | string      | Runtime substrate this ServiceUnit was projected onto |
+| workloadRef        | object      | Reference to the materialized workload (apiVersion, kind, name, namespace) |
+| conditions         | []Condition | Standard Kubernetes condition array                |
 
 ---
 
@@ -78,7 +93,7 @@ spec
 #### Static Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-kaniko-app-api
@@ -96,7 +111,7 @@ spec:
 #### Build-Derived Artifact
 
 ```yaml
-apiVersion: environments.blanketops.dev/v1
+apiVersion: environments.blanketops.dev/v1alpha1
 kind: ServiceUnit
 metadata:
   name: for-buildah-app-worker

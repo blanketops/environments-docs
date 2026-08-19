@@ -30,22 +30,20 @@ spec
 
 #### spec.contract
 
-| Field              | Type     | Required | Description                                 |
-| ------------------ | -------- | -------- | ------------------------------------------- |
-| name               | string   | Yes      | Canonical package identity                  |
-| version            | string   | Yes      | Logical version identifier                  |
-| enabled            | boolean  | Yes      | Whether the package is active               |
-| packageName        | string   | Yes      | Distribution name                           |
-| packageVersion     | string   | Yes      | Distribution version                        |
-| packageDescription | string   | No       | Human-readable description                  |
-| packageMaintainers | []object | No       | List of maintainers                         |
-| packageRepository  | object   | Yes      | Source repository for package configuration |
-| packageKappDiff    | boolean  | No       | Enables structured diff behavior            |
-| stateRepo          | object   | Yes      | Environment state repository definition     |
+| Field           | Type     | Required | Description                                  |
+| ---------------- | -------- | -------- | --------------------------------------------- |
+| enabled         | boolean  | Yes      | Whether the package is active                 |
+| name            | string   | Yes      | Canonical package identity                    |
+| version         | string   | Yes      | Logical version identifier                    |
+| description     | string   | No       | Human-readable description                    |
+| maintainers     | []object | No       | List of maintainers                           |
+| repository      | object   | Yes      | Source repository for package configuration   |
+| diffEnabled     | boolean  | No       | Enables structured diff behavior               |
+| stateRepository | object   | Yes      | Environment state repository definition        |
 
 ---
 
-#### spec.contract.packageMaintainers[]
+#### spec.contract.maintainers[]
 
 | Field | Type   | Required | Description      |
 | ----- | ------ | -------- | ---------------- |
@@ -54,7 +52,7 @@ spec
 
 ---
 
-#### spec.contract.packageRepository
+#### spec.contract.repository
 
 | Field             | Type   | Required | Description                          |
 | ----------------- | ------ | -------- | ------------------------------------ |
@@ -63,23 +61,15 @@ spec
 
 ---
 
-#### spec.contract.stateRepo
+#### spec.contract.stateRepository
 
 | Field       | Type   | Required | Description                                    |
 | ----------- | ------ | -------- | ---------------------------------------------- |
 | url         | string | Yes      | Git repository URL for state projection        |
-| ref         | object | Yes      | Git reference configuration                    |
+| ref         | string | Yes      | Git branch, tag, or commit reference            |
 | cloneSecret | string | No       | Secret for repository authentication           |
 | strategy    | string | Yes      | Reconciliation strategy (e.g. `kustomization`) |
 | path        | string | Yes      | Path within repository for state projection    |
-
----
-
-#### spec.contract.stateRepo.ref
-
-| Field  | Type   | Required | Description     |
-| ------ | ------ | -------- | --------------- |
-| branch | string | Yes      | Git branch name |
 
 ---
 
@@ -116,24 +106,21 @@ metadata:
   namespace: dev
 spec:
   contract:
-    name: for-kaniko-app
-    version: v1.0.0
     enabled: true
-    packageName: for-kaniko-app
-    packageVersion: v1.2.3
-    packageDescription: >
+    name: for-kaniko-app
+    version: v1.2.3
+    description: >
       This package contains the API deployment manifests and runtime configuration.
-    packageMaintainers:
+    maintainers:
       - name: Jane Doe
         email: jane@example.com
-    packageRepository:
+    repository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
-    packageKappDiff: true
-    stateRepo:
+    diffEnabled: true
+    stateRepository:
       url: git@github.com:example-org/for-kaniko-app-state.git
-      ref:
-        branch: master
+      ref: master
       cloneSecret: git-ssh-credentials-state
       strategy: kustomization
       path: ./clusters/dev
@@ -142,8 +129,8 @@ spec:
 ## Invariants
 
 - name and version must remain consistent for a given package lifecycle.
-- packageRepository.url must be reachable.
-- stateRepo.url must be reachable.
-- stateRepo.path must resolve to valid manifests.
+- repository.url must be reachable.
+- stateRepository.url must be reachable.
+- stateRepository.path must resolve to valid manifests.
 - Disabled packages must not reconcile state.
 - Package does not modify Build or Deployment resources directly.

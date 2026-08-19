@@ -23,32 +23,20 @@ GitHubEvent is immutable once created — the controller writes status, never th
 
 ### Spec
 
-| Field      | Type   | Required | Description                                                       |
-| ---------- | ------ | -------- | ------------------------------------------------------------------ |
-| repository | string | Yes      | Repository the event originated from, as `owner/name`             |
-| eventType  | string | Yes      | Provider event type: `push`, `pull_request`, `release`, or `manual` |
-| ref        | string | No       | Git ref the event applies to (e.g. `refs/heads/main`)              |
-| commitSHA  | string | No       | Commit SHA at the head of the event                                |
-| actor      | string | No       | Provider login of the actor who caused the event                   |
-| eventId    | string | No       | Provider-assigned delivery ID, used for idempotency and audit      |
-| webhook    | object | No       | Webhook signature verification config. Absent for manual dispatch  |
+| Field              | Type   | Required | Description                                                       |
+| ------------------- | ------ | -------- | ------------------------------------------------------------------ |
+| repository         | string | Yes      | Repository the event originated from, as `owner/name`             |
+| eventType          | string | Yes      | Provider event type: `push`, `pull_request`, `release`, or `manual` |
+| ref                | string | No       | Git ref the event applies to (e.g. `refs/heads/main`)              |
+| commitSHA          | string | No       | Commit SHA at the head of the event                                |
+| actor              | string | No       | Provider login of the actor who caused the event                   |
+| eventId            | string | No       | Provider-assigned delivery ID, used for idempotency and audit      |
+| occurredAt         | string | No       | Timestamp the provider reports the event occurred at               |
+| webhookSecretRef   | string | No       | Name of the Secret holding the HMAC signing secret. Absent for manual dispatch |
 
 Only `repository` and `eventType` are enforced today — everything else is read if present and left empty otherwise. A real webhook delivery populates `ref`, `commitSHA`, and `actor`; a manual dispatch can omit them.
 
----
-
-#### spec.contract.webhook
-
-| Field    | Type   | Required | Description                                          |
-| -------- | ------ | -------- | ------------------------------------------------------- |
-| secretRef | object | Yes, if `webhook` is set | Reference to the Secret holding the HMAC signing secret |
-
-#### spec.contract.webhook.secretRef
-
-| Field | Type   | Required | Description                                                     |
-| ----- | ------ | -------- | ------------------------------------------------------------------ |
-| name  | string | Yes      | Name of the Secret — materialized via ExternalSecret from `/blanketops/github/webhook/secret` |
-| key   | string | Yes      | Key within that Secret holding the signing value                    |
+`webhookSecretRef` names a Secret materialized via ExternalSecret from `/blanketops/github/webhook/secret` — see [Environment: Secrets & SecretStore](../Environments/environment.md#secrets--secretstore). It isn't created directly, and unlike most secret references in this platform it's a plain name, not a `{name, key}` pair — the signing value's key within that Secret is a platform convention, not something you set here.
 
 ---
 
@@ -116,10 +104,7 @@ spec:
     eventType: push
     ref: refs/heads/main
     commitSHA: 3f2c91d
-    webhook:
-      secretRef:
-        name: github-webhook-secret
-        key: secret
+    webhookSecretRef: github-webhook-secret
 ```
 
 `github-webhook-secret` here is materialized by the controller via `ExternalSecret`, sourced from `/blanketops/github/webhook/secret` in the environment's secret store — see [Environment: Secrets & SecretStore](../Environments/environment.md#secrets--secretstore). It isn't created directly.

@@ -65,24 +65,21 @@ metadata:
   namespace: dev
 spec:
   contract:
-    name: for-kaniko-app
-    version: v1.0.0
     enabled: true
-    packageName: for-kaniko-app
-    packageVersion: v1.2.3
-    packageDescription: >
+    name: for-kaniko-app
+    version: v1.2.3
+    description: >
       This package contains the API deployment manifests and runtime configuration.
-    packageMaintainers:
+    maintainers:
       - name: Jane Doe
         email: jane@example.com
-    packageRepository:
+    repository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
-    packageKappDiff: true
-    stateRepo:
+    diffEnabled: true
+    stateRepository:
       url: git@github.com:example-org/for-kaniko-app-state.git
-      ref:
-        branch: master
+      ref: master
       cloneSecret: git-ssh-credentials-state
       strategy: kustomization
       path: ./clusters/dev
@@ -114,17 +111,7 @@ This enables:
 - Environment gating.
 - Controlled rollout.
 
-`packageName / packageVersion`
-
-Separates internal object identity from distributed version.
-
-This distinction allows:
-
-- Semantic versioning.
-- Registry-based distribution.
-- Promotion without renaming CR.
-
-`packageDescription`
+`description`
 
 Defines human-readable context.
 
@@ -134,7 +121,7 @@ This makes Package:
 - Discoverable.
 - Maintained as a product unit.
 
-`packageMaintainers`
+`maintainers`
 
 Declares ownership.
 
@@ -146,12 +133,12 @@ This supports:
 
 Packages are owned artifacts.
 
-`packageRepository`
+`repository`
 
 Defines configuration bundle source.
 
 ```yaml
-packageRepository:
+repository:
   url: git@github.com:example-org/for-kaniko-app-packages.git
 ```
 
@@ -162,7 +149,7 @@ This constrains:
 - Distribution lineage.
 - Package configuration cannot drift outside declared repo.
 
-`packageKappDiff`
+`diffEnabled`
 
 Controls diff strategy behavior.
 
@@ -174,17 +161,16 @@ Enables:
 
 This is runtime governance support.
 
-`stateRepo`
+`stateRepository`
 
 Defines environment state projection repository.
 
 ```yaml
-stateRepo:
+stateRepository:
   url: git@github.com:example-org/for-kaniko-app-state.git
-  ref:
-    branch: master
-    strategy: kustomization
-    path: ./clusters/dev
+  ref: master
+  strategy: kustomization
+  path: ./clusters/dev
 ```
 
 This allows:

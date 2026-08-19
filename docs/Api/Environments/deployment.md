@@ -30,15 +30,13 @@ spec
 
 #### spec.contract
 
-| Field                  | Type     | Required                              | Description                                        |
-| ---------------------- | -------- | ---------------------------------------- | -------------------------------------------------- |
-| serviceUnits           | string[] | Yes                                       | Names of ServiceUnit resources to deploy           |
-| runtime                | string   | Yes                                       | Runtime substrate identifier                       |
-| strategy               | string   | Yes                                       | Rollout strategy: `Rolling`, `BlueGreen`, or `Canary` |
-| imageAutomation        | boolean  | No                                        | Whether image updates are automatically reconciled |
-| gitOwner               | string   | No                                        | Owning Git organisation or user                    |
-| reconciliationStrategy | string   | Yes, if `manifestsRepo` is set            | Strategy used to reconcile manifests: `kustomize` or `helm`. Must be absent if `manifestsRepo` is not set — defaults to imperative reconciliation |
-| manifestsRepo          | object   | No                                        | Git repository containing runtime manifests        |
+| Field                  | Type     | Required                       | Description                                        |
+| ---------------------- | -------- | -------------------------------- | -------------------------------------------------- |
+| serviceUnits           | string[] | Yes                                | Names of ServiceUnit resources to deploy           |
+| runtime                | string   | Yes                                | Runtime substrate identifier                       |
+| imageAutomation        | boolean  | No                                 | Whether image updates are automatically reconciled |
+| reconciliationStrategy | string   | Yes, if `manifestsRepo` is set     | Strategy used to reconcile manifests: `kustomize` or `helm`. Must be absent if `manifestsRepo` is not set — defaults to imperative reconciliation |
+| manifestsRepo          | object   | No                                 | Git repository containing runtime manifests        |
 
 ---
 
@@ -47,6 +45,7 @@ spec
 | Field       | Type   | Required | Description                                    |
 | ----------- | ------ | -------- | ---------------------------------------------- |
 | url         | string | Yes      | Git repository URL containing manifests        |
+| ref         | string | No       | Git branch, tag, or commit reference            |
 | cloneSecret | string | No       | Secret used for Git authentication             |
 | strategy    | string | Yes      | Reconciliation strategy (e.g. `kustomization`) |
 | path        | string | Yes      | Path within repository to manifests            |
@@ -55,12 +54,27 @@ spec
 
 ### Status
 
-| Field               | Type        | Description                         |
-| ------------------- | ----------- | ----------------------------------- |
-| phase               | string      | Current lifecycle phase             |
-| observedGeneration  | integer     | Last reconciled generation          |
-| lastAppliedRevision | string      | Git revision currently applied      |
-| conditions          | []Condition | Standard Kubernetes condition array |
+| Field               | Type                        | Description                                            |
+| -------------------- | ---------------------------- | -------------------------------------------------------- |
+| phase                | string                      | Current lifecycle phase                                  |
+| message              | string                      | Human-readable status detail                              |
+| runtime              | string                      | Runtime substrate this Deployment was projected onto      |
+| strategy             | string                      | Rollout strategy actually used: `Rolling`, `BlueGreen`, or `Canary` |
+| serviceUnitStatuses  | []ServiceUnitDeploymentStatus | Per-ServiceUnit deployment status                        |
+| lastUpdatedAt        | string                      | Timestamp when status was last updated                    |
+
+---
+
+#### status.serviceUnitStatuses[]
+
+| Field   | Type   | Description                                    |
+| ------- | ------ | ------------------------------------------------ |
+| name    | string | Name of the ServiceUnit                          |
+| phase   | string | Deployment phase for this ServiceUnit             |
+| image   | string | Image reference currently deployed                |
+| runtime | string | Runtime substrate this ServiceUnit was projected onto |
+| message | string | Human-readable status detail                        |
+| error   | string | Error detail, if this ServiceUnit failed to deploy |
 
 ---
 
@@ -88,7 +102,6 @@ spec:
     serviceUnits:
       - for-kaniko-app-api
     runtime: kubernetes.io/container-runtime
-    strategy: Rolling
     imageAutomation: false
     reconciliationStrategy: kustomize
     manifestsRepo:

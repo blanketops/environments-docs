@@ -18,17 +18,17 @@ It establishes provider configuration, webhook scope, and repository identity.
 
 ### Spec
 
-| Field            | Type   | Required | Description                             |
-| ---------------- | ------ | -------- | --------------------------------------- |
-| provider         | string | Yes      | Source control provider (e.g. `github`) |
-| hookUrl          | string | No       | Webhook endpoint for event ingestion    |
-| repository.owner | string | Yes      | Repository owner                        |
-| repository.name  | string | Yes      | Repository name                         |
-| webhooks         | list   | Yes      | Allowed webhook event configurations    |
+| Field             | Type   | Required | Description                             |
+| ------------------ | ------ | -------- | --------------------------------------- |
+| provider          | string | Yes      | Source control provider (e.g. `github`) |
+| repository.owner  | string | Yes      | Repository owner                        |
+| repository.name   | string | Yes      | Repository name                         |
+| webhooks          | list   | Yes      | Allowed webhook event configurations    |
+| credentialsSecret | string | No       | Secret for repository authentication    |
 
 ---
 
-#### spec.repositoryRef
+#### spec.contract.webhooks[]
 
 | Field  | Type     | Required | Description                                       |
 | ------ | -------- | -------- | ------------------------------------------------- |
@@ -38,23 +38,11 @@ It establishes provider configuration, webhook scope, and repository identity.
 
 #### Status
 
-`status.phase`
-
-Represents repository registration state.
-
-Possible values:
-
-- Pending
-
-- Ready
-
-- Faileds
-
----
-
-`status.conditions`
-
-Standard Kubernetes-style condition array.
+| Field         | Type    | Description                                    |
+| -------------- | ------- | -------------------------------------------------- |
+| ready         | boolean | Whether the repository is registered and reachable |
+| reason        | string  | Human-readable detail, populated on error          |
+| lastUpdatedAt | string  | Timestamp when status was last updated             |
 
 ---
 

@@ -139,7 +139,7 @@ Once that store exists, each composed CR materializes its own `ExternalSecret` a
 | `/blanketops/git/ssh-publickey`          | same three consumers                                                 | `ssh-publickey` (`ssh_publickey` for Package)   |                                    |
 | `/blanketops/git/known-hosts`            | same three consumers                                                 | `known_hosts`                               |                                    |
 | `/blanketops/registry/config`            | Build's registry push, Package's registry credentials                | `.dockerconfigjson` (`dockerconfigjson` for Package) | `kubernetes.io/dockerconfigjson`  |
-| `/blanketops/github/webhook/secret`      | GitHubEvent's webhook signature (`spec.webhook.secretRef`)           | whatever key name `webhook.secretRef.key` declares | `Opaque`                          |
+| `/blanketops/github/webhook/secret`      | GitHubEvent's webhook signature (`spec.contract.webhookSecretRef`)   | platform-convention key name                | `Opaque`                          |
 | `/blanketops/crossplane/github/token`    | Crossplane's GitHub provider (repository/webhook provisioning)       | `token`                                     | `Opaque`                          |
 | `/blanketops/github/api/token`           | Listed by the install-repo secret store samples as a required path; no reconciler reads it yet | —                | —                                  |
 

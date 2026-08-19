@@ -28,13 +28,16 @@ Build objects are responsible for producing a verifiable image artifact
 
 #### spec.contract
 
-| Field          | Type   | Required | Description                            |
-| -------------- | ------ | -------- | -------------------------------------- |
-| image          | string | Yes      | Target container image reference       |
-| strategy       | object | Yes      | Execution strategy definition          |
-| source         | object | Yes      | Source repository configuration        |
-| serviceAccount | object | Yes      | Execution identity binding             |
-| policy         | object | No       | Trigger and retry policy configuration |
+| Field          | Type     | Required | Description                              |
+| -------------- | -------- | -------- | ----------------------------------------- |
+| image          | string   | Yes      | Target container image reference          |
+| strategy       | object   | Yes      | Execution strategy definition             |
+| source         | object   | Yes      | Source repository configuration           |
+| serviceAccount | object   | Yes      | Execution identity binding                |
+| policy         | object   | No       | Trigger and retry policy configuration    |
+| timeout        | duration | No       | Maximum duration for a single build run    |
+| timeToLive     | duration | No       | How long to retain the BuildRun after completion |
+| githubEvent    | string   | No       | Name of the triggering GitHubEvent CR, if build-triggered |
 
 ---
 
@@ -49,12 +52,14 @@ Build objects are responsible for producing a verifiable image artifact
 
 #### spec.contract.source
 
-| Field       | Type   | Required | Description                          |
-| ----------- | ------ | -------- | ------------------------------------ |
-| url         | string | Yes      | Git repository URL                   |
-| revision    | string | Yes      | Branch, tag, or commit reference     |
-| contextDir  | string | Yes      | Build context directory              |
-| cloneSecret | string | No       | Secret for repository authentication |
+| Field       | Type    | Required | Description                          |
+| ----------- | ------- | -------- | ------------------------------------ |
+| url         | string  | Yes      | Git repository URL                   |
+| revision    | string  | Yes      | Branch, tag, or commit reference     |
+| contextDir  | string  | Yes      | Build context directory              |
+| depth       | integer | No       | Git clone depth (shallow clone); 0 means full history |
+| sslVerify   | boolean | No       | Whether to verify SSL certs when cloning over HTTPS |
+| cloneSecret | string  | No       | Secret for repository authentication |
 
 ---
 
@@ -69,14 +74,14 @@ Build objects are responsible for producing a verifiable image artifact
 
 #### spec.contract.policy
 
-| Field    | Type     | Required | Description           |
-| -------- | -------- | -------- | --------------------- |
-| triggers | []object | No       | Allowed trigger types |
-| retry    | object   | No       | Retry configuration   |
+| Field           | Type     | Required | Description           |
+| --------------- | -------- | -------- | --------------------- |
+| allowedTriggers  | []object | No       | Allowed trigger types |
+| retry           | object   | No       | Retry configuration   |
 
 ---
 
-#### spec.contract.policy.triggers[]
+#### spec.contract.policy.allowedTriggers[]
 
 | Field | Type   | Required | Description                                      |
 | ----- | ------ | -------- | ------------------------------------------------ |
@@ -95,13 +100,14 @@ Build objects are responsible for producing a verifiable image artifact
 
 ### Status
 
-| Field          | Type        | Description                         |
-| -------------- | ----------- | ----------------------------------- |
-| phase          | string      | Current lifecycle phase             |
-| artifactDigest | string      | Produced image digest               |
-| startTime      | string      | Execution start timestamp           |
-| completionTime | string      | Execution completion timestamp      |
-| conditions     | []Condition | Standard Kubernetes condition array |
+| Field          | Type   | Description                                |
+| -------------- | ------ | -------------------------------------------- |
+| phase          | string | Current lifecycle phase                       |
+| image          | string | Produced image reference, once known          |
+| executionRef   | string | Name of the underlying Shipwright BuildRun    |
+| message        | string | Human-readable status detail                   |
+| startTime      | string | Execution start timestamp                      |
+| completionTime | string | Execution completion timestamp                 |
 
 ---
 
@@ -139,7 +145,7 @@ spec:
       name: build-bot
       secret: registry-credentials
     policy:
-      triggers:
+      allowedTriggers:
         - type: push
         - type: pull_request
 ```
@@ -152,5 +158,5 @@ spec:
 - strategy.kind must correspond to a registered build strategy.
 - source.revision must be resolvable.
 - serviceAccount.name must exist in the namespace.
-- artifactDigest is immutable once set.
+- status.image is set once the build completes and does not change afterward.
 - Build does not modify Deployment or Route resources.
