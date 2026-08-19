@@ -1,6 +1,10 @@
 # Build/typecheck safety net, independent of Netlify's own build. Netlify
 # deploying successfully doesn't block a PR merge by default; this does,
 # once required as a branch protection check.
+#
+# Re-committed to nudge GitHub into registering this workflow -- it was
+# never showing up under Actions despite being valid, committed YAML on
+# main, so it had never actually run.
 name: CI
 
 on:
