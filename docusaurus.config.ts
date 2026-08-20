@@ -42,6 +42,11 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl: 'https://github.com/blanketops/environments-docs/tree/main/',
+          // docs/code/ holds gomarkdoc-generated Go package docs (see
+          // .github/workflows/code-docs.yml) — raw generated markdown, not
+          // authored for MDX. Exclude it from the site build so it isn't
+          // parsed as MDX content or rendered as a page.
+          exclude: ['code/**'],
         },
         blog: {
           showReadingTime: true,
