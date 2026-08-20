@@ -1,6 +1,6 @@
 # BlanketOps Environments Docs
 
-Documentation site for [BlanketOps Environments](https://github.com/blanketops/environments), a deterministic software delivery platform for Kubernetes. Built with [Docusaurus](https://docusaurus.io/), deployed to Netlify at [blanketopsenvironments.netlify.app](https://blanketopsenvironments.netlify.app).
+Documentation site for [BlanketOps Environments](https://github.com/blanketops/environments), a deterministic software delivery platform for Kubernetes. Built with [Docusaurus](https://docusaurus.io/), deployed to Netlify at [blanketops-environments.netlify.app](https://blanketops-environments.netlify.app).
 
 Covers Getting Started, the API reference, Concepts, and the delivery model — see `docs/`.
 
