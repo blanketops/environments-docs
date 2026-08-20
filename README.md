@@ -1,41 +1,36 @@
-# Website
+# BlanketOps Environments Docs
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+Documentation site for [BlanketOps Environments](https://github.com/blanketops/environments), a deterministic software delivery platform for Kubernetes. Built with [Docusaurus](https://docusaurus.io/), deployed to Netlify at [blanketopsenvironments.netlify.app](https://blanketopsenvironments.netlify.app).
 
-## Installation
+Covers Getting Started, the API reference, Concepts, and the delivery model — see `docs/`.
 
-```bash
-yarn
-```
-
-## Local Development
+## Development
 
 ```bash
-yarn start
+npm ci
+npm start
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Starts a local dev server at `localhost:3000` with live reload.
 
 ## Build
 
 ```bash
-yarn build
+npm run build
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+Generates static content into `build/`. `onBrokenLinks: 'throw'` in `docusaurus.config.ts` fails this on any broken internal link or anchor.
+
+## Typecheck
+
+```bash
+npm run typecheck
+```
+
+## Server
+
+`cmd/server` is a small Go static-file server that ships the built site via `ko` — see `.ko.yaml` and `.github/workflows/ko.yml`.
 
 ## Deployment
 
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+Netlify builds and deploys automatically on push to `main` — see `netlify.toml`.
