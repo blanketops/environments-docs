@@ -12,7 +12,7 @@ It defines:
 
 ServiceUnit is not a Kubernetes Deployment.
 
-It is the deterministic workload abstraction of BlanketOps.
+It is the deterministic workload abstraction of BlanketOps Environments.
 
 Position in Delivery
 
@@ -47,7 +47,7 @@ This creates:
 - Environment coupling.
 - Implicit scaling.
 
-BlanketOps isolates runtime workload definition into a governed object.
+BlanketOps Environments isolates runtime workload definition into a governed object.
 
 ServiceUnit defines workload identity once.
 
@@ -252,4 +252,4 @@ Applying manifests and routing traffic are [Deployment](deployment.md)'s and [Ro
 - Multi-service grouping.
 - Predictable routing.
 
-ServiceUnit is the workload contract of BlanketOps.
+ServiceUnit is the workload contract of BlanketOps Environments.

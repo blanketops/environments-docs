@@ -15,7 +15,7 @@ Without a composing envelope:
 - Deleting an application means hunting down every resource it touched.
 - Multiple environments for the same application (dev, staging, production) have no structural boundary between them.
 
-BlanketOps makes the environment itself a first-class object.
+BlanketOps Environments makes the environment itself a first-class object.
 
 Every delivery resource is created inside one.
 

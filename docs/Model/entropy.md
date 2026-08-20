@@ -43,9 +43,9 @@ This increases delivery entropy because:
 - As systems grow, delivery becomes fragile.
 - Entropy accumulates silently.
 
-### Entropy Model in BlanketOps
+### Entropy Model in BlanketOps Environments
 
-BlanketOps reduces entropy through structured CRDs.
+BlanketOps Environments reduces entropy through structured CRDs.
 
 Each stage narrows the possibility space.
 
@@ -115,7 +115,7 @@ Operational entropy
 → Failures due to uncontrolled change.
 ```
 
-BlanketOps primarily reduces structural entropy.
+BlanketOps Environments primarily reduces structural entropy.
 
 Operational stability improves as a consequence.
 
@@ -125,7 +125,7 @@ Entropy cannot be eliminated.
 
 It can only be constrained.
 
-BlanketOps constrains entropy by:
+BlanketOps Environments constrains entropy by:
 
 - Modeling delivery as state.
 - Enforcing contract boundaries.

@@ -48,7 +48,7 @@ This creates:
 - Weak promotion models.
 - Poor auditability.
 
-BlanketOps separates artifact from package.
+BlanketOps Environments separates artifact from package.
 
 Artifact = binary image.
 Package = structured configuration unit.

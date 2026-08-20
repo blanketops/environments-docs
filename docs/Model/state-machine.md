@@ -6,7 +6,7 @@ sidebar_position: 1
 
 Modern delivery systems treat software movement as execution.
 
-BlanketOps treats it as state progression: a deterministic state machine.
+BlanketOps Environments treats it as state progression: a deterministic state machine.
 
 ## The Core Model
 
@@ -47,7 +47,7 @@ Pipelines define:
 
 | “Run this after that.”
 
-BlanketOps defines:
+BlanketOps Environments defines:
 
 | “The system is now in this stage.”
 
@@ -94,7 +94,7 @@ These boundaries prevent structural drift.
 
 ## Reconciliation as Enforcement
 
-In BlanketOps, reconciliation enforces state contracts on every change.
+In BlanketOps Environments, reconciliation enforces state contracts on every change.
 
 If a transition violates structural rules, it fails visibly — reconciliation stays governed and deliberate.
 
@@ -139,7 +139,7 @@ This is no longer tool-stitching. This is state progression.
 
 The industry optimized for automation.
 
-BlanketOps optimizes for structure.
+BlanketOps Environments optimizes for structure.
 
 Automation without structure increases entropy. Structure with automation reduces it.
 

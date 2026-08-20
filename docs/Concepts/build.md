@@ -29,7 +29,7 @@ Traditional CI systems treat builds as:
 - Log outputs.
 - Side effects.
 
-BlanketOps models build as state.
+BlanketOps Environments models build as state.
 
 Because:
 
