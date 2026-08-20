@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Verify
 
-Every BlanketOps resource is a CRD, so the whole delivery chain from [First Delivery](./first-delivery.md) is inspectable with `kubectl get` — no CI dashboard, no log tailing.
+Every BlanketOps Environments resource is a CRD, so the whole delivery chain from [First Delivery](./first-delivery.md) is inspectable with `kubectl get` — no CI dashboard, no log tailing.
 
 Some of these plural names collide with resources from other operators installed alongside the platform (Shipwright's own `Build`, Kubernetes' own `Deployment`). Qualify with the API group to be unambiguous:
 

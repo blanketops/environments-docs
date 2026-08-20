@@ -8,7 +8,7 @@ You've installed the platform and run one application through the full delivery 
 
 ## Understand the Model
 
-- [`Delivery as Deterministic State`](../Model/state-machine.md) — why BlanketOps models delivery as state, not pipeline steps.
+- [`Delivery as Deterministic State`](../Model/state-machine.md) — why BlanketOps Environments models delivery as state, not pipeline steps.
 - [`Entropy in Software Delivery`](../Model/entropy.md) — how each resource narrows the space of possible outcomes.
 - [`Why Delivery Drifts`](../Why/delivery-drifts.md) — the failure modes this design avoids.
 

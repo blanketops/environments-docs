@@ -37,7 +37,7 @@ Traditional systems bundle exposure and certificate management into a single ing
 - mTLS identity wiring is manual.
 - Certificate renewal windows are undocumented tribal knowledge.
 
-BlanketOps separates:
+BlanketOps Environments separates:
 
 - Traffic exposure (Route).
 - Certificate and mapping lifecycle (Domain).

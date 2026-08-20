@@ -4,7 +4,7 @@ The GitHubEvent represents a normalized, governed delivery trigger derived from 
 
 It is not a raw webhook payload.
 
-It is a structured event object inside the BlanketOps domain.
+It is a structured event object inside the BlanketOps Environments domain.
 
 GitHubEvent converts external activity into internal intent.
 
@@ -19,7 +19,7 @@ Webhooks are:
 
 Non-authoritative
 
-BlanketOps does not allow raw webhooks to drive delivery directly.
+BlanketOps Environments does not allow raw webhooks to drive delivery directly.
 
 Instead:
 

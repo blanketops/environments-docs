@@ -37,7 +37,7 @@ Traditional systems treat ingress as:
 - Mutable without structural validation.
 - Decoupled from artifact lineage.
 
-BlanketOps separates:
+BlanketOps Environments separates:
 
 - Runtime projection (Deployment).
 - Traffic exposure (Route).

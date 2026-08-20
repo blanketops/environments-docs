@@ -31,7 +31,7 @@ Traditional systems blur runtime configuration and artifact delivery:
 - Runtime state is mutated implicitly.
 - Drift becomes hard to reason about.
 
-BlanketOps separates:
+BlanketOps Environments separates:
 
 - Artifact resolution (Build → ServiceUnit)
 - Runtime orchestration (Deployment)
