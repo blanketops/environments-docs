@@ -71,7 +71,7 @@ const config: Config = {
     navbar: {
       title: 'BlanketOps Environments',
       logo: {
-        alt: 'BlanketOps Logo',
+        alt: 'BlanketOps Environments Logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -163,7 +163,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} BlanketOps. Deterministic Software Delivery.`,
+      copyright: `© ${new Date().getFullYear()} BlanketOps Environments. Deterministic Software Delivery.`,
     },
 
     prism: {
