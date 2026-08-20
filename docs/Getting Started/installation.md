@@ -88,7 +88,7 @@ This applies the CRDs, RBAC, and controller-manager `Deployment` published by [e
 
 ## 4. Install the Platform Stack
 
-The operator reconciles BlanketOps CRDs into workloads on a supporting stack: `carvel`, `argoevents`, `tekton-pipelines`, `tekton-dashboard`, `shipwright`, `crossplane`, `externalsecrets`, `buildstrategies`, `flux`, `knative`, and `kourier`. Install the whole stack in one shot:
+The operator reconciles BlanketOps Environments CRDs into workloads on a supporting stack: `carvel`, `argoevents`, `tekton-pipelines`, `tekton-dashboard`, `shipwright`, `crossplane`, `externalsecrets`, `buildstrategies`, `flux`, `knative`, and `kourier`. Install the whole stack in one shot:
 
 ```bash
 bops-env dependencies install

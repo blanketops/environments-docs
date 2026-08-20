@@ -21,7 +21,7 @@ Modern CI/CD systems often treat repositories as loose configuration:
 - Repository references are duplicated.
 - Event legitimacy is assumed.
 
-BlanketOps makes repository origin a first-class domain object.
+BlanketOps Environments makes repository origin a first-class domain object.
 
 Delivery cannot progress without it.
 
@@ -70,7 +70,7 @@ The contract field is non-negotiable.
 
 It defines the structural agreement between:
 
-BlanketOps
+BlanketOps Environments
 
 The source provider.
 
