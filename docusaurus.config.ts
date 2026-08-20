@@ -71,8 +71,8 @@ const config: Config = {
     navbar: {
       title: 'BlanketOps Environments',
       logo: {
-        alt: 'BlanketOps Logo',
-        src: 'img/logo.svg',
+        alt: 'BlanketOps Environments Logo',
+        src: 'img/logo.png',
       },
       items: [
         {
@@ -134,8 +134,36 @@ const config: Config = {
             },
           ],
         },
+        {
+          // Generated Go package docs (gomarkdoc) live in each repo's own
+          // docs/code/ on GitHub rather than on this site — see
+          // .github/workflows/code-docs.yml in each repo.
+          title: 'Code Reference',
+          items: [
+            {
+              label: 'environments',
+              href: 'https://github.com/blanketops/environments/tree/main/docs/code',
+            },
+            {
+              label: 'environments-controller',
+              href: 'https://github.com/blanketops/environments-controller/tree/main/docs/code',
+            },
+            {
+              label: 'environments-api',
+              href: 'https://github.com/blanketops/environments-api/tree/main/docs/code',
+            },
+            {
+              label: 'environments-cli',
+              href: 'https://github.com/blanketops/environments-cli/tree/main/docs/code',
+            },
+            {
+              label: 'environments-docs',
+              href: 'https://github.com/blanketops/environments-docs/tree/main/docs/code',
+            },
+          ],
+        },
       ],
-      copyright: `© ${new Date().getFullYear()} BlanketOps. Deterministic Software Delivery.`,
+      copyright: `© ${new Date().getFullYear()} BlanketOps Environments. Deterministic Software Delivery.`,
     },
 
     prism: {
