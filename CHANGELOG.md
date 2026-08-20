@@ -1,3 +1,12 @@
+## [0.0.7] - 2026-08-20
+
+### 📚 Documentation
+
+- Replace generic Docusaurus README with actual project content
+
+### ⚙️ Miscellaneous Tasks
+
+- *(release)* Update changelog for v0.0.6
 ## [0.0.6] - 2026-08-19
 
 ### 📚 Documentation
