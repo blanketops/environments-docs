@@ -72,7 +72,7 @@ const config: Config = {
       title: 'BlanketOps Environments',
       logo: {
         alt: 'BlanketOps Environments Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
