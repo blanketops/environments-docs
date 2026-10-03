@@ -111,6 +111,12 @@ const config: Config = {
           position: 'left',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'communitySidebar',
+          label: 'Community',
+          position: 'left',
+        },
+        {
           href: 'https://github.com/blanketops/environments-cli',
           label: 'GitHub',
           position: 'right',
@@ -137,6 +143,15 @@ const config: Config = {
               label: 'Roadmap',
               to: '/docs/Roadmap',
             },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            {label: 'Contributing', to: '/docs/Community/contributing'},
+            {label: 'Code of Conduct', to: '/docs/Community/code-of-conduct'},
+            {label: 'Governance', to: '/docs/Community/governance'},
+            {label: 'Security', to: '/docs/Community/security'},
           ],
         },
         {
