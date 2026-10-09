@@ -65,7 +65,6 @@ metadata:
   namespace: dev
 spec:
   contract:
-    enabled: true
     name: for-kaniko-app
     version: v1.2.3
     description: >
@@ -102,16 +101,6 @@ This allows:
 - Controlled upgrades.
 - Rollback capability.
 - Package identity is explicit.
-
-`enabled`
-
-Controls whether package is active.
-
-This enables:
-
-- Feature toggling.
-- Environment gating.
-- Controlled rollout.
 
 `description`
 
@@ -172,7 +161,8 @@ This is runtime governance support.
 
 `stateRepository`
 
-Defines environment state projection repository.
+Defines environment state projection repository. It is optional: a Package
+that does not track state through GitOps leaves it out.
 
 ```yaml
 stateRepository:
@@ -214,7 +204,6 @@ The Package controller governs configuration distribution, and stops there:
 - Resolving configuration repository.
 - Tracking version identity.
 - Managing environment state projection.
-- Enforcing enabled flag.
 
 Artifact production stays with [Build](build.md); running containers stays with [ServiceUnit](serviceunit.md) and [Deployment](deployment.md).
 
