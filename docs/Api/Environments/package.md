@@ -32,14 +32,13 @@ spec
 
 | Field           | Type     | Required | Description                                  |
 | ---------------- | -------- | -------- | --------------------------------------------- |
-| enabled         | boolean  | Yes      | Whether the package is active                 |
 | name            | string   | Yes      | Canonical package identity                    |
 | version         | string   | Yes      | Logical version identifier                    |
 | description     | string   | No       | Human-readable description                    |
 | maintainers     | []object | No       | List of maintainers                           |
 | repository      | object   | Yes      | Source repository for package configuration   |
 | diffEnabled     | boolean  | No       | Enables structured diff behavior               |
-| stateRepository | object   | Yes      | Environment state repository definition        |
+| stateRepository | object   | No       | Environment state repository definition        |
 
 ---
 
@@ -68,10 +67,10 @@ spec
 | Field       | Type   | Required | Description                                    |
 | ----------- | ------ | -------- | ---------------------------------------------- |
 | url         | string | Yes      | Git repository URL for state projection        |
-| ref         | string | Yes      | Git branch, tag, or commit reference            |
+| ref         | string | No       | Git branch, tag, or commit reference            |
 | cloneSecret | string | No       | Secret for repository authentication           |
-| strategy    | string | Yes      | Reconciliation strategy (e.g. `kustomization`) |
-| path        | string | Yes      | Path within repository for state projection    |
+| strategy    | string | No       | `kustomization` or `plain` (default `plain`)   |
+| path        | string | No       | Path within repository for state projection    |
 
 ---
 
@@ -93,7 +92,6 @@ spec
 | Pending     | Package registered but not reconciled |
 | Reconciling | Synchronizing configuration           |
 | Ready       | Package state aligned with contract   |
-| Disabled    | Package disabled by contract          |
 | Failed      | Reconciliation failure                |
 
 ---
@@ -108,7 +106,6 @@ metadata:
   namespace: dev
 spec:
   contract:
-    enabled: true
     name: for-kaniko-app
     version: v1.2.3
     description: >
@@ -137,5 +134,5 @@ spec:
 - repository.ref must exist in the repository.
 - stateRepository.url must be reachable.
 - stateRepository.path must resolve to valid manifests.
-- Disabled packages must not reconcile state.
+- A Package that exists is reconciled; there is no switch to disable it.
 - Package does not modify Build or Deployment resources directly.
