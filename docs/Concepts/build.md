@@ -65,7 +65,7 @@ spec:
       name: build-bot
       secret: registry-credentials
     policy:
-      triggers:
+      allowedTriggers:
         - type: pull_request
         - type: push
 ```
@@ -149,7 +149,7 @@ Example:
 
 ```yaml
 policy:
-  triggers:
+  allowedTriggers:
     - type: pull_request
     - type: push
 ```

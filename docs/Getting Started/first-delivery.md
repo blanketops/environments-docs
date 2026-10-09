@@ -149,7 +149,7 @@ spec:
       name: build-bot
       secret: registry-credentials
     policy:
-      triggers:
+      allowedTriggers:
         - type: push
         - type: pull_request
 ```

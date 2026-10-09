@@ -15,7 +15,7 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://blanketopsenvironments.netlify.app/',
+  url: 'https://blanketops-environments.netlify.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -68,8 +68,8 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    // Shown when a page of the site is shared.
+    image: 'img/social-card.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },

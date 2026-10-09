@@ -4,12 +4,19 @@ import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './index.module.css';
 
 function HomepageHeader() {
   return (
     <header className={clsx('hero', styles.heroBanner)}>
       <div className="container text--center">
+        <img
+          className={styles.heroLogo}
+          src={useBaseUrl('/img/logo.png')}
+          alt="BlanketOps logo"
+        />
+
         <Heading as="h1" className="hero__title">
           BlanketOps Environments
         </Heading>
