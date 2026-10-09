@@ -58,6 +58,8 @@ spec
 | ----------------- | ------ | -------- | ------------------------------------ |
 | url               | string | Yes      | Git repository URL                   |
 | credentialsSecret | string | No       | Secret for repository authentication |
+| ref               | string | Yes      | Git branch, tag, or commit reference |
+| path              | string | No       | Path within repository to apply      |
 
 ---
 
@@ -117,6 +119,8 @@ spec:
     repository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
+      ref: origin/main
+      path: manifests
     diffEnabled: true
     stateRepository:
       url: git@github.com:example-org/for-kaniko-app-state.git
@@ -130,6 +134,7 @@ spec:
 
 - name and version must remain consistent for a given package lifecycle.
 - repository.url must be reachable.
+- repository.ref must exist in the repository.
 - stateRepository.url must be reachable.
 - stateRepository.path must resolve to valid manifests.
 - Disabled packages must not reconcile state.

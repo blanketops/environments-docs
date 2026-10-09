@@ -76,6 +76,8 @@ spec:
     repository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
+      ref: origin/main
+      path: manifests
     diffEnabled: true
     stateRepository:
       url: git@github.com:example-org/for-kaniko-app-state.git
@@ -140,6 +142,8 @@ Defines configuration bundle source.
 ```yaml
 repository:
   url: git@github.com:example-org/for-kaniko-app-packages.git
+  ref: origin/main
+  path: manifests
 ```
 
 This constrains:
@@ -148,6 +152,11 @@ This constrains:
 - Versioned configuration.
 - Distribution lineage.
 - Package configuration cannot drift outside declared repo.
+
+`ref` is required: the branch, tag or commit to apply. A branch is written
+as kapp-controller reads it, `origin/<branch>`. `path` is optional and
+narrows what is applied to one directory; without it the repository root is
+applied.
 
 `diffEnabled`
 
