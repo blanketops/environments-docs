@@ -65,7 +65,6 @@ metadata:
   namespace: dev
 spec:
   contract:
-    enabled: true
     name: for-kaniko-app
     version: v1.2.3
     description: >
@@ -76,6 +75,8 @@ spec:
     repository:
       url: git@github.com:example-org/for-kaniko-app-packages.git
       credentialsSecret: git-ssh-credentials-packages
+      ref: origin/main
+      path: manifests
     diffEnabled: true
     stateRepository:
       url: git@github.com:example-org/for-kaniko-app-state.git
@@ -100,16 +101,6 @@ This allows:
 - Controlled upgrades.
 - Rollback capability.
 - Package identity is explicit.
-
-`enabled`
-
-Controls whether package is active.
-
-This enables:
-
-- Feature toggling.
-- Environment gating.
-- Controlled rollout.
 
 `description`
 
@@ -140,6 +131,8 @@ Defines configuration bundle source.
 ```yaml
 repository:
   url: git@github.com:example-org/for-kaniko-app-packages.git
+  ref: origin/main
+  path: manifests
 ```
 
 This constrains:
@@ -148,6 +141,11 @@ This constrains:
 - Versioned configuration.
 - Distribution lineage.
 - Package configuration cannot drift outside declared repo.
+
+`ref` is required: the branch, tag or commit to apply. A branch is written
+as kapp-controller reads it, `origin/<branch>`. `path` is optional and
+narrows what is applied to one directory; without it the repository root is
+applied.
 
 `diffEnabled`
 
@@ -163,7 +161,8 @@ This is runtime governance support.
 
 `stateRepository`
 
-Defines environment state projection repository.
+Defines environment state projection repository. It is optional: a Package
+that does not track state through GitOps leaves it out.
 
 ```yaml
 stateRepository:
@@ -205,7 +204,6 @@ The Package controller governs configuration distribution, and stops there:
 - Resolving configuration repository.
 - Tracking version identity.
 - Managing environment state projection.
-- Enforcing enabled flag.
 
 Artifact production stays with [Build](build.md); running containers stays with [ServiceUnit](serviceunit.md) and [Deployment](deployment.md).
 

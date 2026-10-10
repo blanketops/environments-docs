@@ -6,7 +6,7 @@ labels: question
 
 # ❓ Question
 
-<!-- Check the site first: https://blanketopsenvironments.netlify.app -->
+<!-- Check the site first: https://blanketops-environments.netlify.app -->
 
 ## What are you trying to understand?
 
