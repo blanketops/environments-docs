@@ -12,6 +12,10 @@ const config: Config = {
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    // From 3.10, v4 also switches the build to the Rspack-based "faster"
+    // bundler, which needs the separate @docusaurus/faster package. Keep the
+    // webpack build the site has always used.
+    faster: false,
   },
 
   // Set the production url of your site here
