@@ -11,6 +11,17 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    # Packages that must move together. Separate PRs for them each fail the
+    # build: react and react-dom must be the exact same version, and the
+    # Docusaurus packages must all be on one release.
+    groups:
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
     commit-message:
       prefix: "chore(deps)"
     labels:
