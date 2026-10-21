@@ -25,7 +25,11 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: npm
+          # npm's download cache lives on the runners' persistent cache volume
+          # (npm_config_cache, set by the runner pool). setup-node's own cache
+          # would upload that shared directory to the Actions cache after every
+          # job, so it stays off.
+          package-manager-cache: false
 
       - name: Install dependencies
         run: npm ci
@@ -43,7 +47,11 @@ jobs:
         uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
-          cache: true
+          # The self-hosted runners keep Go's module and build caches on a
+          # persistent volume. setup-go's own cache would upload them again
+          # after every job, which on these runners hangs "Post Setup Go" for
+          # up to an hour and holds the runner.
+          cache: false
 
       # cmd/server is what release.yml ships via ko — catch compile errors
       # here instead of at tag time.
