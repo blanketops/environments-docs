@@ -4,9 +4,8 @@ title: Roadmap
 
 # Roadmap
 
-:::info Source
-This page mirrors [`ROADMAP.md`](https://github.com/blanketops/environments/blob/main/ROADMAP.md) in the `environments` repository, which is the source of truth.
-:::
+This page is the source of truth for the BlanketOps Environments roadmap. The
+`environments` repository's root `ROADMAP.md` points here.
 
 BlanketOps Environments is pre-1.0. The APIs are `v1alpha1` and may still
 change in breaking ways; [Semantic Versioning](https://semver.org/) applies,
