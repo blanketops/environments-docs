@@ -23,3 +23,4 @@ to the source.
 | [Security](./security.md) | Supported versions and how to report a vulnerability privately |
 | [Adopters](./adopters.md) | Who uses BlanketOps Environments |
 | [Roadmap](../Roadmap.md) | What has shipped and what is planned |
+| [Bots](./bots.md) | GitHub Apps and CLI bots: releaser, developer, test-helper, cleaner, pr-reviewer |
