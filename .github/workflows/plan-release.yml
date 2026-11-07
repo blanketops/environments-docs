@@ -26,8 +26,8 @@ jobs:
     name: releaser plan
     runs-on: self-hosted
     steps:
-      - uses: blanketops/environments-bots/.github/actions/releaser@v0.0.3
+      - uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
         with:
           command: plan
-          app-id: ${{ secrets.RELEASER_APP_ID }}
+          client-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
