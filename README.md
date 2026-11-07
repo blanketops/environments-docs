@@ -34,3 +34,7 @@ npm run typecheck
 ## Deployment
 
 Netlify builds and deploys automatically on push to `main` — see `netlify.toml`.
+
+## License
+
+Apache License 2.0 — see [LICENSE](LICENSE) for details.
