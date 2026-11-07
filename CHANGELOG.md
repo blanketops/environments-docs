@@ -1,3 +1,28 @@
+## [0.1.0] - 2026-11-07
+
+### 💼 Other
+
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Bump environments-bots releaser to v0.0.7
+- *(deps)* Bump developer binary to v0.1.0
+- Cmd/server directory (kodata symlink + main.go)
+- Merge release/v0.1.0 into main
+
+### 📚 Documentation
+
+- Make Roadmap.md the source of truth
+- Add bots page to documentation site
+- Standardize open-pr.yml header comments
+- Update create-github-app-token to use client-id
+
+### ⚙️ Miscellaneous Tasks
+
+- *(finalize)* Continue when the release pull request is already merged
+- Run the releaser in the release workflows
+- *(ci)* Bump blanketops/environments-bots from 0.0.2 to 0.0.3
+- Sync develop with main after release/v0.0.9
+- Sync develop with main
+- *(developer)* Run the developer bot at v0.0.8
 ## [0.0.9] - 2026-10-21
 
 ### 🐛 Bug Fixes
@@ -37,6 +62,7 @@
 - Sync develop with main
 - Land bot writes to main through pull requests
 - Sync develop with main
+- *(release)* Update changelog for v0.0.9 (#57)
 ## [0.0.8] - 2026-08-20
 
 ### 🚀 Features
