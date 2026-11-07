@@ -1,12 +1,11 @@
 # =============================================================================
-# release.yml — Publish Secure GitHub Release & Supply Chain Artifacts
+# release.yml — Publish Secure Documentation Release & Artifacts
 #
-# Triggers on version tags (v*). Generates release notes (git-cliff),
-# packages assets, generates SBOMs, cryptographically signs using Sigstore/Cosign,
-# issues GitHub build attestations, and publishes to GitHub Releases.
+# Triggers on version tags (v*). Builds the Docusaurus site, generates release
+# notes (git-cliff), creates an SPDX SBOM, signs artifacts with baked-in Cosign,
+# generates build provenance, and publishes directly to GitHub Releases via gh.
 # =============================================================================
 name: Release
-
 on:
   push:
     tags:
@@ -37,35 +36,33 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Generate release notes
-        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: false
 
-      - name: Install ORAS
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build documentation site
+        run: npm run build
+
+      - name: Package documentation site bundle
         run: |
-          if ! command -v oras >/dev/null 2>&1; then
-            curl -fsSL "https://github.com/oras-project/oras/releases/download/v1.2.0/oras_1.2.0_linux_amd64.tar.gz" \
-              | tar -xz -C /usr/local/bin oras
-          fi
-          oras version
+          tar -czf "docs-site-${{ github.ref_name }}.tar.gz" -C build .
 
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@v3.8.0
+      - name: Generate SBOM (Software Bill of Materials)
+        uses: anchore/sbom-action@v0.18.0
+        with:
+          artifact-name: sbom-${{ github.ref_name }}.spdx.json
+          output-file: sbom-${{ github.ref_name }}.spdx.json
 
-      - name: Package Release Artifacts
-        run: |
-          tar -czf generated-contracts-${{ github.ref_name }}.tar.gz --exclude='.git' .
-
-      # - name: Generate SBOM (Software Bill of Materials)
-      #   uses: anchore/sbom-action@v0.18.0
-      #   with:
-      #     artifact-name: sbom-${{ github.ref_name }}.spdx.json
-      #     output-file: sbom-${{ github.ref_name }}.spdx.json
-
-      - name: Sign Artifacts with Sigstore Cosign (Keyless)
+      - name: Sign Artifacts with Cosign (Keyless - using runner binary)
         run: |
           cosign sign-blob --yes \
-            --output-signature generated-contracts-${{ github.ref_name }}.tar.gz.sig \
-            generated-contracts-${{ github.ref_name }}.tar.gz
+            --output-signature docs-site-${{ github.ref_name }}.tar.gz.sig \
+            docs-site-${{ github.ref_name }}.tar.gz
 
           cosign sign-blob --yes \
             --output-signature sbom-${{ github.ref_name }}.spdx.json.sig \
@@ -75,37 +72,44 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
-            generated-contracts-${{ github.ref_name }}.tar.gz
+            docs-site-${{ github.ref_name }}.tar.gz
             sbom-${{ github.ref_name }}.spdx.json
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3
-        with:
-          files: |
-            generated-contracts-${{ github.ref_name }}.tar.gz
-            generated-contracts-${{ github.ref_name }}.tar.gz.sig
-            sbom-${{ github.ref_name }}.spdx.json
-            sbom-${{ github.ref_name }}.spdx.json.sig
-            RELEASE_NOTES.md
-          body_path: RELEASE_NOTES.md
+      - name: Generate release notes
+        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
+
+      - name: Create GitHub Release & Attach Assets via GitHub CLI (`gh`)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --notes-file RELEASE_NOTES.md \
+            docs-site-${{ github.ref_name }}.tar.gz \
+            docs-site-${{ github.ref_name }}.tar.gz.sig \
+            sbom-${{ github.ref_name }}.spdx.json \
+            sbom-${{ github.ref_name }}.spdx.json.sig \
+            RELEASE_NOTES.md
 
       - name: Release Summary
         run: |
           cat >> $GITHUB_STEP_SUMMARY << 'EOF'
-          # 📦 Secure GitHub Release Published
+          # 📦 Secure Documentation Release Published
 
           **Version:** `${{ github.ref_name }}`
 
           ## Supply Chain Security & Verification
-          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json`
-          - **Sigstore Signatures:** Attached (`.sig` files) via keyless OIDC signing
-          - **GitHub Provenance:** Native build attestations generated and verified
+          - **Docs Archive:** `docs-site-${{ github.ref_name }}.tar.gz` (+ `.sig`)
+          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`)
+          - **Sigstore Signatures:** Attached via runner-baked Cosign OIDC
+          - **GitHub Provenance:** Native build attestations verified
+          - **Direct Upload:** Handled via baked-in GitHub CLI (`gh`)
 
           ## Attached Artifacts
-          - `generated-contracts-${{ github.ref_name }}.tar.gz` (+ `.sig`)
-          - `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`)
+          - `docs-site-${{ github.ref_name }}.tar.gz`
+          - `docs-site-${{ github.ref_name }}.tar.gz.sig`
+          - `sbom-${{ github.ref_name }}.spdx.json`
+          - `sbom-${{ github.ref_name }}.spdx.json.sig`
           - `RELEASE_NOTES.md`
 
           EOF
