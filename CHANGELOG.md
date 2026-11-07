@@ -1,3 +1,17 @@
+## [0.1.1] - 2026-11-07
+
+### 💼 Other
+
+- Merge release/v0.1.1 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Update actions
+- Sync develop with main after release/v0.1.0
+- *(ci)* Update actions
+- Update CI workflow with typecheck/build summary block header
+- Fix summary block header in CI workflow
+- Fix heredoc EOF delimiter in Summary step
 ## [0.1.0] - 2026-11-07
 
 ### 💼 Other
@@ -23,6 +37,7 @@
 - Sync develop with main after release/v0.0.9
 - Sync develop with main
 - *(developer)* Run the developer bot at v0.0.8
+- *(release)* Update changelog for v0.1.0 (#84)
 ## [0.0.9] - 2026-10-21
 
 ### 🐛 Bug Fixes
