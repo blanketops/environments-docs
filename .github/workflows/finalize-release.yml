@@ -138,25 +138,6 @@ jobs:
           "${RUNNER_TEMP}/api-merge-pr.sh" main "release/${VERSION}" \
             "release: merge release/${VERSION} into main"
 
-      - name: Install gomarkdoc
-        run: |
-          go install github.com/princjef/gomarkdoc/cmd/gomarkdoc@latest
-          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
-
-      - name: Generate code docs
-        run: |
-          mkdir -p docs/code
-          gomarkdoc --output 'docs/code/{{.Dir}}.md' ./...
-
-      - name: Commit code docs
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          "${RUNNER_TEMP}/api-pr.sh" main "release/${VERSION}-docs" \
-            "docs: auto-generate code documentation [skip ci]" docs/code
-          git fetch --quiet origin main
-          git checkout --quiet --detach origin/main
-
       - name: git-cliff version
         run: git-cliff --version
 
