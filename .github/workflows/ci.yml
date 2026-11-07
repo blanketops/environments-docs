@@ -45,5 +45,4 @@ jobs:
           | ---- | ------ |
           | Typecheck | ${{ job.status }} |
           | Build (broken-link check) | ${{ job.status }} |
-          Commit: \`${{ github.sha }}\\`\n
-          EOF
+          Commit: \`${{ github.sha }}\\`\nEOF
