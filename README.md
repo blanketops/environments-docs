@@ -27,10 +27,6 @@ Generates static content into `build/`. `onBrokenLinks: 'throw'` in `docusaurus.
 npm run typecheck
 ```
 
-## Server
-
-`cmd/server` is a small Go static-file server that ships the built site via `ko` — see `.ko.yaml` and `.github/workflows/ko.yml`.
-
 ## Deployment
 
 Netlify builds and deploys automatically on push to `main` — see `netlify.toml`.

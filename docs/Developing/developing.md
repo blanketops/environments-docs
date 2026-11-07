@@ -27,46 +27,46 @@ environments-api ──────┘
 
 ## Build & Install
 
-```bash
-# Standard binary
-mage build
-
-# Fully static (Gokrazy-compatible)
-mage static
-
-# Install to local bin
-mage install   # → $HOME/.local/bin or $HOME/bin
+```environments-contract ─┐
+                       ├─→ environments ─→ environments-controller
+   environments-api ──────┘```
 ```
+
+A change that crosses repositories lands in that order, and each step is a tagged release that the next one picks up through `go.mod`. Dependabot opens the bump pull requests here for environments-api and environments-contract.
+
+Pinned versions are in [go.mod](../go.mod). Check them before assuming a contract field or a CRD Kind is available.
 
 ## Local Testing
 
-```bash
-# Create a test cluster
-kind create cluster
+The `environments-bots` repository holds the GitHub Apps and CLI bots that automate the BlanketOps family's repositories: release workflows, PR hygiene, test bookkeeping, and PR review. Each bot is its own Go command under `cmd/`, released on its own single-digit version scheme (`vX.Y.Z`), and run from repository workflows through composite actions.
 
-# Install the operator
-bops-env install
+| Bot | What it does | Commands |
+|-----|-------------|----------|
+| `releaser` | Drives every release through its Release issue: plans the next release when develop has unreleased changes, cuts the release branch and its pull request, and attaches the tag and GitHub release after a person finalizes | `plan`, `cut`, `prepare`, `verify`, `complete` |
+| `developer` | PR and `develop` hygiene: syncs `develop` with `main`, opens a pull request and tracking issue on a branch's first push, closes that issue when the pull request merges, commits gofmt/go mod tidy fixes | `sync`, `open`, `resolve`, `tidy` |
+| `test-helper` | Keeps one GitHub issue per test file under `tests/` and posts every test run's results to it | `sync`, `report` |
+| `cleaner` | Keeps a repository's Actions footprint small: prunes old workflow runs | `runs` |
+| `pr-reviewer` | Reviews pull requests against the repository's pull request template and issue templates, posts review comments and labels | `review` |
 
-# Install platform stack dependencies
-bops-env dependencies install
+Every command takes `-dry-run` (read only) and `-repo <owner/name>`. The token comes from `GH_TOKEN` (or `GITHUB_TOKEN`); in a workflow, mint one for the bot's GitHub App with `actions/create-github-app-token`. Commit subjects and other untrusted text shown in comments are written inside code spans.
 
-# Verify components
-kubectl get pods -A
-```
+### Using a bot from another repository
 
 ## Provenance and Verification
 
 Every release is signed and attested to ensure artifact integrity from build to deployment:
 
-- **Signed**: Binaries are signed using `cosign` (keyless mode)
-- **Attested**: Every build generates a formal SLSA-compliant provenance attestation
+## Patterns
 
-Verification after download:
+**Contract first.** Field names, enums and semantics come from the contract. Import its types from `github.com/blanketops/environments-contract/blanketops/...`. Do not redeclare a contract enum locally.
 
-```bash
-# Verify the signature
-curl -LO https://github.com/blanketops/environments-cli/releases/latest/download/bops-env-static.sig
-cosign verify-blob --certificate-identity-regexp ".*" --signature bops-env-static.sig bops-env-static
+**Resolution decodes and nothing else.** A `Resolve<Kind>` function takes the CR, rejects a nil object or an empty `Spec.Contract`, decodes the raw JSON, validates required fields and returns a typed struct or an error. The same spec always yields the same struct. No client calls, no clock, no randomness.
+
+**Three packages per Kind in `resolution/`.** `resolve`, `adapter` and `contract` change for different reasons and are kept apart.
+
+**One cohesive `domain` package.** Model, phases, result and errors refer to each other and stay in one package.
+
+**Service, Mapper, StatusWriter.** The service is constructed with its collaborators and exposes `Reconcile`. The Mapper converts resolved to domain types. The StatusWriter is the only thing that writes status.
 
 # Verify the attestation via GitHub CLI
 gh attest verify bops-env-static --owner blanketops
