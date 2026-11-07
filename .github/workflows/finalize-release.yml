@@ -42,7 +42,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.APP_ID }}
+          client-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: blanketops
           repositories: environments-docs
@@ -74,11 +74,11 @@ jobs:
       # still open into release/<version> or in the version's milestone, no
       # tag yet.
       - name: Releaser verify
-        uses: blanketops/environments-bots/.github/actions/releaser@v0.0.2
+        uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
         with:
           command: verify
           release: ${{ github.event.inputs.version }}
-          app-id: ${{ secrets.RELEASER_APP_ID }}
+          client-id: ${{ secrets.RELEASER_APP_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
       # A release pull request merged by hand leaves nothing to merge: the

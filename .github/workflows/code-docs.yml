@@ -28,7 +28,7 @@
 #   the API commit and the squash commit.
 #
 # Secrets required:
-#   APP_ID, APP_PRIVATE_KEY — GitHub App credentials
+#   APP_CLIENT_ID, APP_ID_PRIVATE_KEY — GitHub App credentials
 # =============================================================================
 
 name: Code Docs
@@ -39,8 +39,6 @@ on:
       - main
   workflow_dispatch: {}
 
-# One docs run at a time: a second one waits instead of racing the first to
-# open a pull request on the same main.
 concurrency:
   group: code-docs
   cancel-in-progress: false
@@ -57,8 +55,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_ID_PRIVATE_KEY }}
           owner: blanketops
           repositories: environments-docs
 
@@ -84,25 +82,12 @@ jobs:
             --output 'docs/code/{{.Dir}}.md' \
             ./cmd/...
 
-      # Through a pull request: main's `protect` ruleset takes changes only
-      # through a pull request with verified commits, and the App is not a
-      # bypass actor. hack/api-pr.sh opens one with a commit GitHub signs and
-      # squash-merges it; the skip marker in the message keeps that from
-      # starting workflows, including this one.
       - name: Commit docs
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           hack/api-pr.sh main "docs/code-${GITHUB_SHA::7}" \
             "docs: auto-generate code documentation [skip ci]" docs/code/
-
-      - name: Upload docs artifact
-        uses: actions/upload-artifact@v7
-        continue-on-error: true
-        with:
-          name: godoc-${{ github.sha }}
-          path: docs/code/
-          retention-days: 30
 
       - name: Build summary
         run: |
