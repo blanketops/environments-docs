@@ -41,18 +41,6 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Set up Go
-        uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-          cache: false      
-
-      - name: Generate contracts (Go + TypeScript)
-        run: mage gen
-
-      - name: Package generated contracts
-        run: |
-          tar -czf "generated-contracts-${{ github.ref_name }}.tar.gz" -C blanketops .
 
       - name: Generate release notes
         run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
@@ -81,13 +69,11 @@ jobs:
 
           ## Completed
 
-          - Generated contracts (Go + TypeScript) via mage gen
           - Generated release notes via git-cliff
           - Published GitHub Release with assets
 
           ## Artifacts
 
-          - generated-contracts-${{ github.ref_name }}.tar.gz (Go .pb.go + TypeScript _pb.ts)
           - RELEASE_NOTES.md (attached to release body)
           - GitHub Release
 

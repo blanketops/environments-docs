@@ -28,7 +28,7 @@ permissions:
 
 jobs:
   open:
-    name: open the pull request and tracking issue
+    name: Open the pull request and Tracking issue
     runs-on: self-hosted
     steps:
       - name: Check out the pushed commit
