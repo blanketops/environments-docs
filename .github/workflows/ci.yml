@@ -36,12 +36,6 @@ jobs:
       - name: Build (catches broken links/anchors)
         run: npm run build
 
-      - name: Setup Go
-        uses: actions/setup-go@v7
-        with:
-          go-version-file: go.mod
-          cache: false
-
       - name: Summary
         if: always()
         run: |
@@ -51,5 +45,4 @@ jobs:
           | ---- | ------ |
           | Typecheck | ${{ job.status }} |
           | Build (broken-link check) | ${{ job.status }} |
-          Commit: \`${{ github.sha }}\`
-          EOF
+          Commit: \`${{ github.sha }}\\`\nEOF
