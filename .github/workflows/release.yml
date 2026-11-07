@@ -1,6 +1,18 @@
-# Tag-triggered: updates the changelog on main and publishes a GitHub
-# Release. Image build/push is ko.yml — separate workflow, same trigger.
+# =============================================================================
+# release.yml — Publish GitHub Release
+#
+# Triggers on version tags (v*). Generates contracts (buf gen via mage),
+# changelog (git-cliff), publishes contract bundle to OCI registry, and
+# publishes a GitHub Release with artifacts attached.
+#
+# Assets attached to the release:
+#   - generated-contracts-<tag>.tar.gz  (Go .pb.go + TypeScript _pb.ts)
+#   - RELEASE_NOTES.md                   (git-cliff output for this version)
+#
+# Note: This repo does not generate CRDs — that is handled by environments repo.
+#==============================================================================
 name: Release
+
 on:
   push:
     tags:
@@ -8,38 +20,51 @@ on:
 
 permissions:
   contents: write
-  packages: read
+  packages: write
 
 jobs:
   release:
     runs-on: self-hosted
     steps:
-      - name: Checkout tag
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_ID_PRIVATE_KEY }}
+          owner: blanketops
+          repositories: environments-api
+
+      - name: Checkout
         uses: actions/checkout@v7
         with:
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
-      - name: Install git-cliff
-        run: |
-          GITCLIFF_VERSION="2.13.0"
-          curl -L "https://github.com/orhun/git-cliff/releases/download/v${GITCLIFF_VERSION}/git-cliff-${GITCLIFF_VERSION}-x86_64-unknown-linux-gnu.tar.gz" -o git-cliff.tar.gz
-          tar xzf git-cliff.tar.gz
-          sudo mv "git-cliff-${GITCLIFF_VERSION}/git-cliff" /usr/local/bin/git-cliff
-          rm -rf git-cliff.tar.gz "git-cliff-${GITCLIFF_VERSION}"
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: false      
 
-      # The tag checkout above is a detached HEAD — switch to main so the
-      # changelog commit below lands on a real branch, not the tag ref.
-      - name: Checkout main
-        run: |
-          git checkout main
-          git pull origin main
+      - name: Generate contracts (Go + TypeScript)
+        run: mage gen
 
-      # CHANGELOG.md is generated and committed by finalize-release.yml, before
-      # the tag is created. This workflow only reads it: it makes no commit of its
-      # own.
+      - name: Package generated contracts
+        run: |
+          tar -czf "generated-contracts-${{ github.ref_name }}.tar.gz" -C blanketops .
+
       - name: Generate release notes
-        run: git-cliff --latest --output RELEASE_NOTES.md
+        run: git-cliff --config .cliff.toml --latest --output RELEASE_NOTES.md
 
+      - name: Install ORAS
+        run: |
+          if ! command -v oras >/dev/null 2>&1; then
+            curl -fsSL "https://github.com/oras-project/oras/releases/download/v1.2.0/oras_1.2.0_linux_amd64.tar.gz" \
+              | tar -xz -C /usr/local/bin oras
+          fi
+          oras version
+          
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3
         with:
@@ -48,27 +73,35 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release Summary
-        if: always()
         run: |
           cat >> $GITHUB_STEP_SUMMARY <<EOF
-          # 📦 Release Published: ${{ github.ref_name }}
+          # 📦 GitHub Release Published
+
+          **Version:** \`${{ github.ref_name }}\`
+
           ## Completed
-          - Generated CHANGELOG.md using git-cliff and committed to main
-          - Published GitHub Release with release notes
-          ## Image
-          Built separately by the **Ko Image** workflow, same tag trigger.
+
+          - Generated contracts (Go + TypeScript) via mage gen
+          - Generated release notes via git-cliff
+          - Published GitHub Release with assets
+
+          ## Artifacts
+
+          - generated-contracts-${{ github.ref_name }}.tar.gz (Go .pb.go + TypeScript _pb.ts)
+          - RELEASE_NOTES.md (attached to release body)
+          - GitHub Release
+
+          ## Source Tag
+
+          \`${{ github.ref_name }}\`
+
           EOF
 
-      # The releaser (blanketops/environments-bots, as the Releaser App)
-      # attaches the tag and the published release to the Release issue,
-      # closes it and sets it to Done. It runs even when a step above
-      # failed: it then finds no published release, says so on the issue,
-      # and leaves it open.
       - name: Releaser complete
         if: always()
-        uses: blanketops/environments-bots/.github/actions/releaser@v0.0.7
+        uses: blanketops/environments-bots/.github/actions/releaser@v0.1.0
         with:
           command: complete
           release: ${{ github.ref_name }}
-          client-id: ${{ secrets.RELEASER_APP_ID }}
-          private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.DEVELOPER_CLIENT_ID }}
+          private-key: ${{ secrets.DEVELOPER_APP_PRIVATE_KEY }}
