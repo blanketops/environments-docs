@@ -1,8 +1,18 @@
+## [0.1.4] - 2026-11-07
+
+### 💼 Other
+
+- Merge release/v0.1.4 into main
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.1.3
 ## [0.1.3] - 2026-11-07
 
 ### ⚙️ Miscellaneous Tasks
 
 - Sync develop with main after release/v0.1.2
+- *(release)* Update changelog for v0.1.3 (#106)
 ## [0.1.2] - 2026-11-07
 
 ### 🐛 Bug Fixes
