@@ -1,3 +1,20 @@
+## [0.1.2] - 2026-11-07
+
+### 🐛 Bug Fixes
+
+- Resolve broken links in Developing documentation
+
+### 💼 Other
+
+- Merge release/v0.1.2 into main
+
+### 📚 Documentation
+
+- Add architecting and developing sections
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync develop with main after release/v0.1.1
 ## [0.1.1] - 2026-11-07
 
 ### 💼 Other
@@ -12,6 +29,7 @@
 - Update CI workflow with typecheck/build summary block header
 - Fix summary block header in CI workflow
 - Fix heredoc EOF delimiter in Summary step
+- *(release)* Update changelog for v0.1.1 (#93)
 ## [0.1.0] - 2026-11-07
 
 ### 💼 Other
