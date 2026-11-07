@@ -121,7 +121,7 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://github.com/blanketops/environments',
+          href: 'https://github.com/blanketops/environments-cli',
           label: 'GitHub',
           position: 'right',
         },
@@ -135,7 +135,7 @@ const config: Config = {
           title: 'Project',
           items: [
             {
-              href: 'https://github.com/blanketops/environments',
+              href: 'https://github.com/blanketops/environments-cli',
               label: 'GitHub',
             },
           ],
