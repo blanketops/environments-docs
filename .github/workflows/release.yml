@@ -1,11 +1,14 @@
+name: Release
+
 # =============================================================================
 # release.yml — Publish Secure Documentation Release & Artifacts
 #
 # Triggers on version tags (v*). Builds the Docusaurus site, generates release
-# notes (git-cliff), creates an SPDX SBOM, signs artifacts with baked-in Cosign,
-# generates build provenance, and publishes directly to GitHub Releases via gh.
+# notes (git-cliff), creates an SPDX SBOM (quota-safe), signs artifacts with
+# baked-in Cosign, generates build provenance, and publishes directly to
+# GitHub Releases via gh.
 # =============================================================================
-name: Release
+
 on:
   push:
     tags:
@@ -55,8 +58,12 @@ jobs:
       - name: Generate SBOM (Software Bill of Materials)
         uses: anchore/sbom-action@v0.18.0
         with:
-          artifact-name: sbom-${{ github.ref_name }}.spdx.json
+          artifact-name: sbom-spdx-${{ github.ref_name }}
           output-file: sbom-${{ github.ref_name }}.spdx.json
+          path: .
+          format: spdx-json
+          upload-artifact: false       # Bypasses internal artifact storage quota limits
+          upload-release-assets: false # Handled directly by gh release create below
 
       - name: Sign Artifacts with Cosign (Keyless - using runner binary)
         run: |
@@ -100,7 +107,7 @@ jobs:
 
           ## Supply Chain Security & Verification
           - **Docs Archive:** `docs-site-${{ github.ref_name }}.tar.gz` (+ `.sig`)
-          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`)
+          - **SBOM Generated:** `sbom-${{ github.ref_name }}.spdx.json` (+ `.sig`, Quota-safe)
           - **Sigstore Signatures:** Attached via runner-baked Cosign OIDC
           - **GitHub Provenance:** Native build attestations verified
           - **Direct Upload:** Handled via baked-in GitHub CLI (`gh`)
