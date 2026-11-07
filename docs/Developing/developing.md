@@ -1,17 +1,31 @@
-# Developing
+# Developing BlanketOps Environments
 
-This section covers development workflows for the BlanketOps Environments platform.
+How the code is organised, how the repositories fit together, and how to make the common kinds of change. For process — issues, branches, commit format, sign-off, review — see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
-## Local Development
+## How the repositories relate
 
-### Prerequisites
+A resource such as a Build or a ServiceUnit is defined once, as a versioned protobuf contract. Kubernetes stores it inside an opaque envelope. This module turns that envelope into typed intent and supplies the logic to act on it. The controller runs that logic.
 
-- Go 1.26.10 (toolchain specified in go.mod)
-- Node.js 24 (for frontend/workflow tasks)
-- Mage (for build targets)
-- Kind (for local Kubernetes cluster testing)
+| Repository | Owns | Relation to this module |
+|---|---|---|
+| [environments-contract](https://github.com/blanketops/environments-contract) | Protobuf schemas under `blanketops/<group>/<version>/*.proto` and their generated Go | Imported here. The meaning of every field comes from it. |
+| [environments-api](https://github.com/blanketops/environments-api) | CRD Go types and generated CRD manifests | Imported here. Every Kind is an envelope: `Spec.Contract runtime.RawExtension` plus `Status.Conditions`. |
+| environments | Resolution, per-Kind domain logic, providers, the `core/` engine framework, the cache | This module. A library: no `cmd/`, no manager. |
+| [environments-controller](https://github.com/blanketops/environments-controller) | The running manager: reconcilers, `core/domain.Domain` implementations, mediators | Imports this module and calls into it. |
+| [environments-install](https://github.com/blanketops/environments-install) | Installable manifests: CRDs, RBAC, samples | Carries copies of the CRDs generated in environments-api. Not a Go dependency. |
+| [environments-cli](https://github.com/blanketops/environments-cli) | The `bops` command-line client | Not a Go dependency. Shipped alongside in releases. |
+| [environments-tests](https://github.com/blanketops/environments-tests) | Conformance test suite for the API surface | Not a Go dependency. |
+| [environments-docs](https://github.com/blanketops/environments-docs) | The documentation website | Describes the Kinds and their state transitions. |
+| [environments-bots](https://github.com/blanketops/environments-bots) | GitHub Apps and CLI bots: releaser, developer, test-helper, cleaner, pr-reviewer | Runs the project's automation: release workflows, PR hygiene, test bookkeeping, PR review. Imports this module for Go types; ships its own binaries. |
 
-### Building
+Go dependencies point one way:
+
+```environments-contract ─┐
+                       ├─→ environments ─→ environments-controller
+environments-api ──────┘
+```
+
+## Build & Install
 
 ```bash
 # Standard binary
@@ -24,7 +38,7 @@ mage static
 mage install   # → $HOME/.local/bin or $HOME/bin
 ```
 
-### Testing
+## Local Testing
 
 ```bash
 # Create a test cluster
@@ -40,37 +54,9 @@ bops-env dependencies install
 kubectl get pods -A
 ```
 
-### Workflow Commands
+## Provenance and Verification
 
-```bash
-# Install the BlanketOps Environments operator
-bops-env install
-
-# Uninstall the operator
-bops-env uninstall
-
-# Update the bops-env CLI binary itself
-bops-env self install
-bops-env self uninstall
-
-# Install the platform stack (dependency manifests)
-bops-env dependencies install
-
-# Manage a single dependency instead of the whole stack
-bops-env dependencies list
-bops-env dependencies install <name>
-bops-env dependencies status [name]
-bops-env dependencies uninstall <name>
-
-# Cluster management
-bops-env cluster up [name]
-bops-env cluster down [name]
-bops-env cluster status [name]
-```
-
-### Provenance and Verification
-
-Every release is signed and attested to ensure artifact integrity:
+Every release is signed and attested to ensure artifact integrity from build to deployment:
 
 - **Signed**: Binaries are signed using `cosign` (keyless mode)
 - **Attested**: Every build generates a formal SLSA-compliant provenance attestation
@@ -84,8 +70,3 @@ cosign verify-blob --certificate-identity-regexp ".*" --signature bops-env-stati
 
 # Verify the attestation via GitHub CLI
 gh attest verify bops-env-static --owner blanketops
-```
-
-### Contributing
-
-Pull requests and improvements are welcome! The project is evolving toward a fully self-hosted platform bootstrap system for Kubernetes environments.
