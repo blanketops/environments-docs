@@ -55,11 +55,11 @@ jobs:
         run: |
           tar -czf generated-contracts-${{ github.ref_name }}.tar.gz --exclude='.git' .
 
-      - name: Generate SBOM (Software Bill of Materials)
-        uses: anchore/sbom-action@v0.18.0
-        with:
-          artifact-name: sbom-${{ github.ref_name }}.spdx.json
-          output-file: sbom-${{ github.ref_name }}.spdx.json
+      # - name: Generate SBOM (Software Bill of Materials)
+      #   uses: anchore/sbom-action@v0.18.0
+      #   with:
+      #     artifact-name: sbom-${{ github.ref_name }}.spdx.json
+      #     output-file: sbom-${{ github.ref_name }}.spdx.json
 
       - name: Sign Artifacts with Sigstore Cosign (Keyless)
         run: |
