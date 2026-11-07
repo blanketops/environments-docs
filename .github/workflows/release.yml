@@ -1,5 +1,3 @@
-name: Release
-
 # =============================================================================
 # release.yml — Publish Secure GitHub Release & Supply Chain Artifacts
 #
@@ -7,6 +5,7 @@ name: Release
 # packages assets, generates SBOMs, cryptographically signs using Sigstore/Cosign,
 # issues GitHub build attestations, and publishes to GitHub Releases.
 # =============================================================================
+name: Release
 
 on:
   push:
