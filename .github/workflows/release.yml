@@ -56,7 +56,7 @@ jobs:
           tar -czf "docs-site-${{ github.ref_name }}.tar.gz" -C build .
 
       - name: Generate SBOM (Software Bill of Materials)
-        uses: anchore/sbom-action@v0.18.0
+        uses: anchore/sbom-action@v0.24.3
         with:
           artifact-name: sbom-spdx-${{ github.ref_name }}
           output-file: sbom-${{ github.ref_name }}.spdx.json
